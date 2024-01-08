@@ -1,0 +1,60 @@
+[gd_scene load_steps=15 format=3 uid="uid://dkaahsk2blmkh"]
+
+[ext_resource type="Texture2D" uid="uid://dtolrumencpkb" path="res://Assets/ThinIce/ArcadePlaceholder.png" id="1_d8bow"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceImage.cs" id="1_xl3vy"]
+[ext_resource type="Texture2D" uid="uid://ba26hgqltmdui" path="res://Assets/ThinIce/ArcadeCabinet.png" id="3_mi01u"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceCabinet.cs" id="4_rhmp4"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceCabinetKey.cs" id="5_3mumj"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceSideCabinetKey.cs" id="5_ygv6u"]
+[ext_resource type="Texture2D" uid="uid://dnq0r4c8dgm0k" path="res://Assets/ThinIce/UpKeyStill.png" id="6_6kujr"]
+[ext_resource type="Texture2D" uid="uid://cltiymjl2wtbh" path="res://Assets/ThinIce/RightKeyStill.png" id="6_36ym2"]
+[ext_resource type="Texture2D" uid="uid://c5rd13ep663wq" path="res://Assets/ThinIce/UpKeyPressed.png" id="7_2gys1"]
+[ext_resource type="Texture2D" uid="uid://dif8kt6afoli1" path="res://Assets/ThinIce/RightKeyPressed.png" id="7_m58gi"]
+[ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://Assets/ThinIce/DownKeyStill.png" id="8_s0wrs"]
+[ext_resource type="Texture2D" uid="uid://dehy53t8fcm50" path="res://Assets/ThinIce/DownKeyPressed.png" id="9_1g0ne"]
+[ext_resource type="Texture2D" uid="uid://q7mgcru5ps36" path="res://Assets/ThinIce/ScreenBackground.png" id="13_ipy43"]
+[ext_resource type="PackedScene" uid="uid://uaxa5luuscrh" path="res://Scenes/ThinIce/thin_ice_screen.tscn" id="13_vobr3"]
+
+[node name="ThinIce" type="Node2D"]
+
+[node name="ArcadePlaceholder" type="Sprite2D" parent="."]
+texture = ExtResource("1_d8bow")
+script = ExtResource("1_xl3vy")
+
+[node name="ArcadeCabinet" type="Sprite2D" parent="ArcadePlaceholder"]
+texture = ExtResource("3_mi01u")
+script = ExtResource("4_rhmp4")
+
+[node name="RightCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
+script = ExtResource("5_ygv6u")
+StillTexture = ExtResource("6_36ym2")
+PressedTexture = ExtResource("7_m58gi")
+BoundKey = 4194321
+
+[node name="LeftCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
+script = ExtResource("5_ygv6u")
+IsLeft = true
+StillTexture = ExtResource("6_36ym2")
+PressedTexture = ExtResource("7_m58gi")
+BoundKey = 4194319
+
+[node name="UpCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
+offset = Vector2(0, 2100)
+script = ExtResource("5_3mumj")
+StillTexture = ExtResource("6_6kujr")
+PressedTexture = ExtResource("7_2gys1")
+BoundKey = 4194320
+
+[node name="DownCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
+offset = Vector2(0, 2300)
+script = ExtResource("5_3mumj")
+StillTexture = ExtResource("8_s0wrs")
+PressedTexture = ExtResource("9_1g0ne")
+BoundKey = 4194322
+
+[node name="ThinIceScreenBackground" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
+position = Vector2(0, -150)
+texture = ExtResource("13_ipy43")
+
+[node name="ThinIceScreen" parent="ArcadePlaceholder/ArcadeCabinet/ThinIceScreenBackground" instance=ExtResource("13_vobr3")]
+position = Vector2(0, 150)
