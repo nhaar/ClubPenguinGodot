@@ -1,12 +1,18 @@
 using Godot;
 using System;
 
+/// <summary>
+/// Class for one of side cabinet keys.
+/// </summary>
 public partial class ThinIceSideCabinetKey : ThinIceCabinetKey
 {
 	public static readonly float VerticalPosition = 2200f;
 
 	public static readonly float SidePosition = 2000f;
 
+	/// <summary>
+	/// Whether this is the left key or the right key
+	/// </summary>
 	[Export]
 	public bool IsLeft { get; set; }
 

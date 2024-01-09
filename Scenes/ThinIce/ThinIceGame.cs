@@ -2,10 +2,13 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using ClubPenguinPlus.ThinIce;
 
+/// <summary>
+/// Node for the contents of the Thin Ice game scene, which consitutes of the
+/// everything in the arcade screen after the "PLAY" button is pressed.
+/// </summary>
 public partial class ThinIceGame : Node2D
 {
 	[Export]
@@ -51,10 +54,19 @@ public partial class ThinIceGame : Node2D
 
 	public Level CurrentLevel => ThinIceLevels.Levels[CurrentLevelNumber - 1];
 
+	/// <summary>
+	/// Grid containing all tiles used in the game
+	/// </summary>
 	public ThinIceTile[,] Tiles { get; set; }
 
+	/// <summary>
+	/// Reference to the Puffle object
+	/// </summary>
 	public ThinIcePuffle Puffle { get; set; }
 
+	/// <summary>
+	/// A list containing references to all the blocks currently in the screen
+	/// </summary>
 	public List<ThinIceBlock> Blocks { get; set; }
 
 	public override void _Ready()
@@ -63,52 +75,111 @@ public partial class ThinIceGame : Node2D
 		Blocks = new List<ThinIceBlock>();
 		Vector2 tileSize = EmptyTile.GetSize();
 
+		// reference hardcoded values
+		int leftmostTileX = -2100;
+		int topmostTileY = -1500;
+
 		for (int i = 0; i < Level.MaxWidth; i++)
 		{
 			for (int j = 0; j < Level.MaxHeight; j++)
 			{
-				ThinIceTile newTile = new();
-				newTile.Texture = EmptyTile;
-				newTile.Position = new Vector2(-2100 + i * tileSize.X, - 1500 + j * tileSize.Y);
-				newTile.TileCoordinate = new Vector2I(i, j);
-				newTile.Game = this;
+				ThinIceTile newTile = new()
+				{
+					Texture = EmptyTile,
+					Position = new Vector2(leftmostTileX + i * tileSize.X, topmostTileY + j * tileSize.Y),
+					TileCoordinate = new Vector2I(i, j),
+					Game = this
+				};
 				Tiles[i, j] = newTile;
 				AddChild(newTile);
 			}
 		}
 
+		// move to bottom so it is always visible on top of tiles
 		Puffle = (ThinIcePuffle)GetNode("ThinIcePuffle");
-		// move to bottom so it is always on top of tiles
 		MoveChild(Puffle, -1);
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
+	/// <summary>
+	/// All valid tile types
+	/// </summary>
 	public enum TileType
 	{
+		/// <summary>
+		/// In vanilla, represents blank tiles placed outside the level
+		/// </summary>
 		Empty,
+		
+		/// <summary>
+		/// Regular ice tiles
+		/// </summary>
 		Ice,
+
+		/// <summary>
+		/// Tiles after ice is melt
+		/// </summary>
 		Water,
+
+		/// <summary>
+		/// Tiles that can be passed through twice
+		/// </summary>
 		ThickIce,
+
+		/// <summary>
+		/// Regular wall tile
+		/// </summary>
 		Wall,
+
+		/// <summary>
+		/// Tile that finishes the level upon reached
+		/// </summary>
 		Goal,
+
+		/// <summary>
+		/// Tile that links to another and teleports player to it
+		/// </summary>
 		Teleporter,
+
+		/// <summary>
+		/// Tile for an already used teleporter
+		/// </summary>
 		PlaidTeleporter,
+
+		/// <summary>
+		/// Tile that requires a key to be opened
+		/// </summary>
 		Lock,
+
+		/// <summary>
+		/// Tile for the button that in vanilla is used to reveal the hidden path in
+		/// level 19
+		/// </summary>
 		Button,
+
+		/// <summary>
+		/// Tile for the fake wall that in vanilla is used to hide the hidden path in
+		/// level 19
+		/// </summary>
 		FakeWall,
+
+		/// <summary>
+		/// Tile the blocks are meant to be placed into
+		/// </summary>
 		BlockHole
 	}
 
+	/// <summary>
+	/// Class for a Thin Ice level's layout
+	/// </summary>
 	public class Level
 	{
 		public static readonly int MaxWidth = 19;
 
 		public static readonly int MaxHeight = 15;
 
+		/// <summary>
+		/// Tiles that do not count towards the total tile count
+		/// </summary>
 		public static readonly List<TileType> ZeroCountTiles = new()
 		{
 			TileType.Empty,
@@ -117,31 +188,46 @@ public partial class ThinIceGame : Node2D
 			TileType.BlockHole
 		};
 
+		/// <summary>
+		/// A coordinate pair used to offset the level's origin relative to the absolute one.
+		/// When used, the top left square to the origin will be automatically
+		/// filled with empty squares.
+		/// </summary>
 		public Vector2I RelativeOrigin { get; set; }
 
-		// all others coordinates are absolute coords
+		// all coordinates used in here are in absolute coords relative to the whole grid,
+		// and not the relative origin
+
+		/// <summary>
+		/// Coordinate pair for where the puffle should spawn
+		/// </summary>
 		public Vector2I PuffleSpawnLocation { get; set; }
 
+		/// <summary>
+		/// Biggest number of non empty horizontal tiles used relative to the origin
+		/// </summary>
 		public int Width { get; set; }
 
+		/// <summary>
+		/// Biggest number of non empty vertical tiles used relative to the origin
+		/// </summary>
 		public int Height { get; set; }
 
+		/// <summary>
+		/// Grid containing all tiles used in the level, not containing
+		/// empty tiles outside the defined width, height and relative origin boundaries
+		/// </summary>
 		public TileType[,] Tiles { get; set; }
 
+		/// <summary>
+		/// List of all cordinate pairs for where the keys should be placed
+		/// </summary>
 		public List<Vector2I> KeyPositions { get; set; }
 
+		/// <summary>
+		/// List of all coordinate pairs where blocks are spawned
+		/// </summary>
 		public List<Vector2I> BlockPositions { get; set; }
-	
-		public Level(TileType[,] tiles, Vector2I puffleSpawnLocation, Vector2I origin, List<Vector2I> keyPositions = null, List<Vector2I> blockPositions = null)
-		{
-			Tiles = tiles;
-			PuffleSpawnLocation = puffleSpawnLocation;
-			RelativeOrigin = origin;
-			Width = tiles.GetLength(0);
-			Height = tiles.GetLength(1);
-			KeyPositions = keyPositions ?? new List<Vector2I>();
-			BlockPositions = blockPositions ?? new List<Vector2I>();
-		}
 
 		// level string format
 		// map
@@ -152,10 +238,24 @@ public partial class ThinIceGame : Node2D
 		// puffle(coord)
 		// origin(coord)
 		// dim(width,height)
+		/// <summary>
+		/// Initialize a level from the custom level string format
+		/// </summary>
+		/// <param name="levelString">Custom level string that follows this format:
+		/// map
+		/// (mapString, see <c>MapDecode</c>);
+		/// origin(x,y)
+		/// puffle(x,y)
+		/// keys(x,y),...
+		/// blocks(x,y),...
+		/// 
+		/// Where the map string defines the tileset,
+		/// the origin defines the relative origin,
+		/// the puffle defines the spawn location,
+		/// and keys and blocks define coordinates of where the keys and blocks are placed.
+		/// </param>
 		public Level(string levelString)
 		{
-			Match match = Regex.Match(levelString, @"(?<map>(?<=map\n)[^;]+)|(?<keys>(?<=keys).*);(?<blocks>(?<=blocks).*)(?<puffle>(?<=puffle).*)(?<origin>(?<=origin).*)(?<dim>(?<=dim).*)");
-
 			Tiles = MapDecode(Regex.Match(levelString, @"(?<=map(\r\n|\n))[^;]+").Value);
 			KeyPositions = GetCoordsFromString(Regex.Match(levelString, @"(?<=keys).*").Value);
 			BlockPositions = GetCoordsFromString(Regex.Match(levelString, @"(?<=blocks).*").Value);
@@ -165,6 +265,13 @@ public partial class ThinIceGame : Node2D
 			Height = Tiles.GetLength(1);
 		}
 
+		/// <summary>
+		/// Helper function that given a string that contains a list of coordinate pairs like
+		/// (x,y),(x,y),...
+		/// returns the list of coordinate pairs
+		/// </summary>
+		/// <param name="coords"></param>
+		/// <returns></returns>
 		public static List<Vector2I> GetCoordsFromString(string coords)
 		{
 			List<Vector2I> coordsList = new();
@@ -178,6 +285,13 @@ public partial class ThinIceGame : Node2D
 			return coordsList;
 		}
 
+		/// <summary>
+		/// Helper function that given a string that contains a single coordinate pair like
+		/// (x,y)
+		/// returns that coordinate pair, or null if it doesn't have pairs
+		/// </summary>
+		/// <param name="coord"></param>
+		/// <returns></returns>
 		public static Vector2I? GetCoordFromString(string coord)
 		{
 			List<Vector2I> coordsList = GetCoordsFromString(coord);
@@ -188,6 +302,20 @@ public partial class ThinIceGame : Node2D
 			return coordsList[0];
 		}
 
+		/// <summary>
+		/// Decode the custom tileset notation into a tile grid
+		/// </summary>
+		/// <param name="mapString">
+		/// A comma separated representation of the <c>Tiles</c> grid,
+		/// where each row is separated by a newline, and each tile
+		/// is separated by a comma. The tile format is
+		/// using the format <c>(amount)(tile)</c>, where <c>amount</c>
+		/// can be ommited and will be count as 1, or otherwise represents the number
+		/// of tiles in a row, and the tile name is a string representing
+		/// the tile type (see function body)
+		/// </param>
+		/// <returns></returns>
+		/// <exception cref="Exception"></exception>
 		public static TileType[,] MapDecode(string mapString)
 		{
 			List<string[]> records = ParseCsv(mapString.Trim());
@@ -252,6 +380,12 @@ public partial class ThinIceGame : Node2D
 			return tiles;
 		}
 
+		/// <summary>
+		/// Helper function that parses a csv-like string into a list of string arrays
+		/// that represent each row
+		/// </summary>
+		/// <param name="csv"></param>
+		/// <returns></returns>
 		public static List<string[]> ParseCsv(string csv)
 		{
 			List<string[]> records = new List<string[]>();
@@ -261,21 +395,27 @@ public partial class ThinIceGame : Node2D
 			for (int i = 0; i < lines.Length; i++)
 			{
 				string[] fields = lines[i].Split(',');
-
 				fields = fields.Select(field => field.Trim()).ToArray();
-
 				records.Add(fields);
 			}
 
 			return records;
 		}
 
+		/// <summary>
+		/// Whether the given point is outside the level's defined boundaries
+		/// </summary>
+		/// <param name="point"></param>
+		/// <returns></returns>
 		public bool IsPointOutOfBounds(Vector2I point)
 		{
 			return point.X < RelativeOrigin.X || point.Y < RelativeOrigin.Y || point.X >= Width + RelativeOrigin.X || point.Y >= Height + RelativeOrigin.Y;
 		}
 	}
 
+	/// <summary>
+	/// Draws the current level to its absolute freshest state
+	/// </summary>
 	public void DrawLevel()
 	{
 		ClearBlocks();
@@ -297,6 +437,10 @@ public partial class ThinIceGame : Node2D
 				}
 				Tiles[i, j].ChangeTile(tileType);
 				ThinIceTile currentTile = Tiles[i, j];
+
+				// teleporters are currently linked in pair based
+				// on first appearance
+				// works for vanilla ones, but might be expanded for custom ones in the future
 				if (tileType == TileType.Teleporter)
 				{
 					if (teleporterCount % 2 == 0)
@@ -319,17 +463,23 @@ public partial class ThinIceGame : Node2D
 		}
 		foreach (Vector2I blockPosition in level.BlockPositions)
 		{
-			ThinIceBlock block = new();
-			block.Texture = BlockTexture;
-			block.Coordinates = blockPosition;
 			ThinIceTile blockTile = Tiles[blockPosition.X, blockPosition.Y];
-			block.Position = blockTile.Position;
+			ThinIceBlock block = new()
+			{
+				Texture = BlockTexture,
+				Coordinates = blockPosition,
+				Position = blockTile.Position
+			};
 			AddChild(block);
 			Blocks.Add(block);
 			blockTile.BlockReference = block;
 		}
 	}
 
+	/// <summary>
+	/// Start level based on its number
+	/// </summary>
+	/// <param name="levelNumber"></param>
 	public void StartLevel(int levelNumber)
 	{
 		CurrentLevelNumber = levelNumber;
@@ -343,6 +493,9 @@ public partial class ThinIceGame : Node2D
 		StartLevel(CurrentLevelNumber + 1);
 	}
 
+	/// <summary>
+	/// Clears all blocks from the screen
+	/// </summary>
 	public void ClearBlocks()
 	{
 		foreach(ThinIceBlock block in Blocks)

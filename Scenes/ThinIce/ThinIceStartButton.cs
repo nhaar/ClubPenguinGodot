@@ -3,8 +3,11 @@ using System;
 
 public partial class ThinIceStartButton : ThinIceButton
 {
-	private void _OnPressed()
+	private void OnPressed()
 	{
-		GetTree().CallGroup("thin_ice_menu", "OpenInstructionMenu");
+		Node2D mainMenu = (Node2D)GetParent();
+		Node2D instructionMenu = (Node2D)mainMenu.GetNode("../ThinIceInstructionMenu");
+		instructionMenu.Visible = true;
+		mainMenu.QueueFree();
 	}
 }

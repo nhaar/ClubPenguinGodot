@@ -1,46 +1,84 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
+/// <summary>
+/// Object for the playable puffle
+/// </summary>
 public partial class ThinIcePuffle : Sprite2D
 {
+	/// <summary>
+	/// Amount of time it takes for the puffle to move a tile
+	/// </summary>
 	public static readonly int MoveAnimationDuration = 4;
 
+	/// <summary>
+	/// Grid coordinates where the puffle is locaed
+	/// </summary>
 	public Vector2I Coordinates { get; set; }
 
+	/// <summary>
+	/// Whether or not the puffle is moving
+	/// </summary>
 	public bool IsMoving { get; set; }
 
+	/// <summary>
+	/// Counter for the move animation
+	/// </summary>
 	public int MoveAnimationTimer { get; set; }
 
+	/// <summary>
+	/// Reference to the game object
+	/// </summary>
 	public ThinIceGame Game { get; set; }
 
+	/// <summary>
+	/// Number of keys the puffle has
+	/// </summary>
+	/// <remarks>
+	/// In vanilla, each level has at most one key. This is thus meant for custom levels.
+	/// </remarks>
 	public int KeyCount { get; set; }
 
+	/// <summary>
+	/// Position in screen space the puffle is moving from
+	/// </summary>
 	private Vector2 _positionMovingFrom;
 
+	/// <summary>
+	/// Coordinate pair the puffle is moving towards
+	/// </summary>
 	private Vector2I _movementTargetCoords;
 
+	/// <summary>
+	/// Displacement vector for the puffle's movement towards the next tile
+	/// </summary>
 	private Vector2 _movementDisplacement;
 
+	/// <summary>
+	/// Direction the puffle is moving towards
+	/// </summary>
 	private Direction _movementDirection;
 
+	/// <summary>
+	/// Represents a direction the puffle can move in
+	/// </summary>
 	public enum Direction
 	{
 		Up,
 		Down,
 		Left,
 		Right,
-		None
 	}
 
+	/// <summary>
+	/// All tiles the puffle cannot move through
+	/// </summary>
 	public static readonly List<ThinIceGame.TileType> ImpassableTiles = new()
 	{
 		ThinIceGame.TileType.Wall,
 		ThinIceGame.TileType.Water,
 	};
-
-
 
 	public override void _Ready()
 	{
@@ -90,7 +128,14 @@ public partial class ThinIcePuffle : Sprite2D
 		}
 	}
 
-	public Vector2I GetDestination(Vector2I originalCoords, Direction direction)
+	/// <summary>
+	/// Gets the coordinate from moving in the given direction from the original coordinate
+	/// </summary>
+	/// <param name="originalCoords"></param>
+	/// <param name="direction"></param>
+	/// <returns></returns>
+	/// <exception cref="NotImplementedException"></exception>
+	public static Vector2I GetDestination(Vector2I originalCoords, Direction direction)
 	{
 		Vector2I deltaCoord = direction switch
 		{
@@ -103,6 +148,12 @@ public partial class ThinIcePuffle : Sprite2D
 		return originalCoords + deltaCoord;
 	}
 
+	/// <summary>
+	/// Whether or not the puffle can move in a given direction
+	/// </summary>
+	/// <param name="targetCoords"></param>
+	/// <param name="direction"></param>
+	/// <returns></returns>
 	public bool CanMove(Vector2I targetCoords, Direction direction)
 	{
 		ThinIceTile targetTile = Game.Tiles[targetCoords.X, targetCoords.Y];
@@ -125,6 +176,11 @@ public partial class ThinIcePuffle : Sprite2D
 		}
 	}
 
+	/// <summary>
+	/// Starts moving towards a tile
+	/// </summary>
+	/// <param name="targetCoords"></param>
+	/// <param name="direction"></param>
 	public void StartMoveAnimation(Vector2I targetCoords, Direction direction)
 	{
 		_movementTargetCoords = targetCoords;
@@ -136,6 +192,9 @@ public partial class ThinIcePuffle : Sprite2D
 		ContinueMoveAnimation();
 	}
 
+	/// <summary>
+	/// Progresses animation towards the next tile
+	/// </summary>
 	public void ContinueMoveAnimation()
 	{
 		MoveAnimationTimer++;
@@ -146,6 +205,9 @@ public partial class ThinIcePuffle : Sprite2D
 		}
 	}
 
+	/// <summary>
+	/// Finishes moving towards the next tile
+	/// </summary>
 	public void FinishMoveAnimation()
 	{
 		Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleExit();
@@ -163,15 +225,18 @@ public partial class ThinIcePuffle : Sprite2D
 	{
 		KeyCount--;
 	}
+	public void ResetKeys()
+	{
+		KeyCount = 0;
+	}
 
+	/// <summary>
+	/// Teleports the puffle to the given grid coordinates
+	/// </summary>
+	/// <param name="coords"></param>
 	public void TeleportTo(Vector2I coords)
 	{
 		Position = Game.Tiles[coords.X, coords.Y].Position;
 		Coordinates = coords;
-	}
-
-	public void ResetKeys()
-	{
-		KeyCount = 0;
 	}
 }

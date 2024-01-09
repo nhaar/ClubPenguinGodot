@@ -24,4 +24,4 @@ ButtonText = "START"
 ButtonFont = ExtResource("5_0e4ox")
 ButtonFontSize = 100
 
-[connection signal="pressed" from="ThinIceStartButton" to="ThinIceStartButton" method="_OnPressed"]
+[connection signal="pressed" from="ThinIceStartButton" to="ThinIceStartButton" method="OnPressed"]

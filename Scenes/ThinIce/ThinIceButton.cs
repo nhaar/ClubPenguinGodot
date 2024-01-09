@@ -1,6 +1,9 @@
 using Godot;
 using System;
 
+/// <summary>
+/// A button that is clickable in the Thin Ice game.
+/// </summary>
 public partial class ThinIceButton : TextureButton
 {
 	[Export]
@@ -14,19 +17,23 @@ public partial class ThinIceButton : TextureButton
 
 	public override void _Ready()
 	{
-		Bitmap bitmap = new Bitmap();
+		// to delineate what is the button, use the alpha channel of the normal texture
+		Bitmap bitmap = new();
 		bitmap.CreateFromImageAlpha(TextureNormal.GetImage());
 		TextureClickMask = bitmap;
-		
-		Label label = new Label();
-		label.Text = ButtonText;
-		label.LabelSettings = new LabelSettings();
-		label.LabelSettings.Font = ButtonFont;
-		label.LabelSettings.FontSize = ButtonFontSize;
-		label.VerticalAlignment = VerticalAlignment.Center;
-		label.HorizontalAlignment = HorizontalAlignment.Center;
-		label.SetSize(TextureNormal.GetSize());
 
+		Label label = new()
+		{
+			Text = ButtonText,
+			LabelSettings = new()
+			{
+				Font = ButtonFont,
+				FontSize = ButtonFontSize
+			},
+			VerticalAlignment = VerticalAlignment.Center,
+			HorizontalAlignment = HorizontalAlignment.Center
+		};
+		label.SetSize(TextureNormal.GetSize());
 		AddChild(label);
 
 		base._Ready();

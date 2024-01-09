@@ -1,14 +1,12 @@
 ﻿using Godot;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using static ThinIceGame;
 
 namespace ClubPenguinPlus.ThinIce
 {
+    /// <summary>
+    /// Class for all the levels in Thin Ice
+    /// </summary>
     public static class ThinIceLevels
     {
 
@@ -142,7 +140,7 @@ origin(1,0)
 puffle(14,7)
 ");
 
-        public static Level Level10 = new(@"
+        public static readonly Level Level10 = new(@"
 map
 19wall
 wall,17ice,wall
@@ -163,7 +161,7 @@ puffle(9,5)
 keys(1,1)
 ");
 
-        public static Level Level11 = new(@"
+        public static readonly Level Level11 = new(@"
 map
 13empty,3wall,2empty
 13empty,wall,goal,wall,2empty
@@ -185,7 +183,7 @@ puffle(15,11)
 keys(6,9)
 ");
 
-        public static Level Level12 = new(@"
+        public static readonly Level Level12 = new(@"
 map
 6empty,4wall,empty,6wall,2empty
 6empty,wall,2ice,3wall,2ice,wall,ice,wall,2empty
@@ -206,7 +204,7 @@ puffle(15,1)
 keys(4,13)
 ");
 
-        public static Level Level13 = new(@"
+        public static readonly Level Level13 = new(@"
 map
 7empty,4wall,empty,3wall,3empty
 2empty,6wall,2ice,3wall,ice,wall,3empty
@@ -228,7 +226,7 @@ keys(1,9)
 blocks(5,9)
 ");
 
-        public static Level Level14 = new(@"
+        public static readonly Level Level14 = new(@"
 map
 6wall,3empty,4wall,5empty
 wall,4ice,wall,3empty,wall,2ice,3wall,3empty
@@ -250,7 +248,7 @@ keys(16,7)
 blocks(7,8)
 ");
 
-        public static Level Level15 = new(@"
+        public static readonly Level Level15 = new(@"
 map
 19wall
 wall,8ice,wall,2thick,wall,2thick,3ice,wall
@@ -272,7 +270,7 @@ keys(1,9)
 blocks(5,8)
 ");
 
-        public static Level Level16 = new(@"
+        public static readonly Level Level16 = new(@"
 map
 19wall
 wall,2ice,thick,3ice,2wall,4ice,wall,4ice,wall
@@ -294,7 +292,7 @@ keys(17,13)
 blocks(14,5)
 ");
 
-        public static Level Level17 = new(@"
+        public static readonly Level Level17 = new(@"
 map
 19wall
 wall,5ice,2wall,hole,wall,3ice,wall,ice,wall,2ice,wall
@@ -316,7 +314,7 @@ keys(14,1)
 blocks(5,11)
 ");
 
-        public static Level Level18 = new(@"
+        public static readonly Level Level18 = new(@"
 map
 19wall
 2wall,16ice,wall
@@ -338,7 +336,7 @@ keys(2,1)
 blocks(16,10)
 ");
 
-        public static Level Level19 = new(@"
+        public static readonly Level Level19 = new(@"
 map
 19wall
 wall,goal,wall,10ice,wall,4fake,wall
@@ -360,7 +358,7 @@ keys(15,12)
 blocks(12,7)
 ");
 
-        public static ThinIceGame.Level[] Levels = new ThinIceGame.Level[]
+        public static Level[] Levels = new Level[]
         {
             Level1,
             Level2,
