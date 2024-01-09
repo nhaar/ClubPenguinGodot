@@ -1,0 +1,34 @@
+[gd_scene load_steps=15 format=3 uid="uid://cyqygan61whl4"]
+
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceGame.cs" id="1_tbklw"]
+[ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://Assets/ThinIce/EmptyTile.png" id="2_f1q46"]
+[ext_resource type="Texture2D" uid="uid://vmj4uyieds41" path="res://Assets/ThinIce/Puffle1.png" id="3_eacnp"]
+[ext_resource type="Texture2D" uid="uid://b42sy4cseneg0" path="res://Assets/ThinIce/IceTile.png" id="3_vpo1d"]
+[ext_resource type="Texture2D" uid="uid://dwe8fean60gum" path="res://Assets/ThinIce/WaterTile.png" id="4_aiy34"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePuffle.cs" id="4_s12aw"]
+[ext_resource type="Texture2D" uid="uid://bydff6v435324" path="res://Assets/ThinIce/ThickIceTile.png" id="5_v68u7"]
+[ext_resource type="Texture2D" uid="uid://bhv5yw18dquia" path="res://Assets/ThinIce/WallTile.png" id="6_4uv8b"]
+[ext_resource type="Texture2D" uid="uid://dm7iwh37wirwp" path="res://Assets/ThinIce/GoalTile.png" id="7_g242h"]
+[ext_resource type="Texture2D" uid="uid://coupcu0ori5lf" path="res://Assets/ThinIce/TeleporterTile.png" id="8_s4m5c"]
+[ext_resource type="Texture2D" uid="uid://cys7yv6mojce" path="res://Assets/ThinIce/PlaidTeleporterTile.png" id="9_goel3"]
+[ext_resource type="Texture2D" uid="uid://fi35677oc6xn" path="res://Assets/ThinIce/LockTile.png" id="10_80wb3"]
+[ext_resource type="Texture2D" uid="uid://bq2flgwyi61rj" path="res://Assets/ThinIce/ButtonTile.png" id="11_tkj7r"]
+[ext_resource type="Texture2D" uid="uid://cq788tyuavcq6" path="res://Assets/ThinIce/BlockHoleTile.png" id="12_200gw"]
+
+[node name="ThinIceGame" type="Node2D"]
+script = ExtResource("1_tbklw")
+EmptyTile = ExtResource("2_f1q46")
+IceTile = ExtResource("3_vpo1d")
+WaterTile = ExtResource("4_aiy34")
+ThickIceTile = ExtResource("5_v68u7")
+WallTile = ExtResource("6_4uv8b")
+GoalTile = ExtResource("7_g242h")
+TeleporterTile = ExtResource("8_s4m5c")
+PlaidTeleporterTile = ExtResource("9_goel3")
+LockTile = ExtResource("10_80wb3")
+ButtonTile = ExtResource("11_tkj7r")
+BlockHoleTile = ExtResource("12_200gw")
+
+[node name="ThinIcePuffle" type="Sprite2D" parent="."]
+texture = ExtResource("3_eacnp")
+script = ExtResource("4_s12aw")

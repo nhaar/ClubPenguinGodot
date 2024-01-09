@@ -10,7 +10,7 @@ public partial class ThinIceImage : Sprite2D
 	
 	[Export]
 	// uses a scale from -1 to 1 in each axis
-	// such that (0, 0) corresponds to the center
+	// such that (0, 0) corresponds tTo the center
 	public Vector2 ThinIcePosition { get; set; }
 	
 	// Called when the node enters the scene tree for the first time.

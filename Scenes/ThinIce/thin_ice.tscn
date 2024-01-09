@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dkaahsk2blmkh"]
+[gd_scene load_steps=19 format=3 uid="uid://dkaahsk2blmkh"]
 
 [ext_resource type="Texture2D" uid="uid://dtolrumencpkb" path="res://Assets/ThinIce/ArcadePlaceholder.png" id="1_d8bow"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceImage.cs" id="1_xl3vy"]
@@ -13,7 +13,11 @@
 [ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://Assets/ThinIce/DownKeyStill.png" id="8_s0wrs"]
 [ext_resource type="Texture2D" uid="uid://dehy53t8fcm50" path="res://Assets/ThinIce/DownKeyPressed.png" id="9_1g0ne"]
 [ext_resource type="Texture2D" uid="uid://q7mgcru5ps36" path="res://Assets/ThinIce/ScreenBackground.png" id="13_ipy43"]
-[ext_resource type="PackedScene" uid="uid://uaxa5luuscrh" path="res://Scenes/ThinIce/thin_ice_screen.tscn" id="13_vobr3"]
+[ext_resource type="PackedScene" uid="uid://c0rlia3y7yb2u" path="res://Scenes/ThinIce/thin_ice_menu.tscn" id="14_0evgq"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceMenu.cs" id="15_be0fk"]
+[ext_resource type="PackedScene" uid="uid://cyqygan61whl4" path="res://Scenes/ThinIce/thin_ice_game.tscn" id="16_kgur2"]
+[ext_resource type="Texture2D" uid="uid://brchwxehau80q" path="res://Assets/ThinIce/Key1.png" id="17_piq8y"]
+[ext_resource type="Texture2D" uid="uid://bcpgbrqousu3x" path="res://Assets/ThinIce/Block.png" id="18_06sbk"]
 
 [node name="ThinIce" type="Node2D"]
 
@@ -56,5 +60,10 @@ BoundKey = 4194322
 position = Vector2(0, -150)
 texture = ExtResource("13_ipy43")
 
-[node name="ThinIceScreen" parent="ArcadePlaceholder/ArcadeCabinet/ThinIceScreenBackground" instance=ExtResource("13_vobr3")]
-position = Vector2(0, 150)
+[node name="ThinIceMenu" parent="ArcadePlaceholder/ArcadeCabinet/ThinIceScreenBackground" groups=["thin_ice_menu"] instance=ExtResource("14_0evgq")]
+script = ExtResource("15_be0fk")
+
+[node name="ThinIceGame" parent="ArcadePlaceholder/ArcadeCabinet/ThinIceScreenBackground" instance=ExtResource("16_kgur2")]
+visible = false
+KeyTexture = ExtResource("17_piq8y")
+BlockTexture = ExtResource("18_06sbk")

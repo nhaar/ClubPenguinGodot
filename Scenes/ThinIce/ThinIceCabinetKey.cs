@@ -22,8 +22,6 @@ public partial class ThinIceCabinetKey : Sprite2D
 		IsPressed = false;
 
 		PressDelta = StillTexture.GetSize() - PressedTexture.GetSize();
-
-		GD.Print(PressDelta);
 	}
 
 	public override void _Process(double delta)
