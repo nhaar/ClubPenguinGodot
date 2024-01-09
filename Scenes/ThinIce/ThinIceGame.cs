@@ -504,4 +504,14 @@ public partial class ThinIceGame : Node2D
 		}
 		Blocks.Clear();
 	}
+
+	/// <summary>
+	/// Gets tile in the given coordinate
+	/// </summary>
+	/// <param name="coordinates"></param>
+	/// <returns></returns>
+	public ThinIceTile GetTile(Vector2I coordinates)
+	{
+		return Tiles[coordinates.X, coordinates.Y];
+	}
 }

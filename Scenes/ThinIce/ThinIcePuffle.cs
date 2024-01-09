@@ -183,6 +183,7 @@ public partial class ThinIcePuffle : Sprite2D
 	/// <param name="direction"></param>
 	public void StartMoveAnimation(Vector2I targetCoords, Direction direction)
 	{
+		Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleExit(direction);
 		_movementTargetCoords = targetCoords;
 		_movementDirection = direction;
 		_positionMovingFrom = Position;
@@ -210,7 +211,6 @@ public partial class ThinIcePuffle : Sprite2D
 	/// </summary>
 	public void FinishMoveAnimation()
 	{
-		Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleExit();
 		Coordinates = _movementTargetCoords;
 		Game.Tiles[_movementTargetCoords.X, _movementTargetCoords.Y].OnPuffleEnter(_movementDirection);
 		IsMoving = false;

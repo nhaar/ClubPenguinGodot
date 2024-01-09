@@ -95,9 +95,6 @@ public partial class ThinIceTile : Sprite2D
 			LinkedTeleporter.MakePlaidTeleporter();
 		}
 		
-		// move if block exists
-		BlockReference?.Move(direction);
-		
 		if (KeyReference != null)
 		{
 			RemoveKey();
@@ -108,7 +105,7 @@ public partial class ThinIceTile : Sprite2D
 	/// <summary>
 	/// Action to perform when the puffle exits this tile
 	/// </summary>
-	public void OnPuffleExit()
+	public void OnPuffleExit(ThinIcePuffle.Direction direction)
 	{
 		if (TileType == ThinIceGame.TileType.Ice)
 		{
@@ -118,6 +115,9 @@ public partial class ThinIceTile : Sprite2D
 		{
 			ChangeTile(ThinIceGame.TileType.Ice);
 		}
+
+		// move if block exists
+		GetAdjacent(direction).BlockReference?.Move(direction);
 	}
 
 	/// <summary>
@@ -149,5 +149,15 @@ public partial class ThinIceTile : Sprite2D
 		KeyReference = new Sprite2D();
 		KeyReference.Texture = Game.KeyTexture;
 		AddChild(KeyReference);
+	}
+
+	/// <summary>
+	/// Get adjacent tile in a given direction
+	/// </summary>
+	/// <param name="direction"></param>
+	/// <returns></returns>
+	public ThinIceTile GetAdjacent(ThinIcePuffle.Direction direction)
+	{
+		return Game.GetTile(ThinIcePuffle.GetDestination(TileCoordinate, direction));
 	}
 }
