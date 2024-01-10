@@ -501,6 +501,7 @@ public partial class ThinIceGame : Node2D
 		foreach(ThinIceBlock block in Blocks)
 		{
 			block.QueueFree();
+			GetTile(block.Coordinates).BlockReference = null;
 		}
 		Blocks.Clear();
 	}

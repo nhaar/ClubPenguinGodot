@@ -104,6 +104,8 @@ public partial class ThinIceBlock : Sprite2D
 		Vector2 targetPosition = Game.Tiles[_coordinatesMovingTo.X, _coordinatesMovingTo.Y].Position;
 		_displacementVector = targetPosition - Position;
 		StartMoveAnimation();
+
+		Game.GetTile(Coordinates).BlockReference = null;
 	}
 
 	/// <summary>
@@ -138,9 +140,15 @@ public partial class ThinIceBlock : Sprite2D
 	public void StopMoveAnimation()
 	{
 		Coordinates = _coordinatesMovingTo;
+		// add block to new tile
+		Game.GetTile(Coordinates).BlockReference = this;
 		if (CanPush(_movementDirection))
 		{
 			Move(_movementDirection);
+		}
+		else
+		{
+			IsMoving = false;
 		}
 	}
 }
