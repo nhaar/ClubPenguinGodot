@@ -256,4 +256,13 @@ public partial class ThinIcePuffle : Sprite2D
 		}
 		return true;
 	}
+
+	/// <summary>
+	/// Reset Puffle variables for when the puffle "dies"
+	/// </summary>
+	public void Die()
+	{
+		IsMoving = false;
+		ResetKeys();
+	}
 }

@@ -567,5 +567,6 @@ public partial class ThinIceGame : Node2D
 	private void OnResetButtonPressed()
 	{
 		ResetLevel();
+		Puffle.Die();
 	}
 }
