@@ -4,7 +4,7 @@ using static ThinIceGame;
 
 namespace ClubPenguinPlus.ThinIce
 {
-    /// <summary>
+    /// <summary>   
     /// Class for all the levels in Thin Ice
     /// </summary>
     public static class ThinIceLevels
@@ -236,7 +236,7 @@ empty,wall,4ice,thick,2ice,wall,3ice,thick,ice,2wall,empty
 2wall,ice,2wall,2ice,wall,ice,2wall,3ice,thick,ice,wall,empty
 wall,2ice,2wall,3ice,thick,6ice,3wall
 wall,3ice,wall,2ice,thick,9ice,wall
-wall,3ice,wall,ice,wall,ice,3wall,ice,wall,4ice,wall
+wall,3ice,wall,ice,wall,thick,3wall,ice,wall,4ice,wall
 2wall,2ice,wall,2ice,thick,2ice,wall,thick,3ice,3wall
 2wall,ice,6wall,ice,wall,3ice,thick,ice,wall,empty
 empty,wall,ice,4wall,3ice,wall,2ice,thick,ice,2wall,empty
