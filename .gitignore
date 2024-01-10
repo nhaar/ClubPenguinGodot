@@ -1,3 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
 .vs/
+
+# Use this folder for image editting and other tests
+ImageTest/
