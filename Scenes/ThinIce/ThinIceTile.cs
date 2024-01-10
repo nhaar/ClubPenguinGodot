@@ -96,7 +96,11 @@ public partial class ThinIceTile : Sprite2D
 			MakePlaidTeleporter();
 			LinkedTeleporter.MakePlaidTeleporter();
 		}
-		
+		else if (Game.Puffle.IsStuck())
+		{
+			Game.ResetLevel();
+		}
+
 		if (KeyReference != null)
 		{
 			RemoveKey();

@@ -240,4 +240,20 @@ public partial class ThinIcePuffle : Sprite2D
 		Position = Game.Tiles[coords.X, coords.Y].Position;
 		Coordinates = coords;
 	}
+
+	/// <summary>
+	/// Whether or not the puffle has anywhere to go
+	/// </summary>
+	/// <returns></returns>
+	public bool IsStuck()
+	{
+		foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+		{
+			if (CanMove(GetDestination(Coordinates, direction), direction))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -551,4 +551,12 @@ public partial class ThinIceGame : Node2D
 			}
 		}
 	}
+
+	/// <summary>
+	/// Resets the level
+	/// </summary>
+	public void ResetLevel()
+	{
+		StartLevel(CurrentLevelNumber);
+	}
 }
