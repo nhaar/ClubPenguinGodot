@@ -76,8 +76,8 @@ public partial class ThinIceGame : Node2D
 		Vector2 tileSize = EmptyTile.GetSize();
 
 		// reference hardcoded values
-		int leftmostTileX = -2100;
-		int topmostTileY = -1500;
+		int leftmostTileX = -2158;
+		int topmostTileY = -1700;
 
 		for (int i = 0; i < Level.MaxWidth; i++)
 		{
