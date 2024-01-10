@@ -62,7 +62,9 @@ public partial class ThinIceTile : Sprite2D
 			ThinIceGame.TileType.PlaidTeleporter => Game.PlaidTeleporterTile,
 			ThinIceGame.TileType.Lock => Game.LockTile,
 			ThinIceGame.TileType.Button => Game.ButtonTile,
-			ThinIceGame.TileType.FakeWall => Game.WallTile,
+			ThinIceGame.TileType.FakeTemporaryWall => Game.WallTile,
+			ThinIceGame.TileType.FakeImpassableWall => Game.WallTile,
+			ThinIceGame.TileType.FakePassableWall => Game.WallTile,
 			ThinIceGame.TileType.BlockHole => Game.BlockHoleTile,
 			_ => throw new NotImplementedException(),
 		};
@@ -116,8 +118,16 @@ public partial class ThinIceTile : Sprite2D
 			ChangeTile(ThinIceGame.TileType.Ice);
 		}
 
+		ThinIceTile destinationTile = GetAdjacent(direction);
+		
 		// move if block exists
-		GetAdjacent(direction).BlockReference?.Move(direction);
+		destinationTile.BlockReference?.Move(direction);
+	
+		// button is pressed on previous tile exit
+		if (destinationTile.TileType == ThinIceGame.TileType.Button)
+		{
+			Game.PressButton();
+		}
 	}
 
 	/// <summary>

@@ -78,6 +78,7 @@ public partial class ThinIcePuffle : Sprite2D
 	{
 		ThinIceGame.TileType.Wall,
 		ThinIceGame.TileType.Water,
+		ThinIceGame.TileType.FakeImpassableWall,
 	};
 
 	public override void _Ready()

@@ -158,9 +158,21 @@ public partial class ThinIceGame : Node2D
 
 		/// <summary>
 		/// Tile for the fake wall that in vanilla is used to hide the hidden path in
-		/// level 19
+		/// level 19, but you can't walk over
 		/// </summary>
-		FakeWall,
+		FakeImpassableWall,
+
+		/// <summary>
+		/// Tile for the fake wall that in vanilla is used to hide the hidden path in
+		/// level 19 and that you can walk over
+		/// </summary>
+		FakePassableWall,
+
+		/// <summary>
+		/// Tile for the fake wall in vanilla that is used to hide the hidden path in
+		/// level 19 and that becomes a normal wall when the button is pressed
+		/// </summary>
+		FakeTemporaryWall,
 
 		/// <summary>
 		/// Tile the blocks are meant to be placed into
@@ -341,7 +353,9 @@ public partial class ThinIceGame : Node2D
 							"plaid" => TileType.PlaidTeleporter,
 							"lock" => TileType.Lock,
 							"button" => TileType.Button,
-							"fake" => TileType.FakeWall,
+							"faketemp" => TileType.FakeTemporaryWall,
+							"fakepass" => TileType.FakePassableWall,
+							"fakeimpass" => TileType.FakeImpassableWall,
 							"hole" => TileType.BlockHole,
 							_ => throw new Exception("Invalid tile type: " + tile)
 						};
@@ -514,5 +528,27 @@ public partial class ThinIceGame : Node2D
 	public ThinIceTile GetTile(Vector2I coordinates)
 	{
 		return Tiles[coordinates.X, coordinates.Y];
+	}
+
+	/// <summary>
+	/// Action for when the button that exposes fake walls is pressed
+	/// </summary>
+	public void PressButton()
+	{
+		for (int i = 0; i < Level.MaxWidth; i++)
+		{
+			for (int j = 0; j < Level.MaxHeight; j++)
+			{
+				ThinIceTile tile = Tiles[i, j];
+				if (tile.TileType == TileType.FakeTemporaryWall)
+				{
+					tile.ChangeTile(TileType.Wall);
+				}
+				else if (tile.TileType == TileType.FakePassableWall || tile.TileType == TileType.FakeImpassableWall)
+				{
+					tile.ChangeTile(TileType.Ice);
+				}
+			}
+		}
 	}
 }
