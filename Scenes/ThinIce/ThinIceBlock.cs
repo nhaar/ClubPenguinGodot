@@ -141,8 +141,17 @@ public partial class ThinIceBlock : Sprite2D
 	{
 		Coordinates = _coordinatesMovingTo;
 		// add block to new tile
-		Game.GetTile(Coordinates).BlockReference = this;
-		if (CanPush(_movementDirection))
+		ThinIceTile currentTile = Game.GetTile(Coordinates);
+		currentTile.BlockReference = this;
+		
+		if (currentTile.TileType == ThinIceGame.TileType.Teleporter)
+		{
+			currentTile.BlockReference = null;
+			Coordinates = currentTile.LinkedTeleporter.TileCoordinate;
+			Position = Game.GetTile(Coordinates).Position;
+			Move(_movementDirection);
+		}
+		else if (CanPush(_movementDirection))
 		{
 			Move(_movementDirection);
 		}
