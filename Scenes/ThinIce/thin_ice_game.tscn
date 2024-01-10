@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=20 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceGame.cs" id="1_tbklw"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://Assets/ThinIce/EmptyTile.png" id="2_f1q46"]
@@ -14,6 +14,11 @@
 [ext_resource type="Texture2D" uid="uid://fi35677oc6xn" path="res://Assets/ThinIce/LockTile.png" id="10_80wb3"]
 [ext_resource type="Texture2D" uid="uid://bq2flgwyi61rj" path="res://Assets/ThinIce/ButtonTile.png" id="11_tkj7r"]
 [ext_resource type="Texture2D" uid="uid://cq788tyuavcq6" path="res://Assets/ThinIce/BlockHoleTile.png" id="12_200gw"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceLabel.cs" id="15_3bm4g"]
+[ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://Assets/ThinIce/cpBurbankBgWdBold.ttf" id="15_g1vvg"]
+[ext_resource type="Texture2D" uid="uid://ua1mdc33h03d" path="res://Assets/ThinIce/SquareButtonScaled.png" id="17_oqxii"]
+[ext_resource type="Texture2D" uid="uid://bsx5mcwm64pq5" path="res://Assets/ThinIce/SquareButtonHoverScaled.png" id="18_ee78q"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceButton.cs" id="19_bssp1"]
 
 [node name="ThinIceGame" type="Node2D"]
 script = ExtResource("1_tbklw")
@@ -32,3 +37,35 @@ BlockHoleTile = ExtResource("12_200gw")
 [node name="ThinIcePuffle" type="Sprite2D" parent="."]
 texture = ExtResource("3_eacnp")
 script = ExtResource("4_s12aw")
+
+[node name="LevelLabel" type="Label" parent="."]
+offset_left = -2000.0
+offset_top = -2030.0
+offset_right = -1477.0
+offset_bottom = -1826.0
+text = "LEVEL"
+script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="PointsLabel" type="Label" parent="."]
+offset_left = 1100.0
+offset_top = 1800.0
+offset_right = 1158.0
+offset_bottom = 1823.0
+text = "POINTS"
+script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="ResetButton" type="TextureButton" parent="."]
+offset_left = -2100.0
+offset_top = 1820.0
+offset_right = -1210.0
+offset_bottom = 2012.0
+texture_normal = ExtResource("17_oqxii")
+texture_hover = ExtResource("18_ee78q")
+script = ExtResource("19_bssp1")
+ButtonText = "RESET"
+ButtonFont = ExtResource("15_g1vvg")
+ButtonFontSize = 100
+
+[connection signal="pressed" from="ResetButton" to="." method="OnResetButtonPressed"]

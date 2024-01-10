@@ -92,12 +92,13 @@ public partial class ThinIceGame : Node2D
 				};
 				Tiles[i, j] = newTile;
 				AddChild(newTile);
+				// move up to so the pre-created nodes are visible
+				MoveChild(newTile, 0);
 			}
 		}
 
 		// move to bottom so it is always visible on top of tiles
 		Puffle = (ThinIcePuffle)GetNode("ThinIcePuffle");
-		MoveChild(Puffle, -1);
 	}
 
 	/// <summary>
@@ -558,5 +559,13 @@ public partial class ThinIceGame : Node2D
 	public void ResetLevel()
 	{
 		StartLevel(CurrentLevelNumber);
+	}
+
+	/// <summary>
+	/// Signal for when the reset button is pressed
+	/// </summary>
+	private void OnResetButtonPressed()
+	{
+		ResetLevel();
 	}
 }
