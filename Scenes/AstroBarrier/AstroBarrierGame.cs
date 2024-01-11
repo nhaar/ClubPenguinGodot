@@ -19,6 +19,8 @@ public partial class AstroBarrierGame : Node
 
 	public AstroBarrierBullet Bullet {get{return _bullet;}}
 
+
+
 	public void AddBullet(Vector2 shippos)
 	{
 		if(Bullet == null)
@@ -33,7 +35,16 @@ public partial class AstroBarrierGame : Node
 		
 	}
 
-	private bool IsColliding(Vector2 pos1, Vector2 size1, Vector2 pos2, Vector2 size2)
+	/// <summary>
+	/// pos1 and pos2 are the positions of the two colliding objects from the centre
+	/// size1 and size2 are the size of the two colliding objects
+	/// </summary>
+	/// <param name="pos1"></param>
+	/// <param name="size1"></param>
+	/// <param name="pos2"></param>
+	/// <param name="size2"></param>
+	/// <returns></returns>
+	private static bool IsColliding(Vector2 pos1, Vector2 size1, Vector2 pos2, Vector2 size2)
 	{
 		Vector2 topleft1 = pos1 - size1 / 2;
 		Vector2 topleft2 = pos2 - size2 / 2;
@@ -77,12 +88,12 @@ public partial class AstroBarrierGame : Node
 	{
 		if(_bullet != null)
 		{
-			for(int i = 0; i < _targets.Count; ++i)
+			foreach(AstroBarrierTarget target in _targets)
 			{
-				if(HasBulletHitTarget(_targets[i]))
+				if(HasBulletHitTarget(target))
 				{
 					RemoveBullet();
-					_targets[i].Hit();
+					target.Hit();
 					return;
 				}
 			}
