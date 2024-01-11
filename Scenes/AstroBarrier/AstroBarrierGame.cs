@@ -65,7 +65,7 @@ public partial class AstroBarrierGame : Node
 			Vector2 targetsize = TextureTarget.GetSize();
 			Vector2 bulletsize = TextureBullet.GetSize();
 
-			return IsColliding(target.Position, targetsize, Bullet.Position, bulletsize);
+			return IsColliding(target.Position, targetsize, Bullet.Position + Bullet.Velocity, bulletsize);
 		}
 	}
 
