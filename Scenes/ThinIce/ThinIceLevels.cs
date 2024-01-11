@@ -53,12 +53,11 @@ wall,3ice,8wall,3ice,wall
 wall,3ice,2wall,4ice,2wall,3ice,wall
 2wall,12ice,2wall
 empty,wall,ice,4wall,2ice,4wall,ice,wall,empty
-empty,wall,ice,4wall,2ice,4wall,ice,wall,empty
 empty,wall,ice,wall,empty,wall,4ice,wall,empty,wall,ice,wall,empty
 empty,wall,ice,wall,empty,wall,4ice,wall,empty,wall,goal,wall,empty
 empty,3wall,empty,6wall,empty,3wall,empty;
 origin(1,1)
-puffle(3,8)
+puffle(3,7)
 ");
 
         public static readonly Level Level5 = new(@"
