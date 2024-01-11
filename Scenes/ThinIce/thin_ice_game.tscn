@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=22 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceGame.cs" id="1_tbklw"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://Assets/ThinIce/EmptyTile.png" id="2_f1q46"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://bsx5mcwm64pq5" path="res://Assets/ThinIce/SquareButtonHoverScaled.png" id="18_ee78q"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceButton.cs" id="19_bssp1"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceLevelNumber.cs" id="20_x5elt"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePointsNumber.cs" id="21_64iav"]
 
 [node name="ThinIceGame" type="Node2D"]
 script = ExtResource("1_tbklw")
@@ -48,13 +49,29 @@ text = "LEVEL"
 script = ExtResource("15_3bm4g")
 Font = ExtResource("15_g1vvg")
 
+[node name="LevelNumber" type="Label" parent="LevelLabel"]
+offset_left = 600.0
+offset_right = 640.0
+offset_bottom = 23.0
+text = "1"
+script = ExtResource("20_x5elt")
+Font = ExtResource("15_g1vvg")
+
 [node name="PointsLabel" type="Label" parent="."]
-offset_left = 1100.0
+offset_left = 1050.0
 offset_top = 1800.0
-offset_right = 1158.0
+offset_right = 1108.0
 offset_bottom = 1823.0
 text = "POINTS"
 script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="PointsNumber" type="Label" parent="PointsLabel"]
+offset_left = 700.0
+offset_right = 740.0
+offset_bottom = 23.0
+text = "0"
+script = ExtResource("21_64iav")
 Font = ExtResource("15_g1vvg")
 
 [node name="ResetButton" type="TextureButton" parent="."]
@@ -68,14 +85,5 @@ script = ExtResource("19_bssp1")
 ButtonText = "RESET"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
-
-[node name="LevelNumber" type="Label" parent="."]
-offset_left = -1400.0
-offset_top = -2030.0
-offset_right = -1360.0
-offset_bottom = -2007.0
-text = "1"
-script = ExtResource("20_x5elt")
-Font = ExtResource("15_g1vvg")
 
 [connection signal="pressed" from="ResetButton" to="." method="OnResetButtonPressed"]

@@ -52,6 +52,29 @@ public partial class ThinIceGame : Node2D
 
 	public int CurrentLevelNumber { get; set; } = 1;
 
+
+	/// <summary>
+	/// How many points the player has at the start of each level
+	/// </summary>
+	public int PointsAtStartOfLevel { get; set; } = 0;
+
+	/// <summary>
+	/// How many points the player has collected in the current level in their
+	/// current life
+	/// </summary>
+	public int PointsInLevel { get; set; } = 0;
+
+	/// <summary>
+	/// How many tiles the player has melted in the current level in their
+	/// current life
+	/// </summary>
+	public int MeltedTiles { get; set; } = 0;
+
+	/// <summary>
+	/// How many times the player reset the current level
+	/// </summary>
+	public int TimesFailed { get; set; } = 0;
+
 	public Level CurrentLevel => ThinIceLevels.Levels[CurrentLevelNumber - 1];
 
 	/// <summary>
@@ -198,7 +221,11 @@ public partial class ThinIceGame : Node2D
 			TileType.Empty,
 			TileType.Water,
 			TileType.Wall,
-			TileType.BlockHole
+			TileType.BlockHole,
+			TileType.Goal,
+			TileType.Teleporter,
+			TileType.FakeTemporaryWall,
+			TileType.Button
 		};
 
 		/// <summary>
@@ -276,6 +303,33 @@ public partial class ThinIceGame : Node2D
 			RelativeOrigin = GetCoordFromString(Regex.Match(levelString, @"(?<=origin).*").Value) ?? Vector2I.Zero;
 			Width = Tiles.GetLength(0);
 			Height = Tiles.GetLength(1);
+		}
+
+		/// <summary>
+		/// Total tile count of the game (as per vanilla standards)
+		/// </summary>
+		public int TotalTileCount
+		{
+			get
+			{
+				int count = 0;
+				for (int i = 0; i < Width; i++)
+				{
+					for (int j = 0; j < Height; j++)
+					{
+						TileType tileType = Tiles[i, j];
+						if (!ZeroCountTiles.Contains(tileType))
+						{
+							count++;
+							if (tileType == TileType.ThickIce)
+							{
+								count++;
+							}
+						}
+					}
+				}
+				return count;
+			}
 		}
 
 		/// <summary>
@@ -495,8 +549,18 @@ public partial class ThinIceGame : Node2D
 	/// Start level based on its number
 	/// </summary>
 	/// <param name="levelNumber"></param>
-	public void StartLevel(int levelNumber)
+	/// <param name="resetting">
+	/// Whether or not the player is resetting the level
+	/// </param>
+	public void StartLevel(int levelNumber, bool resetting = false)
 	{
+		if (!resetting)
+		{
+			TimesFailed = 0;
+		}
+		PointsInLevel = 0;
+		MeltedTiles = 0;
+
 		CurrentLevelNumber = levelNumber;
 		DrawLevel();
 		Puffle.TeleportTo(CurrentLevel.PuffleSpawnLocation);
@@ -505,6 +569,14 @@ public partial class ThinIceGame : Node2D
 
 	public void GoToNextLevel()
 	{
+		bool solved = MeltedTiles == CurrentLevel.TotalTileCount;
+		if (solved)
+		{
+			// double if first try
+			int factor = TimesFailed == 0 ? 2 : 1;
+			PointsInLevel += factor * CurrentLevel.TotalTileCount;
+		}
+		PointsAtStartOfLevel += PointsInLevel;
 		StartLevel(CurrentLevelNumber + 1);
 	}
 
@@ -558,7 +630,8 @@ public partial class ThinIceGame : Node2D
 	/// </summary>
 	public void ResetLevel()
 	{
-		StartLevel(CurrentLevelNumber);
+		TimesFailed++;
+		StartLevel(CurrentLevelNumber, true);
 	}
 
 	/// <summary>
@@ -568,5 +641,23 @@ public partial class ThinIceGame : Node2D
 	{
 		ResetLevel();
 		Puffle.Die();
+	}
+
+	/// <summary>
+	/// Action for when a tile is melted
+	/// </summary>
+	public void MeltTile()
+	{
+		MeltedTiles++;
+		PointsInLevel++;
+	}
+
+	/// <summary>
+	/// Gets the total number of points the player has to display
+	/// </summary>
+	/// <returns></returns>
+	public int GetPoints()
+	{
+		return PointsAtStartOfLevel + PointsInLevel;
 	}
 }

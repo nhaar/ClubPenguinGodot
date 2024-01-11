@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 /// <summary>
 /// Object for a single tile in the Thin Ice game
@@ -115,10 +116,12 @@ public partial class ThinIceTile : Sprite2D
 	{
 		if (TileType == ThinIceGame.TileType.Ice)
 		{
+			Game.MeltTile();
 			ChangeTile(ThinIceGame.TileType.Water);
 		}
 		else if (TileType == ThinIceGame.TileType.ThickIce)
 		{
+			Game.MeltTile();
 			ChangeTile(ThinIceGame.TileType.Ice);
 		}
 

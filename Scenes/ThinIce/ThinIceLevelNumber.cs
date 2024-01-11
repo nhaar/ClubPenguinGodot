@@ -19,7 +19,7 @@ public partial class ThinIceLevelNumber : ThinIceLabel
 	public override void _Ready()
 	{
 		base._Ready();
-		Game = GetParent<ThinIceGame>();
+		Game = GetParent<Label>().GetParent<ThinIceGame>();
 		_currentLevel = Game.CurrentLevelNumber;
 	}
 
