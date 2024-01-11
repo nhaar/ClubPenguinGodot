@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://cll1riyjtngt5"]
+[gd_scene load_steps=5 format=3 uid="uid://cll1riyjtngt5"]
 
 [ext_resource type="Texture2D" uid="uid://ddpwyviqr0ybe" path="res://Assets/AstroBarrier/Ship.png" id="1_6uirx"]
+[ext_resource type="Script" path="res://Scenes/AstroBarrier/AstroBarrierGame.cs" id="1_8r2s3"]
 [ext_resource type="Script" path="res://Scenes/AstroBarrier/AstroBarrierShip.cs" id="2_e4o80"]
+[ext_resource type="Texture2D" uid="uid://cnel3nvxofyvk" path="res://Assets/AstroBarrier/60.png" id="2_oum1w"]
 
 [node name="AstroBarrierGame" type="Node2D"]
+script = ExtResource("1_8r2s3")
+TextureBullet = ExtResource("2_oum1w")
 
 [node name="Ship" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 150)
 texture = ExtResource("1_6uirx")
 script = ExtResource("2_e4o80")

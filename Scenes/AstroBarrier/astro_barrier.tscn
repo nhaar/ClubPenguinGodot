@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://qq6cpo4k50dv" path="res://Assets/AstroBarrier/Cabinet.png" id="8_chghe"]
 
 [node name="AstroBarrier" type="Node2D"]
+texture_filter = 1
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = ExtResource("1_do6uj")
