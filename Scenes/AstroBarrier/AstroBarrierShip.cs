@@ -3,14 +3,12 @@ using System;
 
 public partial class AstroBarrierShip : Sprite2D
 {
-
-	public AstroBarrierGame GameReference {get; set;}
+	public AstroBarrierGame GameReference { get; set; }
 
 	public void Shoot()
 	{
-		GameReference.AddBullet(Position);
+		GameReference.AddBullet();
 	}
-
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

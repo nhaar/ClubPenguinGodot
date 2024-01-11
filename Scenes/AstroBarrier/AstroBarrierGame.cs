@@ -1,108 +1,74 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
+/// <summary>
+/// Object that controls the Astro Barrier game
+/// </summary>
 public partial class AstroBarrierGame : Node
 {
 	[Export]
-	public Texture2D TextureBullet {get; set;}
+	public Texture2D BulletTexture { get; set; }
 
 	[Export]
-	public Texture2D TextureTarget {get; set;}
+	public Texture2D TargetTexture { get; set; }
 
 	[Export]
-	public Texture2D TextureTargetDMG {get; set;}
+	public Texture2D DamagedTargetTexture { get; set; }
 
-	private AstroBarrierBullet _bullet = null;
+	public List<AstroBarrierTarget> Targets { get; } = new();
 
-	private List<AstroBarrierTarget> _targets = new();
+	public AstroBarrierBullet Bullet { get; set; } = null;
 
-	public AstroBarrierBullet Bullet {get{return _bullet;}}
+	public AstroBarrierShip Ship { get; set; } = null;
 
-
-
-	public void AddBullet(Vector2 shippos)
+	public void AddBullet()
 	{
-		if(Bullet == null)
+		// this requires for the bullet to be removed before another one can be added
+		// (as in the original game)
+		if (Bullet == null)
 		{
-			_bullet = new()
+			Bullet = new()
 			{
-				Position = shippos
+				Position = Ship.Position
 			};
 
-			AddChild(_bullet);
+			AddChild(Bullet);
 		}
 		
 	}
 
 	/// <summary>
-	/// pos1 and pos2 are the positions of the two colliding objects from the centre
-	/// size1 and size2 are the size of the two colliding objects
+	/// Checks for the collision of two objects with square hitboxes. Given positions are centered.
 	/// </summary>
-	/// <param name="pos1"></param>
-	/// <param name="size1"></param>
-	/// <param name="pos2"></param>
-	/// <param name="size2"></param>
+	/// <param name="obj1"></param>
+	/// <param name="obj2"></param>
 	/// <returns></returns>
-	private static bool IsColliding(Vector2 pos1, Vector2 size1, Vector2 pos2, Vector2 size2)
+	public static bool IsColliding(Sprite2D obj1, Sprite2D obj2)
 	{
-		Vector2 topleft1 = pos1 - size1 / 2;
-		Vector2 topleft2 = pos2 - size2 / 2;
+		Sprite2D[] objs = new[] { obj1, obj2 };
+		Vector2[] sizes = objs.Select(obj => obj.Texture.GetSize()).ToArray();
+		Vector2[] toplefts = objs.Select((obj, i) => obj.Position - sizes[i] / 2).ToArray();
 
-		return !(topleft1.X + size1.X <= topleft2.X ||
-			topleft1.X >= topleft2.X + size2.X ||
-			topleft1.Y + size1.Y <= topleft2.Y ||
-			topleft1.Y >= topleft2.Y + size2.Y);
-		
+		return !(toplefts[0].X + sizes[0].X <= toplefts[1].X ||
+			toplefts[0].X >= toplefts[1].X + sizes[1].X ||
+			toplefts[0].Y + sizes[0].Y <= toplefts[1].Y ||
+			toplefts[0].Y >= toplefts[1].Y + sizes[1].Y);
 	}
 
-	private bool HasBulletHitTarget(AstroBarrierTarget target)
-	{
-		if(_bullet == null)
-			return false;
-		else
-		{
-			Vector2 targetsize = TextureTarget.GetSize();
-			Vector2 bulletsize = TextureBullet.GetSize();
-
-			return IsColliding(target.Position, targetsize, Bullet.Position + Bullet.Velocity, bulletsize);
-		}
-	}
-
-	private void RemoveBullet()
-	{
-		_bullet.QueueFree();
-		_bullet = null;
-	}
-
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_targets.Add(new AstroBarrierMidTarget());
-		AddChild(_targets[^1]);
-		_targets[^1].Position = new Vector2(0, -50);
+		Ship = GetNode<AstroBarrierShip>("Ship");
+
+		// temp target layout
+		AstroBarrierMediumTarget target = new();
+		Targets.Add(target);
+		AddChild(target);
+		target.Position = new Vector2(0, -50);
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if(_bullet != null)
-		{
-			foreach(AstroBarrierTarget target in _targets)
-			{
-				if(HasBulletHitTarget(target))
-				{
-					RemoveBullet();
-					target.Hit();
-					return;
-				}
-			}
-
-
-			if(_bullet.Position.Y < -230)
-				RemoveBullet();
-			
-		}
-		
 	}
 }
