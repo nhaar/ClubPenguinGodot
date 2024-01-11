@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cll1riyjtngt5"]
+
+[ext_resource type="Texture2D" uid="uid://ddpwyviqr0ybe" path="res://Assets/AstroBarrier/Ship.png" id="1_6uirx"]
+[ext_resource type="Script" path="res://Scenes/AstroBarrier/AstroBarrierShip.cs" id="2_e4o80"]
+
+[node name="AstroBarrierGame" type="Node2D"]
+
+[node name="Ship" type="Sprite2D" parent="."]
+texture = ExtResource("1_6uirx")
+script = ExtResource("2_e4o80")
