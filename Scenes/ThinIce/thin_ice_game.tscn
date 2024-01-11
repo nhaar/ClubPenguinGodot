@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=24 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceGame.cs" id="1_tbklw"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://Assets/ThinIce/EmptyTile.png" id="2_f1q46"]
@@ -21,6 +21,8 @@
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceButton.cs" id="19_bssp1"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceLevelNumber.cs" id="20_x5elt"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePointsNumber.cs" id="21_64iav"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceMeltedTileCount.cs" id="22_v4uyt"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceTotalTileCount.cs" id="23_8aycp"]
 
 [node name="ThinIceGame" type="Node2D"]
 script = ExtResource("1_tbklw")
@@ -39,23 +41,6 @@ BlockHoleTile = ExtResource("12_200gw")
 [node name="ThinIcePuffle" type="Sprite2D" parent="."]
 texture = ExtResource("3_eacnp")
 script = ExtResource("4_s12aw")
-
-[node name="LevelLabel" type="Label" parent="."]
-offset_left = -2000.0
-offset_top = -2030.0
-offset_right = -1477.0
-offset_bottom = -1826.0
-text = "LEVEL"
-script = ExtResource("15_3bm4g")
-Font = ExtResource("15_g1vvg")
-
-[node name="LevelNumber" type="Label" parent="LevelLabel"]
-offset_left = 600.0
-offset_right = 640.0
-offset_bottom = 23.0
-text = "1"
-script = ExtResource("20_x5elt")
-Font = ExtResource("15_g1vvg")
 
 [node name="PointsLabel" type="Label" parent="."]
 offset_left = 1050.0
@@ -85,5 +70,49 @@ script = ExtResource("19_bssp1")
 ButtonText = "RESET"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
+
+[node name="ArcadeTopRow" type="Node2D" parent="."]
+position = Vector2(0, -2030)
+
+[node name="LevelLabel" type="Label" parent="ArcadeTopRow"]
+offset_left = -2000.0
+offset_right = -1477.0
+offset_bottom = 204.0
+text = "LEVEL"
+script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="LevelNumber" type="Label" parent="ArcadeTopRow/LevelLabel"]
+offset_left = 600.0
+offset_right = 640.0
+offset_bottom = 23.0
+text = "1"
+script = ExtResource("20_x5elt")
+Font = ExtResource("15_g1vvg")
+
+[node name="TileSeparator" type="Label" parent="ArcadeTopRow"]
+offset_left = -50.0
+offset_right = -10.0
+offset_bottom = 23.0
+text = "/"
+script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="MeltedTileCount" type="Label" parent="ArcadeTopRow/TileSeparator"]
+layout_mode = 0
+offset_left = -530.0
+offset_right = -30.0
+offset_bottom = 23.0
+horizontal_alignment = 2
+script = ExtResource("22_v4uyt")
+Font = ExtResource("15_g1vvg")
+
+[node name="TotalTileCount" type="Label" parent="ArcadeTopRow/TileSeparator"]
+layout_mode = 0
+offset_left = 100.0
+offset_right = 140.0
+offset_bottom = 23.0
+script = ExtResource("23_8aycp")
+Font = ExtResource("15_g1vvg")
 
 [connection signal="pressed" from="ResetButton" to="." method="OnResetButtonPressed"]

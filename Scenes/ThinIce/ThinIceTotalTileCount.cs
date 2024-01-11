@@ -2,9 +2,9 @@ using Godot;
 using System;
 
 /// <summary>
-/// Object that displays the current level number in the Thin Ice HUD
+/// Object that displays the total tile count in the Thin Ice HUD
 /// </summary>
-public partial class ThinIceLevelNumber : ThinIceLabel
+public partial class ThinIceTotalTileCount : ThinIceLabel
 {
 	/// <summary>
 	/// Reference to the game
@@ -12,15 +12,16 @@ public partial class ThinIceLevelNumber : ThinIceLabel
 	public ThinIceGame Game { get; set; }
 
 	/// <summary>
-	/// Tracker of the level number value for display
+	/// Tracker of the current level number for reference
 	/// </summary>
 	private int _currentLevel;
 
 	public override void _Ready()
 	{
-		base._Ready();
 		Game = GetNode<ThinIceGame>("../../../");
 		_currentLevel = Game.CurrentLevelNumber;
+		Text = Game.CurrentLevel.TotalTileCount.ToString();
+		base._Ready();
 	}
 
 	public override void _Process(double delta)
@@ -28,7 +29,7 @@ public partial class ThinIceLevelNumber : ThinIceLabel
 		if (_currentLevel != Game.CurrentLevelNumber)
 		{
 			_currentLevel = Game.CurrentLevelNumber;
-			Text = Game.CurrentLevelNumber.ToString();
+			Text = Game.CurrentLevel.TotalTileCount.ToString();
 		}
 	}
 }
