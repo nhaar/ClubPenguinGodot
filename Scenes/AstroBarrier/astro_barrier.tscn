@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePlaceholder.cs" id="2_wwvbr"]
 [ext_resource type="Texture2D" uid="uid://kw4o4g51qtr" path="res://Assets/AstroBarrier/GreenScreen.png" id="3_8ry5a"]
 [ext_resource type="Texture2D" uid="uid://ct15h60kk7nve" path="res://Assets/AstroBarrier/GreenScreenShadow.png" id="4_1grnk"]
-[ext_resource type="Texture2D" uid="uid://ikf8e7mqxgtu" path="res://Assets/AstroBarrier/55.png" id="5_ahqfn"]
+[ext_resource type="Texture2D" uid="uid://cv8vxmqeapk1m" path="res://Assets/AstroBarrier/GameWindow.png" id="5_2peen"]
 [ext_resource type="Script" path="res://Scenes/AstroBarrier/AstroBarrierGameWindow.cs" id="6_8rppm"]
 [ext_resource type="PackedScene" uid="uid://cll1riyjtngt5" path="res://Scenes/AstroBarrier/astro_barrier_game.tscn" id="7_kegnf"]
 [ext_resource type="Texture2D" uid="uid://qq6cpo4k50dv" path="res://Assets/AstroBarrier/Cabinet.png" id="8_chghe"]
@@ -28,7 +28,7 @@ texture = ExtResource("4_1grnk")
 
 [node name="GameWindow" type="Sprite2D" parent="Background"]
 scale = Vector2(0.917, 1)
-texture = ExtResource("5_ahqfn")
+texture = ExtResource("5_2peen")
 script = ExtResource("6_8rppm")
 
 [node name="AstroBarrierGame" parent="Background/GameWindow" instance=ExtResource("7_kegnf")]
