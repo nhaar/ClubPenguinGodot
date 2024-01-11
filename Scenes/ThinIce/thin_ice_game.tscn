@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=25 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceGame.cs" id="1_tbklw"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://Assets/ThinIce/EmptyTile.png" id="2_f1q46"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://fi35677oc6xn" path="res://Assets/ThinIce/LockTile.png" id="10_80wb3"]
 [ext_resource type="Texture2D" uid="uid://bq2flgwyi61rj" path="res://Assets/ThinIce/ButtonTile.png" id="11_tkj7r"]
 [ext_resource type="Texture2D" uid="uid://cq788tyuavcq6" path="res://Assets/ThinIce/BlockHoleTile.png" id="12_200gw"]
+[ext_resource type="Texture2D" uid="uid://bg5oc55d4bd7m" path="res://Assets/ThinIce/CoinBag.png" id="13_anilt"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceLabel.cs" id="15_3bm4g"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://Assets/ThinIce/cpBurbankBgWdBold.ttf" id="15_g1vvg"]
 [ext_resource type="Texture2D" uid="uid://ua1mdc33h03d" path="res://Assets/ThinIce/SquareButtonScaled.png" id="17_oqxii"]
@@ -37,6 +38,7 @@ PlaidTeleporterTile = ExtResource("9_goel3")
 LockTile = ExtResource("10_80wb3")
 ButtonTile = ExtResource("11_tkj7r")
 BlockHoleTile = ExtResource("12_200gw")
+CoinBagTexture = ExtResource("13_anilt")
 
 [node name="ThinIcePuffle" type="Sprite2D" parent="."]
 texture = ExtResource("3_eacnp")
@@ -52,6 +54,7 @@ script = ExtResource("15_3bm4g")
 Font = ExtResource("15_g1vvg")
 
 [node name="PointsNumber" type="Label" parent="PointsLabel"]
+layout_mode = 0
 offset_left = 700.0
 offset_right = 740.0
 offset_bottom = 23.0
@@ -83,6 +86,7 @@ script = ExtResource("15_3bm4g")
 Font = ExtResource("15_g1vvg")
 
 [node name="LevelNumber" type="Label" parent="ArcadeTopRow/LevelLabel"]
+layout_mode = 0
 offset_left = 600.0
 offset_right = 640.0
 offset_bottom = 23.0

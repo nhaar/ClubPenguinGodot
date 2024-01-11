@@ -50,8 +50,10 @@ public partial class ThinIceGame : Node2D
 	[Export]
 	public Texture2D BlockTexture { get; set; }
 
-	public int CurrentLevelNumber { get; set; } = 1;
+	[Export]
+	public Texture2D CoinBagTexture { get; set; }
 
+	public int CurrentLevelNumber { get; set; } = 1;
 
 	/// <summary>
 	/// How many points the player has at the start of each level
@@ -91,6 +93,11 @@ public partial class ThinIceGame : Node2D
 	/// A list containing references to all the blocks currently in the screen
 	/// </summary>
 	public List<ThinIceBlock> Blocks { get; set; }
+
+	/// <summary>
+	/// Whether or not previous level was solved
+	/// </summary>
+	public bool SolvedPrevious { get; set; } = false;
 
 	public override void _Ready()
 	{
@@ -269,6 +276,11 @@ public partial class ThinIceGame : Node2D
 		/// </summary>
 		public List<Vector2I> BlockPositions { get; set; }
 
+		/// <summary>
+		/// Null if there is no coin bag, otherwise the coordinate pair for where the coin bag should be placed
+		/// </summary>
+		public Vector2I? CoinBagPosition { get; set; }
+
 		// level string format
 		// map
 		// comma separated rows define tileset
@@ -301,6 +313,7 @@ public partial class ThinIceGame : Node2D
 			BlockPositions = GetCoordsFromString(Regex.Match(levelString, @"(?<=blocks).*").Value);
 			PuffleSpawnLocation = (Vector2I)GetCoordFromString(Regex.Match(levelString, @"(?<=puffle).*").Value);
 			RelativeOrigin = GetCoordFromString(Regex.Match(levelString, @"(?<=origin).*").Value) ?? Vector2I.Zero;
+			CoinBagPosition = GetCoordFromString(Regex.Match(levelString, @"(?<=bag).*").Value);
 			Width = Tiles.GetLength(0);
 			Height = Tiles.GetLength(1);
 		}
@@ -543,6 +556,17 @@ public partial class ThinIceGame : Node2D
 			Blocks.Add(block);
 			blockTile.BlockReference = block;
 		}
+		if (SolvedPrevious && level.CoinBagPosition != null)
+		{
+			ThinIceTile tile = GetTile((Vector2I)level.CoinBagPosition);
+			Sprite2D coinBag = new()
+			{
+				Texture = CoinBagTexture
+			};
+			
+			tile.AddChild(coinBag);
+			tile.CoinBag = coinBag;
+		}
 	}
 
 	/// <summary>
@@ -576,6 +600,7 @@ public partial class ThinIceGame : Node2D
 			int factor = TimesFailed == 0 ? 2 : 1;
 			PointsInLevel += factor * CurrentLevel.TotalTileCount;
 		}
+		SolvedPrevious = solved;
 		PointsAtStartOfLevel += PointsInLevel;
 		StartLevel(CurrentLevelNumber + 1);
 	}

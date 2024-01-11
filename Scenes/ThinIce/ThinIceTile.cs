@@ -40,6 +40,11 @@ public partial class ThinIceTile : Sprite2D
 	public ThinIceGame Game { get; set; }
 
 	/// <summary>
+	/// Reference to the coin bag on this tile, or null if none exists
+	/// </summary>
+	public Sprite2D CoinBag { get; set; } = null;
+
+	/// <summary>
 	/// Change the tile to a fresh new one of a given type
 	/// </summary>
 	/// <param name="tileType"></param>
@@ -47,6 +52,7 @@ public partial class ThinIceTile : Sprite2D
 	public void ChangeTile(ThinIceGame.TileType tileType)
 	{
 		RemoveKey();
+		RemoveCoinBag();
 		LinkedTeleporter = null;
 		BlockReference = null;
 		IsPlaidTeleporter = false;
@@ -80,6 +86,10 @@ public partial class ThinIceTile : Sprite2D
 	/// <param name="direction"></param>
 	public void OnPuffleEnter(ThinIcePuffle.Direction direction)
 	{
+		if (CoinBag != null)
+		{
+			GetCoinBag();
+		}
 		if (TileType == ThinIceGame.TileType.Goal)
 		{
 			Game.GoToNextLevel();
@@ -176,5 +186,23 @@ public partial class ThinIceTile : Sprite2D
 	public ThinIceTile GetAdjacent(ThinIcePuffle.Direction direction)
 	{
 		return Game.GetTile(ThinIcePuffle.GetDestination(TileCoordinate, direction));
+	}
+
+	public void RemoveCoinBag()
+	{
+		if (CoinBag != null)
+		{
+			CoinBag.QueueFree();
+			CoinBag = null;
+		}
+	}
+
+	/// <summary>
+	/// Removes and returns the value of the coin bag
+	/// </summary>
+	public void GetCoinBag()
+	{
+		Game.PointsInLevel += 100;
+		RemoveCoinBag();
 	}
 }
