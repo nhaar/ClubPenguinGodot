@@ -18,13 +18,11 @@ script = ExtResource("2_wwvbr")
 
 [node name="GreenArea" type="Sprite2D" parent="Background"]
 position = Vector2(-1.90735e-06, 0)
-scale = Vector2(1, 1)
 texture = ExtResource("3_8ry5a")
 
 [node name="GreenAreaShadow" type="Sprite2D" parent="Background"]
 visible = false
 position = Vector2(-1.90735e-06, 0)
-scale = Vector2(1, 1)
 texture = ExtResource("4_1grnk")
 
 [node name="GameWindow" type="Sprite2D" parent="Background"]
