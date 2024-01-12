@@ -1,6 +1,7 @@
 import os
 import re
 import subprocess
+import shutil
 from ffdec_image_fix import crop_all_pngs
 
 from PIL import Image
@@ -34,6 +35,7 @@ class AssetMapParser:
         self.lines = lines
         self.index = 0
         self.length = len(lines)
+        print("LEN", self.length)
 
     def parse(self):
         # Lines in here will always be of a format something -> something
@@ -42,6 +44,7 @@ class AssetMapParser:
             self.next()
 
     def parse_origin_file(self):
+        print("THE THING", self.get_current_line())
         line_match = re.search('(.*)->(.*)', self.get_current_line())
         origin = os.path.join(original_asset_path, line_match.group(1).strip())
         destination = os.path.join(game_asset_path, line_match.group(2).strip())
@@ -54,13 +57,14 @@ class AssetMapParser:
         self.next()
         if export_type == 'shape':
             self.parse_shape(origin, destination)
+        elif export_type == 'font':
+            self.parse_font(origin, destination)
 
     def parse_shape(self, origin, destination):
         os.makedirs(self.temp_folder, exist_ok=True)
         os.chdir(ffdec_path)
         subprocess.run([
             'ffdec.bat',
-            # '-help'
             '-zoom',
             '10',
             '-format',
@@ -74,6 +78,7 @@ class AssetMapParser:
         os.makedirs(crop_temp, exist_ok=True)
         crop_all_pngs(self.temp_folder, crop_temp)
         while '=' in self.get_current_line():
+            print("mwahaha", self.get_current_line())
             self.parse_shape_line(crop_temp, destination)
 
     def get_current_line(self):
@@ -89,12 +94,33 @@ class AssetMapParser:
             scale_uneval = destination_str[destination_str.index('[') + 1:destination_str.index(']')].split(',')
             scale = [eval(x) for x in scale_uneval]
 
-
         origin_file = os.path.join(origin, line_match.group(1).strip() + '.png')
         destination_file = os.path.join(destination, destination_filename + '.png')
         scale_image(origin_file, destination_file, scale)
         self.next()
+
+    def parse_font(self, origin, destination):
+        os.makedirs(self.temp_folder, exist_ok=True)
+        os.chdir(ffdec_path)
+        subprocess.run([
+            'ffdec.bat',
+            '-export',
+            'font',
+            self.temp_folder,
+            origin
+        ])
+        while any(char.isdigit() for char in self.get_current_line()):
+            self.parse_font_line(self.temp_folder, destination)
     
+    def parse_font_line(self, origin, destination):
+        font_number = int(self.get_current_line().strip())
+        for filename in os.listdir(origin):
+            print(filename)
+            if filename.startswith(str(font_number)) and filename.endswith('.ttf'):
+                new_filename = filename[filename.index('_') + 1:]
+                shutil.move(os.path.join(origin, filename), os.path.join(destination, new_filename))
+        self.next()
+
     def next(self):
         self.index += 1
 

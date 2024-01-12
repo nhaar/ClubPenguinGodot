@@ -1,4 +1,7 @@
 ThinIce/ThinIce.swf->ThinIce
+font
+133
+143
 shape
 10=TeleporterTile
 21=EmptyTile
@@ -34,3 +37,4 @@ shape
 ThinIce/title.swf->ThinIce
 shape
 2=Logo
+
