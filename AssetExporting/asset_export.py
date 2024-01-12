@@ -30,6 +30,7 @@ with open(os.path.join(asset_export_path, 'assetmap.txt'), 'r') as file:
 
 class AssetMapParser:
     temp_folder = os.path.join(asset_export_path, 'temp')
+    crop_temp_folder = os.path.join(asset_export_path, 'croptemp')
 
     def __init__(self, lines):
         self.lines = lines
@@ -42,6 +43,10 @@ class AssetMapParser:
         while self.index < self.length:
             self.parse_origin_file()
             self.next()
+
+        shutil.rmtree(self.temp_folder)
+        shutil.rmtree(self.crop_temp_folder)
+
 
     def parse_origin_file(self):
         print("THE THING", self.get_current_line())
@@ -74,12 +79,11 @@ class AssetMapParser:
             self.temp_folder,
             origin
         ])
-        crop_temp = os.path.join(asset_export_path, 'croptemp')
-        os.makedirs(crop_temp, exist_ok=True)
-        crop_all_pngs(self.temp_folder, crop_temp)
+        os.makedirs(self.crop_temp_folder, exist_ok=True)
+        crop_all_pngs(self.temp_folder, self.crop_temp_folder)
         while '=' in self.get_current_line():
             print("mwahaha", self.get_current_line())
-            self.parse_shape_line(crop_temp, destination)
+            self.parse_shape_line(self.crop_temp_folder, destination)
 
     def get_current_line(self):
         return self.lines[self.index]
