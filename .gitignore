@@ -4,3 +4,10 @@
 
 # Use this folder for image editting and other tests
 ImageTest/
+
+# Asset exporting
+AssetExporting/OriginalAssets/
+AssetExporting/ffdec-path.txt
+
+# python cache
+*__pycache__*

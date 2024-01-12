@@ -26,9 +26,12 @@ def get_png_files(directory):
     png_files = [file for file in all_files if file.lower().endswith(".png")]
     return png_files
 
-if __name__ == "__main__":
-    all_images = get_png_files(INPUT_DIR)
+def crop_all_pngs(input_dir, output_dir):
+    all_images = get_png_files(input_dir)
     for image in all_images:
-        input_path = os.path.join(INPUT_DIR, image)
-        output_path = os.path.join(OUTPUT_DIR, image)
+        input_path = os.path.join(input_dir, image)
+        output_path = os.path.join(output_dir, image)
         crop_image(input_path, output_path)
+
+if __name__ == "__main__":
+    crop_all_pngs(INPUT_DIR, OUTPUT_DIR)
