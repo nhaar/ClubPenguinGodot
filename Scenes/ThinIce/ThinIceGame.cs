@@ -306,16 +306,29 @@ public partial class ThinIceGame : Node2D
 		/// the puffle defines the spawn location,
 		/// and keys and blocks define coordinates of where the keys and blocks are placed.
 		/// </param>
-		public Level(string levelString)
+		/// <param name="altPatches">
+		/// If this level has an alternative version, this is the list of patches that should be applied.
+		/// See more about the format in <c>Patch</c>
+		/// </param>
+		public Level(string levelString, params string[] altPatches)
 		{
-			Tiles = MapDecode(Regex.Match(levelString, @"(?<=map(\r\n|\n))[^;]+").Value);
-			KeyPositions = GetCoordsFromString(Regex.Match(levelString, @"(?<=keys).*").Value);
-			BlockPositions = GetCoordsFromString(Regex.Match(levelString, @"(?<=blocks).*").Value);
-			PuffleSpawnLocation = (Vector2I)GetCoordFromString(Regex.Match(levelString, @"(?<=puffle).*").Value);
-			RelativeOrigin = GetCoordFromString(Regex.Match(levelString, @"(?<=origin).*").Value) ?? Vector2I.Zero;
-			CoinBagPosition = GetCoordFromString(Regex.Match(levelString, @"(?<=bag).*").Value);
+			Tiles = MapDecodeInsideString(levelString);
+			KeyPositions = GetCoordsFromString(GetInlineCoordsFromWord(levelString, "keys"));
+			BlockPositions = GetCoordsFromString(GetInlineCoordsFromWord(levelString, "blocks"));
+			PuffleSpawnLocation = (Vector2I)GetCoordFromString(GetInlineCoordsFromWord(levelString, "puffle"));
+			RelativeOrigin = GetCoordFromString(GetInlineCoordsFromWord(levelString, "origin")) ?? Vector2I.Zero;
+			CoinBagPosition = GetCoordFromString(GetInlineCoordsFromWord(levelString, "bag"));
 			Width = Tiles.GetLength(0);
 			Height = Tiles.GetLength(1);
+
+			// 50/50 as per original game
+			if (altPatches.Length > 0 && GD.Randf() > 0.5)
+			{
+				foreach (string patchString in altPatches)
+				{
+					ApplyPatch(new Patch(patchString));
+				}
+			}
 		}
 
 		/// <summary>
@@ -463,6 +476,28 @@ public partial class ThinIceGame : Node2D
 		}
 
 		/// <summary>
+		/// Applies <c>MapDecode</c> to a string that contains a map definition somewhere.
+		/// </summary>
+		/// <param name="levelString"></param>
+		/// <returns></returns>
+		public static TileType[,] MapDecodeInsideString(string levelString)
+		{
+			return MapDecode(Regex.Match(levelString, @"(?<=map(\r\n|\n))[^;]+").Value);
+		}
+
+		/// <summary>
+		/// Get the line that consists of a word and everything after it from inside a string.
+		/// Used as a helper function to get the coordinates from the level string for each keyword.
+		/// </summary>
+		/// <param name="levelString">String to search in.</param>
+		/// <param name="word">Word to find at the start of line.</param>
+		/// <returns></returns>
+		public static string GetInlineCoordsFromWord(string levelString, string word)
+		{
+			return Regex.Match(levelString, $@"(?<={word}).*").Value;
+		}
+
+		/// <summary>
 		/// Helper function that parses a csv-like string into a list of string arrays
 		/// that represent each row
 		/// </summary>
@@ -492,6 +527,82 @@ public partial class ThinIceGame : Node2D
 		public bool IsPointOutOfBounds(Vector2I point)
 		{
 			return point.X < RelativeOrigin.X || point.Y < RelativeOrigin.Y || point.X >= Width + RelativeOrigin.X || point.Y >= Height + RelativeOrigin.Y;
+		}
+	
+		/// <summary>
+		/// Class for a patch that can be applied to a level
+		/// and modify it.
+		/// As the changes in the original game, the only possible changes are tile changes,
+		/// any other properties (keys, bags, etc) can't be modified.
+		/// </summary
+		public class Patch
+		{
+			/// <summary>
+			/// Where the patch should start being applied, using absolute coordinates of the grid
+			/// </summary>
+			public Vector2I Origin { get; private set; }
+
+			/// <summary>
+			/// A grid containing all the tiles that the patch will change
+			/// </summary>
+			public TileType[,] Tiles { get; private set; }
+
+			/// <summary>
+			/// Size of the patch tile grid
+			/// </summary>
+			public Vector2I Size
+			{
+				get
+				{
+					return new(Tiles.GetLength(0), Tiles.GetLength(1));
+				} 
+			}
+
+			/// <summary>
+			/// Create a patch from the string.
+			/// </summary>
+			/// <param name="patchString">
+			/// The string follow the same format as the normal level string, but it only includes
+			/// the origin of the patch and the tile map.
+			/// </param>
+			public Patch(string patchString)
+			{
+				Tiles = MapDecodeInsideString(patchString);
+				Origin = GetCoordFromString(GetInlineCoordsFromWord(patchString, "origin")) ?? Vector2I.Zero;
+			}
+		}
+	
+		/// <summary>
+		/// Modifies this level according to a patch.
+		/// </summary>
+		/// <param name="patch"></param>
+		public void ApplyPatch(Patch patch)
+		{
+			// expanding the tile size in case the patch requires it
+			Vector2I requiredSize = patch.Size - RelativeOrigin + patch.Origin;
+			if (requiredSize.X > Width || requiredSize.Y > Height)
+			{
+				Vector2I newSize = new(Math.Max(requiredSize.X, Width), Math.Max(requiredSize.Y, Height));
+				TileType[,] newTiles = new TileType[newSize.X, newSize.Y];
+				for (int i = 0; i < Width; i++)
+				{
+					for (int j = 0; j < Height; j++)
+					{
+						newTiles[i, j] = Tiles[i, j];
+					}
+				}
+				Width = newSize.X;
+				Height = newSize.Y;
+				Tiles = newTiles;
+			}
+
+			for (int i = 0; i < patch.Size.X; i++)
+			{
+				for (int j = 0; j < patch.Size.Y; j++)
+				{
+					Tiles[i + patch.Origin.X - RelativeOrigin.X, j + patch.Origin.Y - RelativeOrigin.Y] = patch.Tiles[i, j];
+				}
+			}
 		}
 	}
 

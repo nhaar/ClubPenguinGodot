@@ -31,6 +31,16 @@ wall,5ice,wall,empty,wall,5ice,wall
 4empty,7wall,4empty;
 origin(1,6)
 puffle(2,10)
+", @"
+map
+7wall
+wall,5ice,wall
+wall,ice,3wall,ice,wall
+2ice,wall,empty,wall,2ice
+3wall,empty,3wall
+7empty
+7empty;
+origin(5,7)
 ");
         
         public static readonly Level Level3 = new(@"
@@ -44,6 +54,14 @@ wall,2ice,4wall,2ice,2wall,2ice,wall
 4wall,2empty,8wall;
 origin(2,6)
 puffle(14,7)
+", @"
+map
+4empty,4wall
+5wall,2ice,wall
+8ice
+2wall,2ice,4wall
+5wall,2empty,wall;
+origin(5,8)
 ");
         
         public static readonly Level Level4 = new(@"
@@ -59,6 +77,18 @@ empty,3wall,empty,6wall,empty,3wall,empty;
 origin(1,1)
 puffle(3,7)
 bag(7,7)
+", @"
+map
+wall,ice,wall
+wall,2ice
+2wall,ice;
+origin(1,3)
+", @"
+map
+wall,ice,wall
+2ice,wall
+ice,2wall;
+origin(14,3)
 ");
 
         public static readonly Level Level5 = new(@"
@@ -73,6 +103,14 @@ wall,goal,14ice,wall
 origin(1,6)
 puffle(14,7)
 bag(9,10)
+", @"
+map
+2wall
+wall,ice
+2ice
+2wall
+empty,wall;
+origin(3,8)
 ");
 
         public static readonly Level Level6 = new(@"
@@ -87,6 +125,17 @@ wall,11ice,wall,3ice,wall
 origin(1,6)
 puffle(2,10)
 bag(10,11)
+"
+, @"
+map
+8empty
+empty,7wall
+2wall,3ice,wall,2ice
+8ice
+1wall,7ice
+4wall,3ice,wall
+3empty,5wall;
+origin(3,7)
 ");
 
         public static readonly Level Level7 = new(@"
@@ -105,6 +154,24 @@ wall,16ice,wall
 origin(1,2)
 puffle(14,7)
 bag(11,9)
+", @"
+map
+2ice;
+origin(5,9)
+", @"
+map
+2wall;
+origin(13,9)
+", @"
+map
+3wall
+2empty,wall;
+origin(5,11)
+", @"
+map
+2ice,wall
+3wall;
+origin(12,11)
 ");
 
         public static readonly Level Level8 = new(@"
@@ -124,6 +191,21 @@ empty,2wall,13ice,wall
 origin(0,3)
 puffle(6,5)
 bag(2,10)
+", // me intentionally adding bad rng to thin ice:
+@"
+map
+wall,ice,wall
+wall,2ice
+3wall;
+origin(1,12)
+", @"
+map
+2wall,ice,2wall
+2wall,2ice,wall
+wall,3ice,wall
+wall,ice,3wall
+wall,3ice,wall;
+origin(12,8)
 ");
 
         public static readonly Level Level9 = new(@"
@@ -143,6 +225,28 @@ wall,3ice,3wall,5ice,wall,4empty
 origin(1,0)
 puffle(14,7)
 bag(6,3)
+", @"
+map
+4wall
+3ice,wall
+thick,2ice,wall
+thick,2ice,wall;
+origin(14,0)
+", @"
+map
+empty,10wall
+2wall,9ice
+wall,2ice,4wall,2thick,2ice
+wall,3ice,thick,6ice
+3wall,ice,thick,3wall,ice,2wall
+2empty,wall,ice,thick,3wall,goal,wall,ice
+3wall,ice,thick,5wall,ice
+wall,5ice,4wall,ice
+wall,ice,3wall,6ice
+wall,ice,3wall,5ice,wall
+wall,5ice,3wall,2ice
+7wall,empty,3wall;
+origin(1,0)
 ");
 
         public static readonly Level Level10 = new(@"
@@ -165,6 +269,11 @@ wall,17ice,wall
 puffle(9,5)
 keys(1,1)
 bag(14,5)
+", @"
+map
+3wall,2ice,3wall
+2wall,ice,2thick,3ice;
+origin(2,11)
 ");
 
         public static readonly Level Level11 = new(@"
@@ -188,6 +297,12 @@ origin(1,0)
 puffle(15,11)
 keys(6,9)
 bag(8,13)
+", @"
+map
+thick,ice,thick,ice,thick
+thick,wall,ice,wall,thick
+2ice,thick,2ice;
+origin(13,3)
 ");
 
         public static readonly Level Level12 = new(@"
@@ -210,6 +325,14 @@ wall,4ice,wall,13empty
 puffle(15,1)
 keys(4,13)
 bag(10,7)
+", @"
+map
+ice,wall,empty
+thick,wall,empty
+ice,2wall
+thick,ice,wall
+ice,2wall;
+origin(15,3)
 ");
 
         public static readonly Level Level13 = new(@"
@@ -233,6 +356,12 @@ puffle(15,11)
 keys(1,9)
 blocks(5,9)
 bag(9,7)
+", @"
+map
+2wall,ice,wall
+wall,ice,thick,wall
+2wall,ice,wall;
+origin(1,4)
 ");
 
         public static readonly Level Level14 = new(@"
@@ -256,6 +385,15 @@ puffle(7,11)
 keys(16,7)
 blocks(7,8)
 bag(6,3)
+", @"
+map
+empty,wall,ice,wall
+2wall,2ice
+wall,3ice
+wall,3ice
+wall,2ice,wall
+2wall,ice,wall;
+origin(0,5)
 ");
 
         public static readonly Level Level15 = new(@"
@@ -279,6 +417,11 @@ puffle(5,12)
 keys(1,9)
 blocks(5,8)
 bag(9,5)
+", @"
+map
+wall,ice
+2ice;
+origin(3,2)
 ");
 
         public static readonly Level Level16 = new(@"
@@ -302,7 +445,13 @@ puffle(17,4)
 keys(17,13)
 blocks(14,5)
 bag(5,9)
-");
+", @"
+map
+ice
+ice
+wall
+wall;
+origin(17,5)");
 
         public static readonly Level Level17 = new(@"
 map
@@ -325,6 +474,14 @@ puffle(15,11)
 keys(14,1)
 blocks(5,11)
 bag(7,5)
+", @"
+map
+2ice;
+origin(6,10)
+", @"
+map
+2wall;
+origin(12,12)
 ");
 
         public static readonly Level Level18 = new(@"
@@ -348,6 +505,13 @@ puffle(3,5)
 keys(2,1)
 blocks(16,10)
 bag(17,1)
+", @"
+map
+2ice
+wall,ice
+wall,ice
+2ice;
+origin(15,5)
 ");
 
         public static readonly Level Level19 = new(@"
@@ -370,6 +534,11 @@ wall,4ice,5wall,2ice,5wall,button,wall
 puffle(3,7)
 keys(15,12)
 blocks(12,7)
+", @"
+map
+ice,thick
+2thick;
+origin(3,9)
 ");
 
         public static Level[] Levels = new Level[]
