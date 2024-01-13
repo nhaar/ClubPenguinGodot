@@ -18,9 +18,6 @@ public partial class ThinIceGame : Node2D
 	public Texture2D IceTile { get; set; }
 
 	[Export]
-	public Texture2D WaterTile { get; set; }
-
-	[Export]
 	public Texture2D ThickIceTile { get; set; }
 
 	[Export]
@@ -52,6 +49,9 @@ public partial class ThinIceGame : Node2D
 
 	[Export]
 	public Texture2D CoinBagTexture { get; set; }
+
+	[Export]
+	public SpriteFrames WaterTileFrames { get; set; }
 
 	public int CurrentLevelNumber { get; set; } = 1;
 

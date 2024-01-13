@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Linq;
 
 /// <summary>
 /// Object for a single tile in the Thin Ice game
@@ -45,6 +44,35 @@ public partial class ThinIceTile : Sprite2D
 	public Sprite2D CoinBag { get; set; } = null;
 
 	/// <summary>
+	/// Name of all the animations in sprite frames
+	/// </summary>
+	public static readonly StringName Animation = new("default");
+
+	/// <summary>
+	/// Current frame of the water animation
+	/// </summary>
+	public int WaterAnimationFrame { get; set; } = 0;
+
+	/// <summary>
+	/// Number of frames in the water animation
+	/// </summary>
+	public int WaterAnimationFrameCount { get; set; }
+
+	public override void _Ready()
+	{
+		WaterAnimationFrameCount = Game.WaterTileFrames.GetFrameCount(Animation);
+	}
+
+	public override void _Process(double delta)
+	{
+		// water tile animation
+		if (TileType == ThinIceGame.TileType.Water)
+		{
+			AdvanceWaterAnimation();
+		}
+	}
+
+	/// <summary>
 	/// Change the tile to a fresh new one of a given type
 	/// </summary>
 	/// <param name="tileType"></param>
@@ -57,26 +85,32 @@ public partial class ThinIceTile : Sprite2D
 		BlockReference = null;
 		IsPlaidTeleporter = false;
 
-		Texture2D tileTexture = tileType switch
+		if (tileType == ThinIceGame.TileType.Water)
 		{
-			ThinIceGame.TileType.Empty => Game.EmptyTile,
-			ThinIceGame.TileType.Ice => Game.IceTile,
-			ThinIceGame.TileType.Water => Game.WaterTile,
-			ThinIceGame.TileType.ThickIce => Game.ThickIceTile,
-			ThinIceGame.TileType.Wall => Game.WallTile,
-			ThinIceGame.TileType.Goal => Game.GoalTile,
-			ThinIceGame.TileType.Teleporter => Game.TeleporterTile,
-			ThinIceGame.TileType.PlaidTeleporter => Game.PlaidTeleporterTile,
-			ThinIceGame.TileType.Lock => Game.LockTile,
-			ThinIceGame.TileType.Button => Game.ButtonTile,
-			ThinIceGame.TileType.FakeTemporaryWall => Game.WallTile,
-			ThinIceGame.TileType.FakeImpassableWall => Game.WallTile,
-			ThinIceGame.TileType.FakePassableWall => Game.WallTile,
-			ThinIceGame.TileType.BlockHole => Game.BlockHoleTile,
-			_ => throw new NotImplementedException(),
-		};
+			StartWaterAnimation();
+		}
+		else
+		{
+			Texture2D tileTexture = tileType switch
+			{
+				ThinIceGame.TileType.Empty => Game.EmptyTile,
+				ThinIceGame.TileType.Ice => Game.IceTile,
+				ThinIceGame.TileType.ThickIce => Game.ThickIceTile,
+				ThinIceGame.TileType.Wall => Game.WallTile,
+				ThinIceGame.TileType.Goal => Game.GoalTile,
+				ThinIceGame.TileType.Teleporter => Game.TeleporterTile,
+				ThinIceGame.TileType.PlaidTeleporter => Game.PlaidTeleporterTile,
+				ThinIceGame.TileType.Lock => Game.LockTile,
+				ThinIceGame.TileType.Button => Game.ButtonTile,
+				ThinIceGame.TileType.FakeTemporaryWall => Game.WallTile,
+				ThinIceGame.TileType.FakeImpassableWall => Game.WallTile,
+				ThinIceGame.TileType.FakePassableWall => Game.WallTile,
+				ThinIceGame.TileType.BlockHole => Game.BlockHoleTile,
+				_ => throw new NotImplementedException(),
+			};
 
-		Texture = tileTexture;
+			Texture = tileTexture;
+		}
 		TileType = tileType;
 	}
 
@@ -204,5 +238,23 @@ public partial class ThinIceTile : Sprite2D
 	{
 		Game.PointsInLevel += 100;
 		RemoveCoinBag();
+	}
+
+	/// <summary>
+	/// Advance the water animation by one frame
+	/// </summary>
+	public void AdvanceWaterAnimation()
+	{
+		WaterAnimationFrame = (WaterAnimationFrame + 1) % WaterAnimationFrameCount;
+		Texture = Game.WaterTileFrames.GetFrameTexture(Animation, WaterAnimationFrame);
+	}
+
+	/// <summary>
+	/// Start the water tile animation
+	/// </summary>
+	public void StartWaterAnimation()
+	{
+		WaterAnimationFrame = 0;
+		AdvanceWaterAnimation();
 	}
 }

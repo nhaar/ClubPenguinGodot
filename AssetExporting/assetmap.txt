@@ -13,7 +13,6 @@ shape
 37=CoinBag
 39=Block
 41=PlaidTeleporterTile
-43=WaterTile
 48=WallTile
 49=ButtonTile
 53=LockTile
