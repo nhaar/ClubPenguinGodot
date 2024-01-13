@@ -1,3 +1,4 @@
+using ClubPenguinPlus;
 using Godot;
 using System;
 
@@ -48,19 +49,14 @@ public partial class ThinIceTile : Sprite2D
 	/// </summary>
 	public static readonly StringName Animation = new("default");
 
-	/// <summary>
-	/// Current frame of the water animation
-	/// </summary>
-	public int WaterAnimationFrame { get; set; } = 0;
+	public FramerateBoundAnimation WaterAnimation { get; set; }
 
-	/// <summary>
-	/// Number of frames in the water animation
-	/// </summary>
-	public int WaterAnimationFrameCount { get; set; }
+	public FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
 
 	public override void _Ready()
 	{
-		WaterAnimationFrameCount = Game.WaterTileFrames.GetFrameCount(Animation);
+		WaterAnimation = new(Game.WaterTileFrames, this);
+		TeleporterIdleAnimation = new(Game.TeleporterTileFrames, this);
 	}
 
 	public override void _Process(double delta)
@@ -68,7 +64,11 @@ public partial class ThinIceTile : Sprite2D
 		// water tile animation
 		if (TileType == ThinIceGame.TileType.Water)
 		{
-			AdvanceWaterAnimation();
+			WaterAnimation.Advance();
+		}
+		else if (TileType == ThinIceGame.TileType.Teleporter && !IsPlaidTeleporter)
+		{
+			TeleporterIdleAnimation.Advance();
 		}
 	}
 
@@ -87,7 +87,11 @@ public partial class ThinIceTile : Sprite2D
 
 		if (tileType == ThinIceGame.TileType.Water)
 		{
-			StartWaterAnimation();
+			WaterAnimation.Start();
+		}
+		else if (tileType == ThinIceGame.TileType.Teleporter)
+		{
+			TeleporterIdleAnimation.Start();
 		}
 		else
 		{
@@ -98,7 +102,6 @@ public partial class ThinIceTile : Sprite2D
 				ThinIceGame.TileType.ThickIce => Game.ThickIceTile,
 				ThinIceGame.TileType.Wall => Game.WallTile,
 				ThinIceGame.TileType.Goal => Game.GoalTile,
-				ThinIceGame.TileType.Teleporter => Game.TeleporterTile,
 				ThinIceGame.TileType.PlaidTeleporter => Game.PlaidTeleporterTile,
 				ThinIceGame.TileType.Lock => Game.LockTile,
 				ThinIceGame.TileType.Button => Game.ButtonTile,
@@ -238,23 +241,5 @@ public partial class ThinIceTile : Sprite2D
 	{
 		Game.PointsInLevel += 100;
 		RemoveCoinBag();
-	}
-
-	/// <summary>
-	/// Advance the water animation by one frame
-	/// </summary>
-	public void AdvanceWaterAnimation()
-	{
-		WaterAnimationFrame = (WaterAnimationFrame + 1) % WaterAnimationFrameCount;
-		Texture = Game.WaterTileFrames.GetFrameTexture(Animation, WaterAnimationFrame);
-	}
-
-	/// <summary>
-	/// Start the water tile animation
-	/// </summary>
-	public void StartWaterAnimation()
-	{
-		WaterAnimationFrame = 0;
-		AdvanceWaterAnimation();
 	}
 }

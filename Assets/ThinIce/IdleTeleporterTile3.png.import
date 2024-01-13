@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://coupcu0ori5lf"
-path="res://.godot/imported/TeleporterTile.png-cada50e453d0f3dc308fa4e7e396bbc5.ctex"
+uid="uid://bmmjpkhcgq27k"
+path="res://.godot/imported/IdleTeleporterTile3.png-7bad7af410f3fffb400b5df92b2b695f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/ThinIce/TeleporterTile.png"
-dest_files=["res://.godot/imported/TeleporterTile.png-cada50e453d0f3dc308fa4e7e396bbc5.ctex"]
+source_file="res://Assets/ThinIce/IdleTeleporterTile3.png"
+dest_files=["res://.godot/imported/IdleTeleporterTile3.png-7bad7af410f3fffb400b5df92b2b695f.ctex"]
 
 [params]
 

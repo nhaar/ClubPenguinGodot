@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://dkaahsk2blmkh"]
+[gd_scene load_steps=63 format=3 uid="uid://dkaahsk2blmkh"]
 
 [ext_resource type="Texture2D" uid="uid://dtolrumencpkb" path="res://Assets/ThinIce/ArcadePlaceholder.png" id="1_d8bow"]
 [ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePlaceholder.cs" id="2_fdq0g"]
@@ -56,6 +56,10 @@
 [ext_resource type="Texture2D" uid="uid://bvu3ht5cvwnu8" path="res://Assets/ThinIce/WaterTile/37.png" id="54_f50oq"]
 [ext_resource type="Texture2D" uid="uid://lj166fe5e4vk" path="res://Assets/ThinIce/WaterTile/38.png" id="55_af42c"]
 [ext_resource type="Texture2D" uid="uid://c6vfk46wcx1my" path="res://Assets/ThinIce/WaterTile/39.png" id="56_wgx4h"]
+[ext_resource type="Texture2D" uid="uid://b46tttjjthbm8" path="res://Assets/ThinIce/IdleTeleporterTile1.png" id="57_jlq5l"]
+[ext_resource type="Texture2D" uid="uid://pkq5nrxnnsww" path="res://Assets/ThinIce/IdleTeleporterTile2.png" id="58_6x8l0"]
+[ext_resource type="Texture2D" uid="uid://bmmjpkhcgq27k" path="res://Assets/ThinIce/IdleTeleporterTile3.png" id="59_83vgr"]
+[ext_resource type="Texture2D" uid="uid://bd7ywv3n6a5o" path="res://Assets/ThinIce/IdleTeleporterTile4.png" id="60_r5bdg"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0dg5i"]
 animations = [{
@@ -182,6 +186,26 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_wpmfg"]
+animations = [{
+"frames": [{
+"duration": 2.0,
+"texture": ExtResource("57_jlq5l")
+}, {
+"duration": 2.0,
+"texture": ExtResource("58_6x8l0")
+}, {
+"duration": 2.0,
+"texture": ExtResource("59_83vgr")
+}, {
+"duration": 2.0,
+"texture": ExtResource("60_r5bdg")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="ThinIce" type="Node2D"]
 
 [node name="ArcadePlaceholder" type="Sprite2D" parent="."]
@@ -230,3 +254,4 @@ visible = false
 KeyTexture = ExtResource("17_piq8y")
 BlockTexture = ExtResource("18_06sbk")
 WaterTileFrames = SubResource("SpriteFrames_0dg5i")
+TeleporterTileFrames = SubResource("SpriteFrames_wpmfg")

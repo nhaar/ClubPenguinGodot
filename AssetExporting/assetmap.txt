@@ -3,7 +3,10 @@ font
 133
 143
 shape
-10=TeleporterTile
+10=IdleTeleporterTile1
+11=IdleTeleporterTile2
+12=IdleTeleporterTile3
+13=IdleTeleporterTile4
 21=EmptyTile
 22=IceTile
 23=BlockHoleTile

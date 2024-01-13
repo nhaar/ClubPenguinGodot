@@ -27,9 +27,6 @@ public partial class ThinIceGame : Node2D
 	public Texture2D GoalTile { get; set; }
 
 	[Export]
-	public Texture2D TeleporterTile { get; set; }
-
-	[Export]
 	public Texture2D PlaidTeleporterTile { get; set; }
 
 	[Export]
@@ -52,6 +49,9 @@ public partial class ThinIceGame : Node2D
 
 	[Export]
 	public SpriteFrames WaterTileFrames { get; set; }
+
+	[Export]
+	public SpriteFrames TeleporterTileFrames { get; set; }
 
 	public int CurrentLevelNumber { get; set; } = 1;
 
