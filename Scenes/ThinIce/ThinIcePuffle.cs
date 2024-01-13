@@ -106,13 +106,13 @@ public partial class ThinIcePuffle : Sprite2D
 			{
 				pressedDirections.Add(Direction.Down);
 			}
-			if (Input.IsPhysicalKeyPressed(Key.Right))
-			{
-				pressedDirections.Add(Direction.Right);
-			}
 			if (Input.IsPhysicalKeyPressed(Key.Left))
 			{
 				pressedDirections.Add(Direction.Left);
+			}
+			if (Input.IsPhysicalKeyPressed(Key.Right))
+			{
+				pressedDirections.Add(Direction.Right);
 			}
 			if (pressedDirections.Count > 0)
 			{
