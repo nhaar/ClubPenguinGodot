@@ -31,6 +31,7 @@ with open(os.path.join(asset_export_path, 'assetmap.txt'), 'r') as file:
 class AssetMapParser:
     temp_folder = os.path.join(asset_export_path, 'temp')
     crop_temp_folder = os.path.join(asset_export_path, 'croptemp')
+    cache_folder = os.path.join(asset_export_path, 'exportcache')
 
     def __init__(self, lines):
         self.lines = lines
@@ -43,8 +44,8 @@ class AssetMapParser:
             self.parse_origin_file()
             self.next()
 
-        shutil.rmtree(self.temp_folder)
-        shutil.rmtree(self.crop_temp_folder)
+        #shutil.rmtree(self.temp_folder)
+        #shutil.rmtree(self.crop_temp_folder)
 
 
     def parse_origin_file(self):
@@ -62,6 +63,8 @@ class AssetMapParser:
             self.parse_shape(origin, destination)
         elif export_type == 'font':
             self.parse_font(origin, destination)
+        elif export_type == 'sprite':
+            self.parse_sprite(origin, destination)
 
     def parse_shape(self, origin, destination):
         os.makedirs(self.temp_folder, exist_ok=True)
@@ -119,6 +122,39 @@ class AssetMapParser:
             if filename.startswith(str(font_number)) and filename.endswith('.ttf'):
                 new_filename = filename[filename.index('_') + 1:]
                 shutil.move(os.path.join(origin, filename), os.path.join(destination, new_filename))
+        self.next()
+
+    def parse_sprite(self, origin, destination):
+        os.makedirs(self.temp_folder, exist_ok=True)
+        os.chdir(ffdec_path)
+        subprocess.run([
+            'ffdec.bat',
+            '-zoom',
+            '10',
+            '-format',
+            'sprite:png', 
+            '-export',
+            'sprite',
+            self.temp_folder,
+            origin
+        ])
+        while '=' in self.get_current_line():
+            self.parse_sprite_line(origin, destination)
+
+    def parse_sprite_line(self, origin, destination):
+        line_match = re.search('(.*)=(.*)', self.get_current_line())
+        sprite_number = line_match.group(1).strip()
+        sprite_folder_start = f"DefineSprite_{sprite_number}"
+        all_directories = os.listdir(origin)
+        for directory in all_directories:
+            if directory.startswith(sprite_folder_start):
+                origin = os.path.join(origin, directory)
+                break
+
+        files = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+        destination_dir = os.path.join(destination, line_match.group(2).strip())
+        for file in files:
+            shutil.copy(os.path.join(directory, file), os.path.join(destination_dir, file))
         self.next()
 
     def next(self):

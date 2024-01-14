@@ -35,6 +35,8 @@ shape
 138=InstructionArt1
 172=SquareButtonScaled[60755/65536,45056/65536]
 173=SquareButtonHoverScaled[60755/65536,45056/65536]
+sprite
+73=WaterTile
 
 ThinIce/title.swf->ThinIce
 shape
