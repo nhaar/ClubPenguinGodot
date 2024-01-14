@@ -6,10 +6,10 @@
 ImageTest/
 
 # Asset exporting
-AssetExporting/OriginalAssets/
 AssetExporting/ffdec-path.txt
 AssetExporting/croptemp/
 AssetExporting/temp/
+OriginalAssets/
 
 # python cache
 *__pycache__*

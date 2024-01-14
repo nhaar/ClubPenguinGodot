@@ -16,7 +16,7 @@ def scale_image(input_path, output_path, scale):
 
 ffdec_path = ''
 asset_export_path = os.path.join(os.getcwd(), "AssetExporting")
-original_asset_path = os.path.join(asset_export_path, "OriginalAssets")
+original_asset_path = os.path.join(os.getcwd(), "OriginalAssets")
 game_asset_path = os.path.join(os.getcwd(), "Assets")
 
 with open(os.path.join(asset_export_path, 'ffdec-path.txt'), 'r') as file:
