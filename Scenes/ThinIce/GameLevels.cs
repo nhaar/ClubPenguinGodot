@@ -1,16 +1,15 @@
 ﻿using Godot;
 using System;
-using static ThinIceGame;
 
 namespace ClubPenguinPlus.ThinIce
 {
     /// <summary>   
     /// Class for all the levels in Thin Ice
     /// </summary>
-    public static class ThinIceLevels
+    public static class GameLevels
     {
 
-        public static readonly Level Level1 = new(@"
+        public static readonly Game.Level Level1 = new(@"
 map
 15wall
 1wall,goal,12ice,wall
@@ -19,7 +18,7 @@ origin(1,9)
 puffle(14,10)
 ");
         
-        public static readonly Level Level2 = new(@"
+        public static readonly Game.Level Level2 = new(@"
 map
 12empty,3wall
 12empty,wall,goal,wall
@@ -43,7 +42,7 @@ wall,ice,3wall,ice,wall
 origin(5,7)
 ");
         
-        public static readonly Level Level3 = new(@"
+        public static readonly Game.Level Level3 = new(@"
 map
 3wall,8empty,3wall
 wall,goal,wall,8empty,wall,ice,wall
@@ -64,7 +63,7 @@ map
 origin(5,8)
 ");
         
-        public static readonly Level Level4 = new(@"
+        public static readonly Game.Level Level4 = new(@"
 map
 5wall,6empty,5wall
 wall,3ice,8wall,3ice,wall
@@ -91,7 +90,7 @@ ice,2wall;
 origin(14,3)
 ");
 
-        public static readonly Level Level5 = new(@"
+        public static readonly Game.Level Level5 = new(@"
 map
 12empty,3wall,2empty
 12empty,wall,ice,wall,2empty
@@ -113,7 +112,7 @@ empty,wall;
 origin(3,8)
 ");
 
-        public static readonly Level Level6 = new(@"
+        public static readonly Game.Level Level6 = new(@"
 map
 12empty,3wall,2empty
 5empty,5wall,2empty,wall,goal,wall,2empty
@@ -138,7 +137,7 @@ empty,7wall
 origin(3,7)
 ");
 
-        public static readonly Level Level7 = new(@"
+        public static readonly Game.Level Level7 = new(@"
 map
 15wall,3empty
 wall,13ice,wall,3empty
@@ -174,7 +173,7 @@ map
 origin(12,11)
 ");
 
-        public static readonly Level Level8 = new(@"
+        public static readonly Game.Level Level8 = new(@"
 map
 5wall,3empty,5wall,4empty
 wall,3ice,5wall,3ice,wall,4empty
@@ -208,7 +207,7 @@ wall,3ice,wall;
 origin(12,8)
 ");
 
-        public static readonly Level Level9 = new(@"
+        public static readonly Game.Level Level9 = new(@"
 map
 16wall,empty
 wall,14ice,2wall
@@ -249,7 +248,7 @@ wall,5ice,3wall,2ice
 origin(1,0)
 ");
 
-        public static readonly Level Level10 = new(@"
+        public static readonly Game.Level Level10 = new(@"
 map
 19wall
 wall,17ice,wall
@@ -276,7 +275,7 @@ map
 origin(2,11)
 ");
 
-        public static readonly Level Level11 = new(@"
+        public static readonly Game.Level Level11 = new(@"
 map
 13empty,3wall,2empty
 13empty,wall,goal,wall,2empty
@@ -305,7 +304,7 @@ thick,wall,ice,wall,thick
 origin(13,3)
 ");
 
-        public static readonly Level Level12 = new(@"
+        public static readonly Game.Level Level12 = new(@"
 map
 6empty,4wall,empty,6wall,2empty
 6empty,wall,2ice,3wall,2ice,wall,ice,wall,2empty
@@ -335,7 +334,7 @@ ice,2wall;
 origin(15,3)
 ");
 
-        public static readonly Level Level13 = new(@"
+        public static readonly Game.Level Level13 = new(@"
 map
 7empty,4wall,empty,3wall,3empty
 2empty,6wall,2ice,3wall,ice,wall,3empty
@@ -364,7 +363,7 @@ wall,ice,thick,wall
 origin(1,4)
 ");
 
-        public static readonly Level Level14 = new(@"
+        public static readonly Game.Level Level14 = new(@"
 map
 6wall,3empty,4wall,5empty
 wall,4ice,wall,3empty,wall,2ice,3wall,3empty
@@ -396,7 +395,7 @@ wall,2ice,wall
 origin(0,5)
 ");
 
-        public static readonly Level Level15 = new(@"
+        public static readonly Game.Level Level15 = new(@"
 map
 19wall
 wall,8ice,wall,2thick,wall,2thick,3ice,wall
@@ -424,7 +423,7 @@ wall,ice
 origin(3,2)
 ");
 
-        public static readonly Level Level16 = new(@"
+        public static readonly Game.Level Level16 = new(@"
 map
 19wall
 wall,2ice,thick,3ice,2wall,4ice,wall,4ice,wall
@@ -453,7 +452,7 @@ wall
 wall;
 origin(17,5)");
 
-        public static readonly Level Level17 = new(@"
+        public static readonly Game.Level Level17 = new(@"
 map
 19wall
 wall,5ice,2wall,hole,wall,3ice,wall,ice,wall,2ice,wall
@@ -484,7 +483,7 @@ map
 origin(12,12)
 ");
 
-        public static readonly Level Level18 = new(@"
+        public static readonly Game.Level Level18 = new(@"
 map
 19wall
 2wall,16ice,wall
@@ -514,7 +513,7 @@ wall,ice
 origin(15,5)
 ");
 
-        public static readonly Level Level19 = new(@"
+        public static readonly Game.Level Level19 = new(@"
 map
 19wall
 wall,goal,wall,10ice,wall,4fakeimpass,wall
@@ -541,7 +540,7 @@ ice,thick
 origin(3,9)
 ");
 
-        public static Level[] Levels = new Level[]
+        public static Game.Level[] Levels = new[]
         {
             Level1,
             Level2,

@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cqtjybggt2wo8" path="res://Assets/ThinIce/MenuArt.png" id="1_cpxl3"]
 [ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://Assets/ThinIce/SmallButton.png" id="2_o1qlf"]
 [ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://Assets/ThinIce/SmallButtonHover.png" id="3_oni2h"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceStartButton.cs" id="4_vhise"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/StartButton.cs" id="4_vhise"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://Assets/ThinIce/cpBurbankBgWdBold.ttf" id="5_0e4ox"]
 
 [node name="ThinIceMainMenu" type="Node2D"]

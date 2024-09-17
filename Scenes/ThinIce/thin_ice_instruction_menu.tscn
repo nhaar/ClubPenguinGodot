@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://ha2tiaqki64l" path="res://Assets/ThinIce/InstructionArt1.png" id="1_04fk0"]
 [ext_resource type="Texture2D" uid="uid://dsymw1st33b4" path="res://Assets/ThinIce/SmallButton.bmp" id="2_iyk0w"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceButton.cs" id="2_nmmay"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/Button.cs" id="2_nmmay"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://Assets/ThinIce/cpBurbankBgWdBold.ttf" id="3_3gqcv"]
 [ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://Assets/ThinIce/SmallButtonHover.png" id="3_fghyt"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePlayButton.cs" id="4_bdmho"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/PlayButton.cs" id="4_bdmho"]
 [ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://Assets/ThinIce/SmallButton.png" id="6_sax4o"]
 [ext_resource type="FontFile" uid="uid://du17cgd8yj2ys" path="res://Assets/ThinIce/cpBurbankSmallBold.ttf" id="7_mnbcg"]
 

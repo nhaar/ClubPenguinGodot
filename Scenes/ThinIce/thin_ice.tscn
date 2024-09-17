@@ -1,22 +1,20 @@
-[gd_scene load_steps=63 format=3 uid="uid://dkaahsk2blmkh"]
+[gd_scene load_steps=61 format=3 uid="uid://dkaahsk2blmkh"]
 
 [ext_resource type="Texture2D" uid="uid://dtolrumencpkb" path="res://Assets/ThinIce/ArcadePlaceholder.png" id="1_d8bow"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePlaceholder.cs" id="2_fdq0g"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/Placeholder.cs" id="2_fdq0g"]
 [ext_resource type="Texture2D" uid="uid://ba26hgqltmdui" path="res://Assets/ThinIce/ArcadeCabinet.png" id="3_mi01u"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceCabinet.cs" id="4_rhmp4"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceCabinetKey.cs" id="5_3mumj"]
-[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIceSideCabinetKey.cs" id="5_ygv6u"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/Cabinet.cs" id="4_rhmp4"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/CabinetKey.cs" id="5_3mumj"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/SideCabinetKey.cs" id="5_ygv6u"]
+[ext_resource type="Texture2D" uid="uid://cltiymjl2wtbh" path="res://Assets/ThinIce/RightKeyStill.png" id="6_0w6dj"]
 [ext_resource type="Texture2D" uid="uid://dnq0r4c8dgm0k" path="res://Assets/ThinIce/UpKeyStill.png" id="6_6kujr"]
-[ext_resource type="Texture2D" uid="uid://cltiymjl2wtbh" path="res://Assets/ThinIce/RightKeyStill.png" id="6_36ym2"]
 [ext_resource type="Texture2D" uid="uid://c5rd13ep663wq" path="res://Assets/ThinIce/UpKeyPressed.png" id="7_2gys1"]
-[ext_resource type="Texture2D" uid="uid://dif8kt6afoli1" path="res://Assets/ThinIce/RightKeyPressed.png" id="7_m58gi"]
+[ext_resource type="Texture2D" uid="uid://dif8kt6afoli1" path="res://Assets/ThinIce/RightKeyPressed.png" id="7_qg3ef"]
 [ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://Assets/ThinIce/DownKeyStill.png" id="8_s0wrs"]
 [ext_resource type="Texture2D" uid="uid://dehy53t8fcm50" path="res://Assets/ThinIce/DownKeyPressed.png" id="9_1g0ne"]
 [ext_resource type="Texture2D" uid="uid://q7mgcru5ps36" path="res://Assets/ThinIce/ScreenBackground.png" id="13_ipy43"]
 [ext_resource type="PackedScene" uid="uid://dwwyalcrnf3wu" path="res://Scenes/ThinIce/thin_ice_menu.tscn" id="14_0evgq"]
 [ext_resource type="PackedScene" uid="uid://cyqygan61whl4" path="res://Scenes/ThinIce/thin_ice_game.tscn" id="16_kgur2"]
-[ext_resource type="Texture2D" uid="uid://brchwxehau80q" path="res://Assets/ThinIce/Key1.png" id="17_piq8y"]
-[ext_resource type="Texture2D" uid="uid://bcpgbrqousu3x" path="res://Assets/ThinIce/Block.png" id="18_06sbk"]
 [ext_resource type="Texture2D" uid="uid://blgafekj8q8ce" path="res://Assets/ThinIce/WaterTile/1.png" id="18_pk486"]
 [ext_resource type="Texture2D" uid="uid://whrnpftaei7j" path="res://Assets/ThinIce/WaterTile/2.png" id="19_bbfqx"]
 [ext_resource type="Texture2D" uid="uid://5byeq1qwonky" path="res://Assets/ThinIce/WaterTile/3.png" id="20_mkj5w"]
@@ -218,15 +216,15 @@ script = ExtResource("4_rhmp4")
 
 [node name="RightCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
 script = ExtResource("5_ygv6u")
-StillTexture = ExtResource("6_36ym2")
-PressedTexture = ExtResource("7_m58gi")
+StillTexture = ExtResource("6_0w6dj")
+PressedTexture = ExtResource("7_qg3ef")
 BoundKey = 4194321
 
 [node name="LeftCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
 script = ExtResource("5_ygv6u")
 IsLeft = true
-StillTexture = ExtResource("6_36ym2")
-PressedTexture = ExtResource("7_m58gi")
+StillTexture = ExtResource("6_0w6dj")
+PressedTexture = ExtResource("7_qg3ef")
 BoundKey = 4194319
 
 [node name="UpCabinetKey" type="Sprite2D" parent="ArcadePlaceholder/ArcadeCabinet"]
@@ -251,7 +249,5 @@ texture = ExtResource("13_ipy43")
 
 [node name="ThinIceGame" parent="ArcadePlaceholder/ArcadeCabinet/ThinIceScreenBackground" instance=ExtResource("16_kgur2")]
 visible = false
-KeyTexture = ExtResource("17_piq8y")
-BlockTexture = ExtResource("18_06sbk")
 WaterTileFrames = SubResource("SpriteFrames_0dg5i")
 TeleporterTileFrames = SubResource("SpriteFrames_wpmfg")
