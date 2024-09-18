@@ -10,18 +10,13 @@ namespace ClubPenguinPlus.ThinIce
     {
         public override void _Ready()
         {
-            // as per the original game, the cabinet is placed on top of a placeholder
-            // image and moved so that it's top right edge is shared with the placeholder's
-            // likewise, the parent is the placeholder image and this operation is to move it
-            Placeholder parent = (Placeholder)GetParent();
+            // the original doesn't do this, it uses a placeholder, here we are properly centering
+            // the game
+            // scale image to fit the height of the screen
+            Scale = new Vector2(1, 1) * 1080f / Texture.GetSize().Y;
 
-            // divided by 2 to account for the fact that the position is the center of the image
-            Vector2 delta = (Texture.GetSize() - parent.Texture.GetSize()) / 2;
-
-            // if place on each other's center, the cabinet needs to be moved
-            // to the left and down
-            delta = new Vector2(-Math.Abs(delta.X), Math.Abs(delta.Y));
-            Translate(delta);
+            // move the image to the center of the screen
+            Translate(new Vector2(1920f / 2, 1080f / 2));
         }
     }
 }
