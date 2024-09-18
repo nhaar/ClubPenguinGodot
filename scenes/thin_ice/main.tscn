@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://dkaahsk2blmkh"]
+[gd_scene load_steps=58 format=3 uid="uid://dkaahsk2blmkh"]
 
 [ext_resource type="Texture2D" uid="uid://ba26hgqltmdui" path="res://assets/thin_ice/ArcadeCabinet.png" id="1_1surv"]
 [ext_resource type="Script" path="res://scripts/ThinIce/Cabinet.cs" id="2_re8uc"]
@@ -11,7 +11,6 @@
 [ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://assets/thin_ice/DownKeyStill.png" id="9_fwmly"]
 [ext_resource type="Texture2D" uid="uid://dehy53t8fcm50" path="res://assets/thin_ice/DownKeyPressed.png" id="10_tct21"]
 [ext_resource type="Texture2D" uid="uid://q7mgcru5ps36" path="res://assets/thin_ice/ScreenBackground.png" id="11_3je31"]
-[ext_resource type="PackedScene" uid="uid://dwwyalcrnf3wu" path="res://scenes/thin_ice/menu.tscn" id="12_6jx0f"]
 [ext_resource type="PackedScene" uid="uid://cyqygan61whl4" path="res://scenes/thin_ice/game.tscn" id="13_rvxe4"]
 [ext_resource type="Texture2D" uid="uid://blgafekj8q8ce" path="res://assets/thin_ice/WaterTile/1.png" id="14_hsjb7"]
 [ext_resource type="Texture2D" uid="uid://whrnpftaei7j" path="res://assets/thin_ice/WaterTile/2.png" id="15_lhkk5"]
@@ -239,9 +238,6 @@ BoundKey = 4194322
 position = Vector2(0, -150)
 texture = ExtResource("11_3je31")
 
-[node name="ThinIceMenu" parent="ArcadeCabinet/ThinIceScreenBackground" groups=["thin_ice_menu"] instance=ExtResource("12_6jx0f")]
-
 [node name="ThinIceGame" parent="ArcadeCabinet/ThinIceScreenBackground" instance=ExtResource("13_rvxe4")]
-visible = false
 WaterTileFrames = SubResource("SpriteFrames_0dg5i")
 TeleporterTileFrames = SubResource("SpriteFrames_wpmfg")

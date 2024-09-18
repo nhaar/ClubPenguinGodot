@@ -8,6 +8,9 @@ namespace ClubPenguinPlus.ThinIce
     /// </summary>
     public partial class TotalTileCount : Text
     {
+        [Export]
+        public NodePath GamePath { get; set; }
+
         /// <summary>
         /// Reference to the game
         /// </summary>
@@ -20,7 +23,7 @@ namespace ClubPenguinPlus.ThinIce
 
         public override void _Ready()
         {
-            Game = GetNode<Game>("../../../");
+            Game = GetNode<Game>(GamePath);
             _currentLevel = Game.CurrentLevelNumber;
             Text = Game.CurrentLevel.TotalTileCount.ToString();
             base._Ready();

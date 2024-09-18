@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=78 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Game.cs" id="1_tbklw"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://assets/thin_ice/EmptyTile.png" id="2_f1q46"]
@@ -67,8 +67,15 @@
 [ext_resource type="Texture2D" uid="uid://pkq5nrxnnsww" path="res://assets/thin_ice/IdleTeleporterTile2.png" id="54_d2sqf"]
 [ext_resource type="Texture2D" uid="uid://bmmjpkhcgq27k" path="res://assets/thin_ice/IdleTeleporterTile3.png" id="55_5p6pq"]
 [ext_resource type="Texture2D" uid="uid://bd7ywv3n6a5o" path="res://assets/thin_ice/IdleTeleporterTile4.png" id="56_yujyg"]
+[ext_resource type="Texture2D" uid="uid://kpdn3kob5rh2" path="res://assets/thin_ice/Logo.png" id="57_ei5o6"]
+[ext_resource type="Texture2D" uid="uid://cqtjybggt2wo8" path="res://assets/thin_ice/MenuArt.png" id="58_3yip4"]
+[ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://assets/thin_ice/SmallButton.png" id="59_ckgbh"]
+[ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://assets/thin_ice/SmallButtonHover.png" id="60_xc0jj"]
+[ext_resource type="Script" path="res://scripts/ThinIce/StartButton.cs" id="61_1iy76"]
+[ext_resource type="Script" path="res://scripts/ThinIce/HowTo.cs" id="65_huqpk"]
+[ext_resource type="Texture2D" uid="uid://ha2tiaqki64l" path="res://assets/thin_ice/InstructionArt1.png" id="66_fs4ym"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_rqf23"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_kqvcr"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -193,7 +200,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_b7jux"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_odnhp"]
 animations = [{
 "frames": [{
 "duration": 2.0,
@@ -213,7 +220,37 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="LabelSettings" id="LabelSettings_urycm"]
+font = ExtResource("15_g1vvg")
+font_size = 140
+font_color = Color(0, 0.4, 0.8, 1)
+
 [node name="ThinIceGame" type="Node2D"]
+
+[node name="ThinIceLogo" type="Sprite2D" parent="."]
+texture = ExtResource("57_ei5o6")
+offset = Vector2(0, -1600)
+
+[node name="ThinIceTitle" type="Node2D" parent="."]
+
+[node name="ThinIceMenuArt" type="Sprite2D" parent="ThinIceTitle"]
+texture = ExtResource("58_3yip4")
+offset = Vector2(0, 100)
+
+[node name="ThinIceStartButton" type="TextureButton" parent="ThinIceTitle"]
+offset_left = -480.0
+offset_top = 1600.0
+offset_right = 480.0
+offset_bottom = 1880.0
+texture_normal = ExtResource("59_ckgbh")
+texture_hover = ExtResource("60_xc0jj")
+script = ExtResource("61_1iy76")
+ButtonText = "START"
+ButtonFont = ExtResource("15_g1vvg")
+ButtonFontSize = 100
+
+[node name="ThinIceEngine" type="Node2D" parent="."]
+visible = false
 script = ExtResource("1_tbklw")
 EmptyTile = ExtResource("2_f1q46")
 IceTile = ExtResource("3_vpo1d")
@@ -227,14 +264,111 @@ BlockHoleTile = ExtResource("12_200gw")
 KeyTexture = ExtResource("11_nk32y")
 BlockTexture = ExtResource("12_q68ok")
 CoinBagTexture = ExtResource("13_anilt")
-WaterTileFrames = SubResource("SpriteFrames_rqf23")
-TeleporterTileFrames = SubResource("SpriteFrames_b7jux")
+WaterTileFrames = SubResource("SpriteFrames_kqvcr")
+TeleporterTileFrames = SubResource("SpriteFrames_odnhp")
 
-[node name="ThinIcePuffle" type="Sprite2D" parent="."]
+[node name="ThinIcePuffle" type="Sprite2D" parent="ThinIceEngine"]
 texture = ExtResource("3_eacnp")
 script = ExtResource("4_s12aw")
 
-[node name="PointsLabel" type="Label" parent="."]
+[node name="ThinIceHowTo" type="Node2D" parent="."]
+visible = false
+script = ExtResource("65_huqpk")
+TitlePath = NodePath("../ThinIceTitle")
+EnginePath = NodePath("../ThinIceEngine")
+UIPath = NodePath("../ThinIceUI")
+LogoPath = NodePath("../ThinIceLogo")
+
+[node name="ThinIcePlayButton" type="TextureButton" parent="ThinIceHowTo"]
+offset_left = -2000.0
+offset_top = 1600.0
+offset_right = -1040.0
+offset_bottom = 1880.0
+texture_normal = ExtResource("59_ckgbh")
+texture_hover = ExtResource("60_xc0jj")
+script = ExtResource("19_bssp1")
+ButtonText = "PLAY"
+ButtonFont = ExtResource("15_g1vvg")
+ButtonFontSize = 100
+
+[node name="ThinIceNextButton" type="TextureButton" parent="ThinIceHowTo"]
+offset_left = 1088.0
+offset_top = 1600.0
+offset_right = 2048.0
+offset_bottom = 1880.0
+texture_normal = ExtResource("59_ckgbh")
+texture_hover = ExtResource("60_xc0jj")
+script = ExtResource("19_bssp1")
+ButtonText = "NEXT"
+ButtonFont = ExtResource("15_g1vvg")
+ButtonFontSize = 100
+
+[node name="ThinIceHowToArt1" type="Sprite2D" parent="ThinIceHowTo"]
+position = Vector2(0, 500)
+texture = ExtResource("66_fs4ym")
+
+[node name="ThinIceHowToText1" type="Label" parent="ThinIceHowTo"]
+offset_left = -2542.0
+offset_top = -1110.0
+offset_right = 2755.0
+offset_bottom = -438.0
+text = "Melt ice on your way through each maze. Once the ice
+is melted you can't walk back. Melt all the ice to solve
+the stage"
+label_settings = SubResource("LabelSettings_urycm")
+
+[node name="ThinIceUI" type="Node2D" parent="."]
+visible = false
+
+[node name="ArcadeTopRow" type="Node2D" parent="ThinIceUI"]
+position = Vector2(0, -2030)
+
+[node name="LevelLabel" type="Label" parent="ThinIceUI/ArcadeTopRow"]
+offset_left = -2000.0
+offset_right = -1477.0
+offset_bottom = 204.0
+text = "LEVEL"
+script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="LevelNumber" type="Label" parent="ThinIceUI/ArcadeTopRow/LevelLabel"]
+layout_mode = 0
+offset_left = 600.0
+offset_right = 640.0
+offset_bottom = 23.0
+text = "1"
+script = ExtResource("20_x5elt")
+GamePath = NodePath("../../../../ThinIceEngine")
+Font = ExtResource("15_g1vvg")
+
+[node name="TileSeparator" type="Label" parent="ThinIceUI/ArcadeTopRow"]
+offset_left = -50.0
+offset_right = -10.0
+offset_bottom = 23.0
+text = "/"
+script = ExtResource("15_3bm4g")
+Font = ExtResource("15_g1vvg")
+
+[node name="MeltedTileCount" type="Label" parent="ThinIceUI/ArcadeTopRow/TileSeparator"]
+layout_mode = 0
+offset_left = -530.0
+offset_right = -30.0
+offset_bottom = 23.0
+horizontal_alignment = 2
+script = ExtResource("22_v4uyt")
+GamePath = NodePath("../../../../ThinIceEngine")
+Font = ExtResource("15_g1vvg")
+
+[node name="TotalTileCount" type="Label" parent="ThinIceUI/ArcadeTopRow/TileSeparator"]
+layout_mode = 0
+offset_left = 100.0
+offset_right = 140.0
+offset_bottom = 23.0
+script = ExtResource("23_8aycp")
+GamePath = NodePath("../../../../ThinIceEngine")
+Font = ExtResource("15_g1vvg")
+
+[node name="PointsLabel" type="Label" parent="ThinIceUI"]
 offset_left = 1050.0
 offset_top = 1800.0
 offset_right = 1108.0
@@ -243,16 +377,17 @@ text = "POINTS"
 script = ExtResource("15_3bm4g")
 Font = ExtResource("15_g1vvg")
 
-[node name="PointsNumber" type="Label" parent="PointsLabel"]
+[node name="PointsNumber" type="Label" parent="ThinIceUI/PointsLabel"]
 layout_mode = 0
 offset_left = 700.0
 offset_right = 740.0
 offset_bottom = 23.0
 text = "0"
 script = ExtResource("21_64iav")
+GamePath = NodePath("../../../ThinIceEngine")
 Font = ExtResource("15_g1vvg")
 
-[node name="ResetButton" type="TextureButton" parent="."]
+[node name="ResetButton" type="TextureButton" parent="ThinIceUI"]
 offset_left = -2100.0
 offset_top = 1820.0
 offset_right = -1210.0
@@ -264,49 +399,6 @@ ButtonText = "RESET"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
 
-[node name="ArcadeTopRow" type="Node2D" parent="."]
-position = Vector2(0, -2030)
-
-[node name="LevelLabel" type="Label" parent="ArcadeTopRow"]
-offset_left = -2000.0
-offset_right = -1477.0
-offset_bottom = 204.0
-text = "LEVEL"
-script = ExtResource("15_3bm4g")
-Font = ExtResource("15_g1vvg")
-
-[node name="LevelNumber" type="Label" parent="ArcadeTopRow/LevelLabel"]
-layout_mode = 0
-offset_left = 600.0
-offset_right = 640.0
-offset_bottom = 23.0
-text = "1"
-script = ExtResource("20_x5elt")
-Font = ExtResource("15_g1vvg")
-
-[node name="TileSeparator" type="Label" parent="ArcadeTopRow"]
-offset_left = -50.0
-offset_right = -10.0
-offset_bottom = 23.0
-text = "/"
-script = ExtResource("15_3bm4g")
-Font = ExtResource("15_g1vvg")
-
-[node name="MeltedTileCount" type="Label" parent="ArcadeTopRow/TileSeparator"]
-layout_mode = 0
-offset_left = -530.0
-offset_right = -30.0
-offset_bottom = 23.0
-horizontal_alignment = 2
-script = ExtResource("22_v4uyt")
-Font = ExtResource("15_g1vvg")
-
-[node name="TotalTileCount" type="Label" parent="ArcadeTopRow/TileSeparator"]
-layout_mode = 0
-offset_left = 100.0
-offset_right = 140.0
-offset_bottom = 23.0
-script = ExtResource("23_8aycp")
-Font = ExtResource("15_g1vvg")
-
-[connection signal="pressed" from="ResetButton" to="." method="OnResetButtonPressed"]
+[connection signal="pressed" from="ThinIceTitle/ThinIceStartButton" to="ThinIceHowTo" method="StartHowTo"]
+[connection signal="pressed" from="ThinIceHowTo/ThinIcePlayButton" to="ThinIceHowTo" method="EndHowTo"]
+[connection signal="pressed" from="ThinIceUI/ResetButton" to="ThinIceEngine" method="OnResetButtonPressed"]

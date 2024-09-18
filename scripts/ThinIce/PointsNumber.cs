@@ -8,6 +8,9 @@ namespace ClubPenguinPlus.ThinIce
     /// </summary>
     public partial class PointsNumber : Text
     {
+        [Export]
+        public NodePath GamePath { get; set; }
+
         /// <summary>
         /// Reference to the game
         /// </summary>
@@ -21,7 +24,7 @@ namespace ClubPenguinPlus.ThinIce
         public override void _Ready()
         {
             base._Ready();
-            Game = GetParent<Label>().GetParent<Game>();
+            Game = GetNode<Game>(GamePath);
             _currentPoints = Game.GetPoints();
         }
 
