@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=77 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Game.cs" id="1_tbklw"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://assets/thin_ice/EmptyTile.png" id="2_f1q46"]
@@ -71,7 +71,6 @@
 [ext_resource type="Texture2D" uid="uid://cqtjybggt2wo8" path="res://assets/thin_ice/MenuArt.png" id="58_3yip4"]
 [ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://assets/thin_ice/SmallButton.png" id="59_ckgbh"]
 [ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://assets/thin_ice/SmallButtonHover.png" id="60_xc0jj"]
-[ext_resource type="Script" path="res://scripts/ThinIce/StartButton.cs" id="61_1iy76"]
 [ext_resource type="Script" path="res://scripts/ThinIce/HowTo.cs" id="65_huqpk"]
 [ext_resource type="Texture2D" uid="uid://ha2tiaqki64l" path="res://assets/thin_ice/InstructionArt1.png" id="66_fs4ym"]
 
@@ -244,7 +243,7 @@ offset_right = 480.0
 offset_bottom = 1880.0
 texture_normal = ExtResource("59_ckgbh")
 texture_hover = ExtResource("60_xc0jj")
-script = ExtResource("61_1iy76")
+script = ExtResource("19_bssp1")
 ButtonText = "START"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
