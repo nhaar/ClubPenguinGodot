@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwwyalcrnf3wu"]
+
+[ext_resource type="PackedScene" uid="uid://28gtfx6skytp" path="res://scenes/thin_ice/main_menu.tscn" id="1_6em0d"]
+[ext_resource type="Texture2D" uid="uid://kpdn3kob5rh2" path="res://assets/thin_ice/Logo.png" id="2_k3d2q"]
+[ext_resource type="PackedScene" uid="uid://bk1lm50008a70" path="res://scenes/thin_ice/instruction_menu.tscn" id="2_noyih"]
+
+[node name="ThinIceMenu" type="Node2D"]
+
+[node name="ThinIceMainMenu" parent="." instance=ExtResource("1_6em0d")]
+
+[node name="ThinIceInstructionMenu" parent="." instance=ExtResource("2_noyih")]
+visible = false
+
+[node name="ThinIceLogo" type="Sprite2D" parent="."]
+texture = ExtResource("2_k3d2q")
+offset = Vector2(0, -1600)

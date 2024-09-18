@@ -1,0 +1,58 @@
+[gd_scene load_steps=10 format=3 uid="uid://bk1lm50008a70"]
+
+[ext_resource type="Texture2D" uid="uid://ha2tiaqki64l" path="res://assets/thin_ice/InstructionArt1.png" id="1_04fk0"]
+[ext_resource type="Texture2D" uid="uid://dsymw1st33b4" path="res://assets/thin_ice/SmallButton.bmp" id="2_iyk0w"]
+[ext_resource type="Script" path="res://scripts/ThinIce/Button.cs" id="2_nmmay"]
+[ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="3_3gqcv"]
+[ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://assets/thin_ice/SmallButtonHover.png" id="3_fghyt"]
+[ext_resource type="Script" path="res://scripts/ThinIce/PlayButton.cs" id="4_bdmho"]
+[ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://assets/thin_ice/SmallButton.png" id="6_sax4o"]
+[ext_resource type="FontFile" uid="uid://du17cgd8yj2ys" path="res://assets/thin_ice/cpBurbankSmallBold.ttf" id="7_mnbcg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_l14n4"]
+font = ExtResource("7_mnbcg")
+font_size = 175
+font_color = Color(0, 0.4, 0.8, 1)
+
+[node name="ThinIceInstructionMenu" type="Node2D"]
+
+[node name="InstructionArt1" type="Sprite2D" parent="."]
+position = Vector2(0, 500)
+texture = ExtResource("1_04fk0")
+
+[node name="ThinIcePlayButton" type="TextureButton" parent="."]
+offset_left = -2000.0
+offset_top = 1600.0
+offset_right = -1039.0
+offset_bottom = 1881.0
+texture_normal = ExtResource("2_iyk0w")
+texture_hover = ExtResource("3_fghyt")
+script = ExtResource("4_bdmho")
+ButtonText = "PLAY"
+ButtonFont = ExtResource("3_3gqcv")
+ButtonFontSize = 100
+
+[node name="ThinIceNextButton" type="TextureButton" parent="."]
+offset_left = 1088.0
+offset_top = 1600.0
+offset_right = 2049.0
+offset_bottom = 1881.0
+texture_normal = ExtResource("6_sax4o")
+texture_hover = ExtResource("3_fghyt")
+script = ExtResource("2_nmmay")
+ButtonText = "NEXT"
+ButtonFont = ExtResource("3_3gqcv")
+ButtonFontSize = 100
+
+[node name="Label" type="Label" parent="."]
+offset_left = -2542.0
+offset_top = -1110.0
+offset_right = 2576.0
+offset_bottom = -357.0
+text = "Melt ice on your way through each maze. Once the ice
+is melted you can't walk back. Melt all the ice to solve
+the stage"
+label_settings = SubResource("LabelSettings_l14n4")
+horizontal_alignment = 1
+
+[connection signal="pressed" from="ThinIcePlayButton" to="ThinIcePlayButton" method="OnPressed"]
