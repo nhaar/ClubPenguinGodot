@@ -78,7 +78,9 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public int TimesFailed { get; set; } = 0;
 
-		public Level CurrentLevel => GameLevels.Levels[CurrentLevelNumber - 1];
+		public Level[] Levels { get; set; }
+
+		public Level CurrentLevel => Levels[CurrentLevelNumber - 1];
 
 		/// <summary>
 		/// Grid containing all tiles used in the game
@@ -102,6 +104,9 @@ namespace ClubPenguinPlus.ThinIce
 
 		public override void _Ready()
 		{
+			var parser = new LevelParser();
+			Levels = parser.ParseLevels("res://assets/thin_ice/levels.xml");
+
 			Tiles = new Tile[Level.MaxWidth, Level.MaxHeight];
 			Blocks = new List<Block>();
 			Vector2 tileSize = EmptyTile.GetSize();
@@ -225,16 +230,16 @@ namespace ClubPenguinPlus.ThinIce
 			/// Tiles that do not count towards the total tile count
 			/// </summary>
 			public static readonly List<TileType> ZeroCountTiles = new()
-		{
-			TileType.Empty,
-			TileType.Water,
-			TileType.Wall,
-			TileType.BlockHole,
-			TileType.Goal,
-			TileType.Teleporter,
-			TileType.FakeTemporaryWall,
-			TileType.Button
-		};
+			{
+				TileType.Empty,
+				TileType.Water,
+				TileType.Wall,
+				TileType.BlockHole,
+				TileType.Goal,
+				TileType.Teleporter,
+				TileType.FakeTemporaryWall,
+				TileType.Button
+			};
 
 			/// <summary>
 			/// A coordinate pair used to offset the level's origin relative to the absolute one.
@@ -313,23 +318,28 @@ namespace ClubPenguinPlus.ThinIce
 			/// </param>
 			public Level(string levelString, params string[] altPatches)
 			{
-				Tiles = MapDecodeInsideString(levelString);
-				KeyPositions = GetCoordsFromString(GetInlineCoordsFromWord(levelString, "keys"));
-				BlockPositions = GetCoordsFromString(GetInlineCoordsFromWord(levelString, "blocks"));
-				PuffleSpawnLocation = (Vector2I)GetCoordFromString(GetInlineCoordsFromWord(levelString, "puffle"));
-				RelativeOrigin = GetCoordFromString(GetInlineCoordsFromWord(levelString, "origin")) ?? Vector2I.Zero;
-				CoinBagPosition = GetCoordFromString(GetInlineCoordsFromWord(levelString, "bag"));
-				Width = Tiles.GetLength(0);
-				Height = Tiles.GetLength(1);
+				//Tiles = MapDecodeInsideString(levelString);
+				//KeyPositions = GetCoordsFromString(GetInlineCoordsFromWord(levelString, "keys"));
+				//BlockPositions = GetCoordsFromString(GetInlineCoordsFromWord(levelString, "blocks"));
+				//PuffleSpawnLocation = (Vector2I)GetCoordFromString(GetInlineCoordsFromWord(levelString, "puffle"));
+				//RelativeOrigin = GetCoordFromString(GetInlineCoordsFromWord(levelString, "origin")) ?? Vector2I.Zero;
+				//CoinBagPosition = GetCoordFromString(GetInlineCoordsFromWord(levelString, "bag"));
+				//Width = Tiles.GetLength(0);
+				//Height = Tiles.GetLength(1);
 
-				// 50/50 as per original game
-				if (altPatches.Length > 0 && GD.Randf() > 0.5)
-				{
-					foreach (string patchString in altPatches)
-					{
-						ApplyPatch(new Patch(patchString));
-					}
-				}
+				//// 50/50 as per original game
+				//if (altPatches.Length > 0 && GD.Randf() > 0.5)
+				//{
+				//	foreach (string patchString in altPatches)
+				//	{
+				//		ApplyPatch(new Patch(patchString));
+				//	}
+				//}
+			}
+
+			public Level()
+			{
+
 			}
 
 			/// <summary>
