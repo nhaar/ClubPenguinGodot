@@ -1,125 +1,242 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace ClubPenguinPlus.ThinIce
 {
-	public partial class LevelParser : XmlParser
+	public partial class LevelParser
 	{
-		public Game.Level[] ParseLevels(string path)
+		private static readonly string MapKey = "m";
+
+		private static readonly string CoinBagKey = "c";
+
+		private static readonly string BlocksKey = "b";
+
+		private static readonly string AltKey = "a";
+
+		private static readonly string SpawnKey = "s";
+
+		private static readonly string OriginKey = "o";
+
+		private static readonly string KeysKey = "k";
+
+		private int? CurrentLevel { get; set; } = null;
+
+		public Game.Level[] ParseLevels(string file)
 		{
-			List<Game.Level> levels = new();
-			Open(path);
-			while (Read() != Error.FileEof)
+			try
 			{
-				if (GetNodeType() == NodeType.Element)
+				var levels = new List<Game.Level>();
+				var jsonString = FileAccess.Open(file, FileAccess.ModeFlags.Read).GetAsText();
+				var jsonParser = new Json();
+				if (jsonParser.Parse(jsonString) == Error.Ok)
 				{
-					var nodeName = GetNodeName();
-					if (nodeName == "level")
+					var data = jsonParser.Data;
+					if (data.VariantType == Variant.Type.Array)
 					{
-						levels.Add(ParseLevel());
-					}
-					else if (nodeName != "levels")
-					{
-						throw new Exception("Unknown node name in levels file: " + nodeName);
-					}
-				}
-			}
-
-			return levels.ToArray();
-		}
-	
-		public Game.Level ParseLevel()
-		{
-			// 50/50 as per the original game
-			var useAlt = GD.Randf() > -1;
-
-			var size = new Vector2I(Game.Level.MaxWidth, Game.Level.MaxHeight);
-			var origin = Vector2I.Zero;
-			var spawn = -1 * Vector2I.One;
-			var gotRows = false;
-			var tileMap = new List<List<Game.TileType>>();
-			var gotMap = false;
-			Vector2I? coinBag = null;
-			var keys = new List<Vector2I>();
-			var blocks = new List<Vector2I>();
-
-			while (Read() != Error.FileEof)
-			{
-				if (GetNodeType() == NodeType.Element)
-				{
-					var nodeName = GetNodeName();
-					var attributesDict = new Dictionary<string, string>();
-					for (int idx = 0; idx < GetAttributeCount(); idx++)
-					{
-						attributesDict[GetAttributeName(idx)] = GetAttributeValue(idx);
-					}
-					switch (nodeName)
-					{
-						case "size":
-							if (gotRows)
+						CurrentLevel = 0;
+						var levelsArray = data.AsGodotArray();
+						foreach (var levelRepresentation in levelsArray)
+						{
+							CurrentLevel++;
+							if (levelRepresentation.VariantType == Variant.Type.Dictionary)
 							{
-								throw new Exception("Size was set AFTER rows in level. Put them before");
-							}
-							size = ParseSizeElement(attributesDict, size);
-							break;
-						case "origin":
-							origin = ParseGridCoordinateElement(attributesDict, origin);
-							break;
-						case "spawn":
-							spawn = ParseGridCoordinateElement(attributesDict, spawn);
-							if (spawn.X == -1 || spawn.Y == -1)
-							{
-								throw new Exception("Puffle spawn coordinates not given");
-							}
-							break;
-						case "rows":
-							tileMap = ParseRows(size.X, size.Y);
-							gotMap = true;
-							break;
-						case "bag":
-							coinBag = ParseGridCoordinateElement(attributesDict, Vector2I.Zero);
-							break;
-						case "keys":
-							keys = ParseCoordinateList("keys", "key");
-							break;
-						case "blocks":
-							blocks = ParseCoordinateList("blocks", "block");
-							break;
-						case "alt":
-							if (!gotMap)
-							{
-								throw new Exception("Alt segment placed before levels");
-							}
-							if (useAlt)
-							{
-								tileMap = ParseAndApplyAlt(tileMap, origin);
+								var levelData = levelRepresentation.AsGodotDictionary<string, Variant>();
+								levels.Add(ParseLevelData(levelData));
 							}
 							else
 							{
-								SkipAlt();
+								throw new Exception($"Level was represented with {levelRepresentation.VariantType} instead of using a dictionary");
 							}
-							break;
-						default:
-							throw new Exception($"Unexpected level element: {nodeName}, either remove it or place it afte rows");
+						}
+					}
+					else
+					{
+						throw new Exception($"Expected an array of levels at the root of levels file, instead found {data.VariantType}");
 					}
 				}
-				else if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == "level")
+				else
 				{
-					break;
+					throw new Exception($"Failed to parse JSON: {jsonParser.GetErrorMessage()}\nLine {jsonParser.GetErrorLine()}");
+				}
+
+				return levels.ToArray();
+			}
+			catch (Exception ex)
+			{
+				var levelMessage = CurrentLevel == null ? "" : $"for level {CurrentLevel}";
+				throw new Exception($"Error while parsing Thin Ice level file {levelMessage}: {ex.Message}\n{ex.StackTrace}");
+			}
+		}
+
+		private static Game.Level ParseLevelData(Godot.Collections.Dictionary<string, Variant> levelData)
+		{
+			var origin = Vector2I.Zero;
+			Vector2I spawn;
+
+			var keys = new List<Vector2I>();
+			var blocks = new List<Vector2I>();
+			Vector2I? bag = null;
+			List<List< Game.TileType >> map;
+
+
+			Vector2I size;
+			var maxSize = new Vector2I(Game.Level.MaxWidth, Game.Level.MaxHeight);
+			if (levelData.ContainsKey(MapKey))
+			{
+				try
+				{
+					TryParseMap(levelData[MapKey], out map, out size);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"Failed parsing level map: {ex.Message}\n{ex.StackTrace}");
+				}
+			}
+			else
+			{
+				throw new Exception("Map for level was not given");
+			}
+			if (size.X > maxSize.X || size.Y > maxSize.Y)
+			{
+				throw new Exception("Map given is bigger than the maximum allowed");
+			}
+
+			if (levelData.ContainsKey(OriginKey))
+			{
+				try
+				{
+					TryGetCoordinate(levelData[OriginKey], out origin, Vector2I.Zero, maxSize - size);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"Could not parse origin coordinate in level: {ex.Message}\n{ex.StackTrace}");
 				}
 			}
 
-			
-			var tiles = new Game.TileType[tileMap[0].Count, tileMap.Count];
-			for (int i = 0; i < tileMap.Count; i++)
+			var maxCoord = size + origin;
+			if (levelData.ContainsKey(SpawnKey))
 			{
-				for (int j = 0; j < tileMap[i].Count; j++)
+				try
+				{
+					TryGetCoordinate(levelData[SpawnKey], out spawn, origin, maxCoord);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"Could not parse spawn coordinate in level: {ex.Message}\n{ex.StackTrace}");
+				}
+			}
+			else
+			{
+				throw new Exception("Spawn for level was not given");
+			}
+			if (levelData.ContainsKey(CoinBagKey))
+			{
+				try
+				{
+					TryGetCoordinate(levelData[CoinBagKey], out var bagOut, origin, maxCoord);
+					bag = bagOut;
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"Could not parse spawn coordinate in level: {ex.Message}\n{ex.StackTrace}");
+				}
+			}
+			if (levelData.ContainsKey(KeysKey))
+			{
+				try
+				{
+					TryGetCoordinateList(levelData[KeysKey], out keys, origin, maxCoord);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"Could not parse key coordinates: {ex.Message}\n{ex.StackTrace}");
+				}
+			}
+			if (levelData.ContainsKey(BlocksKey))
+			{
+				try
+				{
+					TryGetCoordinateList(levelData[BlocksKey], out blocks, origin, maxCoord);
+				}
+				catch (Exception ex)
+				{
+					throw new Exception($"Could not parse block coordinates: {ex.Message}\n{ex.StackTrace}");
+				}
+			}
+
+			// 50/50 as per the original game of having alternate
+			var useAlt = GD.Randf() > 0.5;
+
+			// applying patches for alternate level
+			if (useAlt && levelData.ContainsKey(AltKey))
+			{
+				var altValue = levelData[AltKey];
+				if (altValue.VariantType == Variant.Type.Array)
+				{
+					var patchesArray = altValue.AsGodotArray();
+					foreach (var patch in patchesArray)
+					{
+						if (patch.VariantType == Variant.Type.Dictionary)
+						{
+							var patchValue = patch.AsGodotDictionary<string, Variant>();
+							if (!patchValue.ContainsKey(MapKey))
+							{
+								throw new Exception("Patch is expected to have a map");
+							}
+							Vector2I patchSize;
+							Vector2I patchOrigin;
+							List<List<Game.TileType>> patchMap;
+							try
+							{
+								TryParseMap(patchValue[MapKey], out patchMap, out patchSize);
+							}
+							catch (Exception ex)
+							{
+								throw new Exception($"Could not parse patch map: {ex.Message}\n{ex.StackTrace}");
+							}
+							if (!patchValue.ContainsKey(OriginKey))
+							{
+								throw new Exception("Patch is expected to have a origin");
+							}
+							try
+							{
+								TryGetCoordinate(patchValue[OriginKey], out patchOrigin, origin, maxCoord - patchSize);
+							}
+							catch (Exception ex)
+							{
+								throw new Exception($"Could not parse origin for patch: {ex.Message}\n{ex.StackTrace}");
+							}
+
+							for (int y = 0; y < patchMap.Count; y++)
+							{
+								var patchRow = patchMap[y];
+								for (int x = 0; x < patchRow.Count; x++)
+								{
+									map[y + patchOrigin.Y - origin.Y][x + patchOrigin.X - origin.X] = patchRow[x];
+								}
+							}
+						}
+						else
+						{
+							throw new Exception("Patch in level JSON was not of type dictionary");
+						}
+					}
+				}
+				else
+				{
+					throw new Exception("Alt property in level JSON is not an array");
+				}
+			}
+
+			var tiles = new Game.TileType[size.X, size.Y];
+			for (int i = 0; i < map.Count; i++)
+			{
+				for (int j = 0; j < map[i].Count; j++)
 				{
 					try
 					{
-						tiles[j, i] = tileMap[i][j];
+						tiles[j, i] = map[i][j];
 					}
 					catch
 					{
@@ -137,335 +254,144 @@ namespace ClubPenguinPlus.ThinIce
 				Tiles = tiles,
 				KeyPositions = keys,
 				BlockPositions = blocks,
-				CoinBagPosition = coinBag
+				CoinBagPosition = bag
 			};
 		}
-
-		private List<List<Game.TileType>> ParseRows(int width, int height)
+	
+		private static void TryGetCoordinate(Variant value, out Vector2I coordinates, Vector2I min, Vector2I max)
 		{
-			var tiles = new List<List<Game.TileType>>();
-			while (Read() != Error.FileEof)
+			coordinates = Vector2I.Zero;
+			if (value.VariantType == Variant.Type.Array)
 			{
-				if (GetNodeType() == NodeType.Element)
+				var valueArray = value.AsGodotArray();
+				var coordList = new List<int>();
+				foreach (var element in valueArray)
 				{
-					var nodeName = GetNodeName();
-					if (nodeName == "row")
+					if (element.VariantType == Variant.Type.Float)
 					{
-						tiles.Add(ParseRow(width));
+						coordList.Add(element.AsInt32());
 					}
 					else
 					{
-						throw new Exception("Expected row element inside rows, found " + nodeName + GetCurrentLine());
+						throw new Exception($"Coordinate member was not a number, but a {element.VariantType}: {element}");
 					}
 				}
-				else if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == "rows")
+
+				if (coordList.Count == 2)
 				{
-					break;
+					var x = coordList[0];
+					var y = coordList[1];
+					if (x < min.X || y < min.Y || x > max.X|| y > max.Y)
+					{
+						throw new Exception($"Coordinate pair ({x},{y}) is not within bounds of map");
+					}
+					coordinates = new Vector2I(x, y);
+				}
+				else
+				{
+					throw new Exception($"Coordinate pair did not have two elements: {coordList}");
 				}
 			}
-			
-
-			if (tiles.Count != height)
+			else
 			{
-				throw new Exception("Number of rows in level does not match height");
+				throw new Exception($"Coordinate list was not an array in JSON: {value}");
 			}
-
-			return tiles;
 		}
 
-		private List<Game.TileType> ParseRow(int width)
+		private static void TryGetCoordinateList(Variant value, out List<Vector2I> coordList, Vector2I min, Vector2I max)
 		{
-			var row = new List<Game.TileType>();
-			var autoIndex = -1;
-			Game.TileType autoTile = Game.TileType.Empty;
-
-			while (Read() != Error.FileEof)
+			coordList = new List<Vector2I>();
+			if (value.VariantType == Variant.Type.Array)
 			{
-				if (GetNodeType() == NodeType.Element)
+				var valueArray = value.AsGodotArray();
+				foreach (var element in valueArray)
 				{
-					var nodeName = GetNodeName();
-					Game.TileType type = nodeName switch
+					Vector2I coord;
+					try
 					{
-						"empty" => Game.TileType.Empty,
-						"ice" => Game.TileType.Ice,
-						"water" => Game.TileType.Water,
-						"thick" => Game.TileType.ThickIce,
-						"wall" => Game.TileType.Wall,
-						"goal" => Game.TileType.Goal,
-						"warp" => Game.TileType.Teleporter,
-						"plaid" =>  Game.TileType.PlaidTeleporter,
-						"lock" => Game.TileType.Lock,
-						"button" => Game.TileType.Button,
-						"faketemp" => Game.TileType.FakeTemporaryWall,
-						"fakepass" => Game.TileType.FakePassableWall,
-						"fakeimpass" => Game.TileType.FakeImpassableWall,
-						"hole" => Game.TileType.BlockHole,
-						_ => throw new Exception("Invalid tile type: " + nodeName)
-					};
-					var attributesDict = new Dictionary<string, string>();
-					for (int idx = 0; idx < GetAttributeCount(); idx++)
-					{
-						attributesDict[GetAttributeName(idx)] = GetAttributeValue(idx);
+						TryGetCoordinate(element, out coord, min, max);
 					}
-					if (attributesDict.ContainsKey("n"))
+					catch (Exception ex)
 					{
-						var n = attributesDict["n"];
-						if (n == "auto")
+						throw new Exception($"Could not get coordinate inside coordinate list: {ex.Message}\n{ex.StackTrace}");
+					}
+					coordList.Add(coord);
+				}
+			}
+			else
+			{
+				throw new Exception($"Coordinate list ({value}) was supposed to be an array, found {value.VariantType}");
+			}
+		}
+
+		private static void TryParseMap(Variant value, out List<List<Game.TileType>> map, out Vector2I size)
+		{
+			map = new List<List<Game.TileType>>();
+			size = Vector2I.Zero;
+			var width = -1;
+			if (value.VariantType == Variant.Type.Array)
+			{
+				var mapGrid = value.AsGodotArray();
+
+				foreach (var row in mapGrid)
+				{
+					var rowList = new List<Game.TileType>();
+					if (row.VariantType == Variant.Type.Array)
+					{
+						var rowValue = row.AsGodotArray();
+						if (width == -1)
 						{
-							if (autoIndex == -1)
+							width = rowValue.Count;
+						}
+						else if (rowValue.Count != width)
+						{
+							throw new Exception($"Rows for map aren't all of the same length");
+						}
+						foreach (var tile in rowValue)
+						{
+							if (tile.VariantType == Variant.Type.Float)
 							{
-								autoIndex = row.Count;
-								autoTile = type;
+								var tileValue = tile.AsInt32();
+								var type = tileValue switch
+								{
+									0 => Game.TileType.Empty,
+									1 => Game.TileType.Ice,
+									2 => Game.TileType.ThickIce,
+									3 => Game.TileType.Wall,
+									4 => Game.TileType.Goal,
+									5 => Game.TileType.Teleporter,
+									6 => Game.TileType.Lock,
+									7 => Game.TileType.Button,
+									8 => Game.TileType.FakeTemporaryWall,
+									9 => Game.TileType.FakePassableWall,
+									10 => Game.TileType.FakeImpassableWall,
+									11 => Game.TileType.BlockHole,
+									12 => Game.TileType.PlaidTeleporter,
+									13 => Game.TileType.Water,
+									_ => throw new Exception($"{tileValue} is not a valid value for a tile")
+								} ;
+								rowList.Add(type);
+
 							}
 							else
 							{
-								throw new Exception("More than one automatic completion found in row");
+								throw new Exception("Tile was not a number");
 							}
 						}
-						else
-						{
-							if (!int.TryParse(n, out int times))
-							{
-								throw new Exception("Number of times in tile is not integer");
-							}
-							for (int j = 0; j < times; j++)
-							{
-								row.Add(type);
-							}
-						}
+						map.Add(rowList);
 					}
 					else
 					{
-						row.Add(type);
+						throw new Exception("Row inside map was not an array");
 					}
 				}
-				else if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == "row")
-				{
-					break;
-				}
-			}
 
-			if (autoIndex != -1)
+				size = new Vector2I(map[0].Count, map.Count);
+			}
+			else
 			{
-				var times = width - row.Count;
-				for (int k = 0; k < times; k++)
-				{
-					row.Insert(autoIndex, autoTile);
-				}
+				throw new Exception("Map was not an array");
 			}
-
-			if (row.Count != width)
-			{
-				throw new Exception("Row tile count does not match the row width" + GetCurrentLine());
-			}
-
-			return row;
-		}
-
-		private List<List<Game.TileType>> ParseAndApplyAlt(List<List<Game.TileType>> tileMap, Vector2I origin)
-		{
-			while (Read() != Error.FileEof)
-			{
-				if (GetNodeType() == NodeType.Element)
-				{
-					var nodeName = GetNodeName();
-					if (nodeName == "patch")
-					{
-						tileMap = ParseAndApplyPatch(tileMap, origin);
-					}
-					else
-					{
-						throw new Exception("Unexpected element inside alt, found " + nodeName + GetCurrentLine());
-					}
-				}
-				else if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == "alt")
-				{
-					break;
-				}
-			}
-			return tileMap;
-		}
-
-		private List<List<Game.TileType>> ParseAndApplyPatch(List<List<Game.TileType>> tileMap, Vector2I origin)
-		{
-			var size = -1 * Vector2I.One;
-			var patchOrigin = -1 * Vector2I.One;
-			var gotSize = false;
-			var rows = new List<List<Game.TileType>>();
-			while (Read() != Error.FileEof)
-			{
-				if (GetNodeType() == NodeType.Element)
-				{
-					var nodeName = GetNodeName();
-					var attributesDict = new Dictionary<string, string>();
-					for (int idx = 0; idx < GetAttributeCount(); idx++)
-					{
-						attributesDict[GetAttributeName(idx)] = GetAttributeValue(idx);
-					}
-					switch (nodeName)
-					{
-						case "size":
-							size = ParseSizeElement(attributesDict, size);
-							if (size.X == -1 || size.Y == -1)
-							{
-								throw new Exception("Did not properly add size to patch");
-							}
-							gotSize = true;
-							break;
-						case "origin":
-							patchOrigin = ParseGridCoordinateElement(attributesDict, patchOrigin);
-							break;
-						case "rows":
-							if (!gotSize)
-							{
-								throw new Exception("Did not add size to patch");
-							}
-							rows = ParseRows(size.X, size.Y);
-							break;
-						default:
-							throw new Exception("Unexpected element inside alt, found " + nodeName + GetCurrentLine());
-					}
-				}
-				else if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == "patch")
-				{
-					break;
-				}
-			}
-
-			if (patchOrigin.X == -1 || patchOrigin.Y == -1)
-			{
-				throw new Exception("Did not add origin to patch");
-			}
-			if (rows.Count == 0)
-			{
-				throw new Exception("Did not supply rows to patch");
-			}
-			if (rows.Count != size.Y)
-			{
-				throw new Exception("Incorrect number of rows in patch");
-			}
-			if (rows.Count + patchOrigin.Y - origin.Y > tileMap.Count)
-			{
-				throw new Exception("The patch exceeds the number of rows");
-			}
-			for (int y = 0; y < rows.Count; y++)
-			{
-				var row = rows[y];
-				if (row.Count != size.X)
-				{
-					throw new Exception("Incorrect number of columns in patch");
-				}
-				if (row.Count + patchOrigin.X - origin.X > tileMap[y].Count)
-				{
-					throw new Exception("The patch exceeds the number of columns");
-				}
-				if (row.Count != size.X)
-				{
-					throw new Exception("Incorrect number of tiles in row for patch");
-				}
-				for (int x = 0; x < row.Count; x++)
-				{
-					GD.Print(GetCurrentLine());
-					GD.Print(y + patchOrigin.Y - origin.Y);
-					GD.Print("Patch origin", origin);
-					GD.Print(y, patchOrigin.Y, origin.Y);
-					tileMap[y + patchOrigin.Y - origin.Y][x + patchOrigin.X - origin.X] = row[x];
-				}
-			}
-
-			return tileMap;
-		}
-
-		private void SkipAlt()
-		{
-			while (Read() != Error.FileEof)
-			{
-				if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == "alt")
-				{
-					break;
-				}
-			}
-		}
-
-		private List<Vector2I> ParseCoordinateList(string rootName, string elementName)
-		{
-			var list = new List<Vector2I>();
-			while (Read() !=  Error.FileEof)
-			{
-				if (GetNodeType() == NodeType.Element)
-				{
-					var nodeName = GetNodeName();
-					if (nodeName == elementName)
-					{
-						var attributesDict = new Dictionary<string, string>();
-						for (int idx = 0; idx < GetAttributeCount(); idx++)
-						{
-							attributesDict[GetAttributeName(idx)] = GetAttributeValue(idx);
-						}
-						var coords = ParseGridCoordinateElement(attributesDict, -1 * Vector2I.One);
-						if (coords.X == -1 || coords.Y == -1)
-						{
-							throw new Exception("Improper coordinates for " + rootName);
-						}
-						list.Add(coords);
-					}
-					else
-					{
-						throw new Exception($"Unexpected element inside {rootName}, found " + nodeName + GetCurrentLine());
-					}
-				}
-				else if (GetNodeType() == NodeType.ElementEnd && GetNodeName() == rootName)
-				{
-					break;
-				}
-			}
-
-			return list;
-		}
-
-
-		private static Vector2I ParseCoordinateElement(Dictionary<string, string> attributes, string keyX, string keyY, string nameX, string nameY, Vector2I min, Vector2I max, Vector2I initial)
-		{
-			string[] keys = new[] { keyX, keyY };
-			string[] names = new[] { nameX, nameY };
-			var i = 0;
-			foreach(var key in keys)
-			{
-				if (attributes.ContainsKey(key))
-				{
-					var value = attributes[key];
-					var success = false;
-					if (i == 0)
-					{
-						success = int.TryParse(value, out initial.X);
-					}
-					else
-					{
-						success = int.TryParse(value, out initial.Y);
-					}
-					if (!success)
-					{
-						throw new Exception($"{names[i]} must be integer");
-					}
-					if (initial[i] < min[i] || initial[i] > max[i])
-					{
-						throw new Exception($"{names[i]} is out of range: " + initial[i]);
-					}
-				}
-				i++;
-			}
-
-			return initial;
-		}
-
-		private static Vector2I ParseGridCoordinateElement(Dictionary<string, string> attributes, Vector2I initial)
-		{
-			return ParseCoordinateElement(attributes, "x", "y", "X", "Y", Vector2I.Zero, new Vector2I(Game.Level.MaxWidth - 1, Game.Level.MaxHeight - 1), initial);
-		}
-
-		private static Vector2I ParseSizeElement(Dictionary<string, string> attributes, Vector2I initial)
-		{
-			return ParseCoordinateElement(attributes, "w", "h", "Width", "Height", new Vector2I(1, 1), new Vector2I(Game.Level.MaxWidth, Game.Level.MaxHeight), initial);
 		}
 	}
 }
