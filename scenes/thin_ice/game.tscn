@@ -17,6 +17,7 @@ font_size = 140
 font_color = Color(0, 0.4, 0.8, 1)
 
 [node name="ThinIceGame" type="Node2D"]
+script = ExtResource("65_huqpk")
 
 [node name="ThinIceLogo" type="Sprite2D" parent="."]
 texture = ExtResource("57_ei5o6")
@@ -46,11 +47,6 @@ visible = false
 
 [node name="ThinIceHowTo" type="Node2D" parent="."]
 visible = false
-script = ExtResource("65_huqpk")
-TitlePath = NodePath("../ThinIceTitle")
-EnginePath = NodePath("../ThinIceEngine")
-UIPath = NodePath("../UI")
-LogoPath = NodePath("../ThinIceLogo")
 
 [node name="ThinIcePlayButton" type="TextureButton" parent="ThinIceHowTo"]
 offset_left = -2000.0
@@ -93,5 +89,5 @@ label_settings = SubResource("LabelSettings_urycm")
 [node name="UI" parent="." instance=ExtResource("10_ld5i1")]
 visible = false
 
-[connection signal="pressed" from="ThinIceTitle/ThinIceStartButton" to="ThinIceHowTo" method="StartHowTo"]
-[connection signal="pressed" from="ThinIceHowTo/ThinIcePlayButton" to="ThinIceHowTo" method="EndHowTo"]
+[connection signal="pressed" from="ThinIceTitle/ThinIceStartButton" to="." method="StartHowTo"]
+[connection signal="pressed" from="ThinIceHowTo/ThinIcePlayButton" to="." method="EndHowTo"]
