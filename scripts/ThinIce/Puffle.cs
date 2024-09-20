@@ -100,19 +100,19 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				// preserving the original code's arrow key priority
 				List<Direction> pressedDirections = new();
-				if (Input.IsPhysicalKeyPressed(Key.Up))
+				if (Input.IsPhysicalKeyPressed(Godot.Key.Up))
 				{
 					pressedDirections.Add(Direction.Up);
 				}
-				if (Input.IsPhysicalKeyPressed(Key.Down))
+				if (Input.IsPhysicalKeyPressed(Godot.Key.Down))
 				{
 					pressedDirections.Add(Direction.Down);
 				}
-				if (Input.IsPhysicalKeyPressed(Key.Left))
+				if (Input.IsPhysicalKeyPressed(Godot.Key.Left))
 				{
 					pressedDirections.Add(Direction.Left);
 				}
-				if (Input.IsPhysicalKeyPressed(Key.Right))
+				if (Input.IsPhysicalKeyPressed(Godot.Key.Right))
 				{
 					pressedDirections.Add(Direction.Right);
 				}

@@ -1,9 +1,7 @@
-[gd_scene load_steps=22 format=3 uid="uid://cyqygan61whl4"]
+[gd_scene load_steps=20 format=3 uid="uid://cyqygan61whl4"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Game.cs" id="1_tbklw"]
-[ext_resource type="Texture2D" uid="uid://brchwxehau80q" path="res://assets/thin_ice/Key1.png" id="11_nk32y"]
 [ext_resource type="Texture2D" uid="uid://bcpgbrqousu3x" path="res://assets/thin_ice/Block.png" id="12_q68ok"]
-[ext_resource type="Texture2D" uid="uid://bg5oc55d4bd7m" path="res://assets/thin_ice/CoinBag.png" id="13_anilt"]
 [ext_resource type="Script" path="res://scripts/ThinIce/Text.cs" id="15_3bm4g"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="15_g1vvg"]
 [ext_resource type="Texture2D" uid="uid://ua1mdc33h03d" path="res://assets/thin_ice/SquareButtonScaled.png" id="17_oqxii"]
@@ -53,9 +51,7 @@ ButtonFontSize = 100
 [node name="ThinIceEngine" type="Node2D" parent="."]
 visible = false
 script = ExtResource("1_tbklw")
-KeyTexture = ExtResource("11_nk32y")
 BlockTexture = ExtResource("12_q68ok")
-CoinBagTexture = ExtResource("13_anilt")
 
 [node name="Puffle" parent="ThinIceEngine" instance=ExtResource("63_u0cv6")]
 

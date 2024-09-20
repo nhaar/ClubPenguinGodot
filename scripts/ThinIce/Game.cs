@@ -12,16 +12,6 @@ namespace ClubPenguinPlus.ThinIce
 	/// </summary>
 	public partial class Game : Node2D
 	{
-
-		[Export]
-		public Texture2D KeyTexture { get; set; }
-
-		[Export]
-		public Texture2D BlockTexture { get; set; }
-
-		[Export]
-		public Texture2D CoinBagTexture { get; set; }
-
 		public int CurrentLevelNumber { get; set; } = 1;
 
 		/// <summary>
@@ -71,7 +61,7 @@ namespace ClubPenguinPlus.ThinIce
 		public bool SolvedPrevious { get; set; } = false;
 
 		public override void _Ready()
-		{
+		{ 
 			var parser = new LevelParser();
 			Levels = parser.ParseLevels("res://assets/thin_ice/levels.json");
 
@@ -348,12 +338,9 @@ namespace ClubPenguinPlus.ThinIce
 			foreach (Vector2I blockPosition in level.BlockPositions)
 			{
 				Tile blockTile = Tiles[blockPosition.X, blockPosition.Y];
-				Block block = new()
-				{
-					Texture = BlockTexture,
-					Coordinates = blockPosition,
-					Position = blockTile.Position
-				};
+				var block = GD.Load<PackedScene>("res://scenes/thin_ice/block.tscn").Instantiate<Block>();
+				block.Coordinates = blockPosition;
+				block.Position = blockTile.Position;
 				AddChild(block);
 				Blocks.Add(block);
 				blockTile.BlockReference = block;
@@ -361,11 +348,7 @@ namespace ClubPenguinPlus.ThinIce
 			if (SolvedPrevious && level.CoinBagPosition != null)
 			{
 				Tile tile = GetTile((Vector2I)level.CoinBagPosition);
-				Sprite2D coinBag = new()
-				{
-					Texture = CoinBagTexture
-				};
-
+				var coinBag = GD.Load<PackedScene>("res://scenes/thin_ice/coin_bag.tscn").Instantiate<Sprite2D>();
 				tile.AddChild(coinBag);
 				tile.CoinBag = coinBag;
 			}

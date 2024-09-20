@@ -24,7 +24,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// Key in the keyboard that is bound to this key
 		/// </summary>
 		[Export]
-		public Key BoundKey { get; set; }
+		public Godot.Key BoundKey { get; set; }
 
 		/// <summary>
 		/// Whether the key is currently physically pressed in-game

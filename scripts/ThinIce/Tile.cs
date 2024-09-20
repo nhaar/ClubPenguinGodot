@@ -47,7 +47,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Reference to a key object if this tile has one
 		/// </summary>
-		public Sprite2D KeyReference { get; set; }
+		public Key KeyReference { get; set; }
 
 		/// <summary>
 		/// Reference to a block object if it's on this tile
@@ -245,9 +245,10 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void AddKey()
 		{
-			KeyReference = new Sprite2D();
-			KeyReference.Texture = Game.KeyTexture;
-			AddChild(KeyReference);
+
+			var key = GD.Load<PackedScene>("res://scenes/thin_ice/key.tscn").Instantiate<Key>();
+			KeyReference = key;
+			AddChild(key);
 		}
 
 		/// <summary>
