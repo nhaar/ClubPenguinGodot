@@ -12,32 +12,6 @@ namespace ClubPenguinPlus.ThinIce
 	/// </summary>
 	public partial class Game : Node2D
 	{
-		[Export]
-		public Texture2D EmptyTile { get; set; }
-
-		[Export]
-		public Texture2D IceTile { get; set; }
-
-		[Export]
-		public Texture2D ThickIceTile { get; set; }
-
-		[Export]
-		public Texture2D WallTile { get; set; }
-
-		[Export]
-		public Texture2D GoalTile { get; set; }
-
-		[Export]
-		public Texture2D PlaidTeleporterTile { get; set; }
-
-		[Export]
-		public Texture2D LockTile { get; set; }
-
-		[Export]
-		public Texture2D ButtonTile { get; set; }
-
-		[Export]
-		public Texture2D BlockHoleTile { get; set; }
 
 		[Export]
 		public Texture2D KeyTexture { get; set; }
@@ -47,12 +21,6 @@ namespace ClubPenguinPlus.ThinIce
 
 		[Export]
 		public Texture2D CoinBagTexture { get; set; }
-
-		[Export]
-		public SpriteFrames WaterTileFrames { get; set; }
-
-		[Export]
-		public SpriteFrames TeleporterTileFrames { get; set; }
 
 		public int CurrentLevelNumber { get; set; } = 1;
 
@@ -109,32 +77,32 @@ namespace ClubPenguinPlus.ThinIce
 
 			Tiles = new Tile[Level.MaxWidth, Level.MaxHeight];
 			Blocks = new List<Block>();
-			Vector2 tileSize = EmptyTile.GetSize();
 
 			// reference hardcoded values
 			int leftmostTileX = -2158;
 			int topmostTileY = -1700;
 
+
+
 			for (int i = 0; i < Level.MaxWidth; i++)
 			{
 				for (int j = 0; j < Level.MaxHeight; j++)
 				{
-					Tile newTile = new()
-					{
-						Texture = EmptyTile,
-						Position = new Vector2(leftmostTileX + i * tileSize.X, topmostTileY + j * tileSize.Y),
-						TileCoordinate = new Vector2I(i, j),
-						Game = this
-					};
-					Tiles[i, j] = newTile;
-					AddChild(newTile);
+					var tile = GD.Load<PackedScene>("res://scenes/thin_ice/tile.tscn").Instantiate<Tile>();
+					tile.Texture = tile.EmptyTile;
+					var tileSize = tile.Texture.GetSize();
+					tile.Position = new Vector2(leftmostTileX + i * tileSize.X, topmostTileY + j * tileSize.Y);
+					tile.TileCoordinate = new Vector2I(i, j);
+					tile.Game = this;
+					Tiles[i, j] = tile;
+					AddChild(tile);
 					// move up to so the pre-created nodes are visible
-					MoveChild(newTile, 0);
+					MoveChild(tile, 0);
 				}
 			}
 
 			// move to bottom so it is always visible on top of tiles
-			Puffle = (Puffle)GetNode("ThinIcePuffle");
+			Puffle = GetNode<Puffle>("Puffle");
 		}
 
 		/// <summary>
