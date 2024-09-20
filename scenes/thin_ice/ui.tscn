@@ -1,0 +1,66 @@
+[gd_scene load_steps=7 format=3 uid="uid://cooykk2jsc1wn"]
+
+[ext_resource type="Script" path="res://scripts/ThinIce/UI.cs" id="1_4k31g"]
+[ext_resource type="PackedScene" uid="uid://dkw5x0xm3ibtr" path="res://scenes/thin_ice/ui_label.tscn" id="1_qluoo"]
+[ext_resource type="Texture2D" uid="uid://ua1mdc33h03d" path="res://assets/thin_ice/SquareButtonScaled.png" id="2_veeyd"]
+[ext_resource type="Texture2D" uid="uid://bsx5mcwm64pq5" path="res://assets/thin_ice/SquareButtonHoverScaled.png" id="3_bcnes"]
+[ext_resource type="Script" path="res://scripts/ThinIce/Button.cs" id="4_h83uc"]
+[ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="5_8qfr1"]
+
+[node name="UI" type="Node2D"]
+script = ExtResource("1_4k31g")
+
+[node name="ArcadeTopRow" type="Node2D" parent="."]
+position = Vector2(0, -2030)
+
+[node name="LevelLabel" parent="ArcadeTopRow" instance=ExtResource("1_qluoo")]
+offset_left = -2000.0
+offset_right = -1960.0
+text = "LEVEL"
+
+[node name="LevelNumber" parent="ArcadeTopRow/LevelLabel" instance=ExtResource("1_qluoo")]
+layout_mode = 0
+offset_left = 600.0
+offset_right = 640.0
+
+[node name="TileSeparator" parent="ArcadeTopRow" instance=ExtResource("1_qluoo")]
+offset_left = -50.0
+offset_right = -10.0
+text = "/"
+
+[node name="MeltedTileCount" parent="ArcadeTopRow/TileSeparator" instance=ExtResource("1_qluoo")]
+layout_mode = 0
+offset_left = -530.0
+offset_right = -490.0
+horizontal_alignment = 2
+
+[node name="TotalTileCount" parent="ArcadeTopRow/TileSeparator" instance=ExtResource("1_qluoo")]
+layout_mode = 0
+offset_left = 100.0
+offset_right = 140.0
+
+[node name="PointsLabel" parent="." instance=ExtResource("1_qluoo")]
+offset_left = 1050.0
+offset_top = 1800.0
+offset_right = 1090.0
+offset_bottom = 1823.0
+text = "POINTS"
+
+[node name="PointsNumber" parent="PointsLabel" instance=ExtResource("1_qluoo")]
+layout_mode = 0
+offset_left = 700.0
+offset_right = 740.0
+
+[node name="ResetButton" type="TextureButton" parent="."]
+offset_left = -2100.0
+offset_top = 1820.0
+offset_right = -1210.0
+offset_bottom = 2012.0
+texture_normal = ExtResource("2_veeyd")
+texture_hover = ExtResource("3_bcnes")
+script = ExtResource("4_h83uc")
+ButtonText = "RESET"
+ButtonFont = ExtResource("5_8qfr1")
+ButtonFontSize = 100
+
+[connection signal="pressed" from="ResetButton" to="." method="OnResetButtonPressed"]

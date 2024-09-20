@@ -444,10 +444,7 @@ namespace ClubPenguinPlus.ThinIce
 			StartLevel(CurrentLevelNumber, true);
 		}
 
-		/// <summary>
-		/// Signal for when the reset button is pressed
-		/// </summary>
-		private void OnResetButtonPressed()
+		public void Reset()
 		{
 			ResetLevel();
 			Puffle.Die();
