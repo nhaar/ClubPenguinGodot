@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://cj1610se05dvm"]
+
+[ext_resource type="Texture2D" uid="uid://ba26hgqltmdui" path="res://assets/thin_ice/ArcadeCabinet.png" id="1_0faku"]
+[ext_resource type="Script" path="res://scripts/ThinIce/Cabinet.cs" id="2_xi1l7"]
+
+[node name="Cabinet" type="Sprite2D"]
+texture = ExtResource("1_0faku")
+script = ExtResource("2_xi1l7")

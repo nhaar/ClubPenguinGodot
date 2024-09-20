@@ -1,11 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://dkaahsk2blmkh"]
+[gd_scene load_steps=10 format=3 uid="uid://dkaahsk2blmkh"]
 
-[ext_resource type="Texture2D" uid="uid://ba26hgqltmdui" path="res://assets/thin_ice/ArcadeCabinet.png" id="1_1surv"]
-[ext_resource type="Script" path="res://scripts/ThinIce/Cabinet.cs" id="2_re8uc"]
-[ext_resource type="Script" path="res://scripts/ThinIce/SideCabinetKey.cs" id="3_yvpt1"]
-[ext_resource type="Texture2D" uid="uid://cltiymjl2wtbh" path="res://assets/thin_ice/RightKeyStill.png" id="4_kilj6"]
-[ext_resource type="Texture2D" uid="uid://dif8kt6afoli1" path="res://assets/thin_ice/RightKeyPressed.png" id="5_f3cxi"]
-[ext_resource type="Script" path="res://scripts/ThinIce/CabinetKey.cs" id="6_vpxyo"]
+[ext_resource type="PackedScene" uid="uid://wde2hs582ngl" path="res://scenes/thin_ice/side_cabinet_key.tscn" id="2_e31ed"]
+[ext_resource type="PackedScene" uid="uid://cj1610se05dvm" path="res://scenes/thin_ice/cabinet.tscn" id="3_8fkda"]
+[ext_resource type="PackedScene" uid="uid://dqg8ktr5wal48" path="res://scenes/thin_ice/cabinet_key.tscn" id="3_oyeqa"]
 [ext_resource type="Texture2D" uid="uid://dnq0r4c8dgm0k" path="res://assets/thin_ice/UpKeyStill.png" id="7_23m2l"]
 [ext_resource type="Texture2D" uid="uid://c5rd13ep663wq" path="res://assets/thin_ice/UpKeyPressed.png" id="8_6t3sm"]
 [ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://assets/thin_ice/DownKeyStill.png" id="9_fwmly"]
@@ -15,39 +12,29 @@
 
 [node name="ThinIce" type="Node2D"]
 
-[node name="ArcadeCabinet" type="Sprite2D" parent="."]
-texture = ExtResource("1_1surv")
-script = ExtResource("2_re8uc")
+[node name="Cabinet" parent="." instance=ExtResource("3_8fkda")]
 
-[node name="RightCabinetKey" type="Sprite2D" parent="ArcadeCabinet"]
-script = ExtResource("3_yvpt1")
-StillTexture = ExtResource("4_kilj6")
-PressedTexture = ExtResource("5_f3cxi")
+[node name="RightCabinetKey" parent="Cabinet" instance=ExtResource("2_e31ed")]
 BoundKey = 4194321
 
-[node name="LeftCabinetKey" type="Sprite2D" parent="ArcadeCabinet"]
-script = ExtResource("3_yvpt1")
+[node name="LeftCabinetKey" parent="Cabinet" instance=ExtResource("2_e31ed")]
 IsLeft = true
-StillTexture = ExtResource("4_kilj6")
-PressedTexture = ExtResource("5_f3cxi")
 BoundKey = 4194319
 
-[node name="UpCabinetKey" type="Sprite2D" parent="ArcadeCabinet"]
+[node name="UpCabinetKey" parent="Cabinet" instance=ExtResource("3_oyeqa")]
 offset = Vector2(0, 2100)
-script = ExtResource("6_vpxyo")
 StillTexture = ExtResource("7_23m2l")
 PressedTexture = ExtResource("8_6t3sm")
 BoundKey = 4194320
 
-[node name="DownCabinetKey" type="Sprite2D" parent="ArcadeCabinet"]
+[node name="DownCabinetKey" parent="Cabinet" instance=ExtResource("3_oyeqa")]
 offset = Vector2(0, 2300)
-script = ExtResource("6_vpxyo")
 StillTexture = ExtResource("9_fwmly")
 PressedTexture = ExtResource("10_tct21")
 BoundKey = 4194322
 
-[node name="ThinIceScreenBackground" type="Sprite2D" parent="ArcadeCabinet"]
+[node name="ThinIceScreenBackground" type="Sprite2D" parent="Cabinet"]
 position = Vector2(0, -150)
 texture = ExtResource("11_3je31")
 
-[node name="ThinIceGame" parent="ArcadeCabinet/ThinIceScreenBackground" instance=ExtResource("13_rvxe4")]
+[node name="ThinIceGame" parent="Cabinet/ThinIceScreenBackground" instance=ExtResource("13_rvxe4")]
