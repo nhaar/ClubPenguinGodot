@@ -8,17 +8,17 @@ namespace ClubPenguinPlus.ThinIce
 	/// </summary>
 	public partial class SideCabinetKey : CabinetKey
 	{
-		public static readonly float VerticalPosition = 2200f;
-
-		public static readonly float SidePosition = 2000f;
-
 		/// <summary>
 		/// Whether this is the left key or the right key
 		/// </summary>
 		[Export]
-		public bool IsLeft { get; set; }
+		private bool IsLeft { get; set; }
 
-		public float XPosition => SidePosition * (IsLeft ? -1 : 1);
+		private static readonly float VerticalPosition = 2200f;
+
+		private static readonly float SidePosition = 2000f;
+
+		private float XPosition => SidePosition * (IsLeft ? -1 : 1);
 
 		public override void _Ready()
 		{

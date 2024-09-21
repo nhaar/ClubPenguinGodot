@@ -13,29 +13,29 @@ namespace ClubPenguinPlus.Utils
         /// <summary>
         /// Name of the animation in the sprite frames, needed to access it
         /// </summary>
-        public StringName Animation { get; set; }
+        private StringName Animation { get; set; }
 
         /// <summary>
         /// Reference to the sprite frames, an object containing all the frames of the animation
         /// 
         /// For use by this animator, each frame should have an integer frame duration
         /// </summary>
-        public SpriteFrames SpriteFrames { get; set; }
+        private SpriteFrames SpriteFrames { get; set; }
 
         /// <summary>
         /// Reference to the parent object that displayes the animation
         /// </summary>
-        public Sprite2D Parent { get; set; }
+        private Sprite2D Parent { get; set; }
 
         /// <summary>
         /// Total number of frames in the animation
         /// </summary>
-        public int FrameCount { get; set; }
+        private int FrameCount { get; set; }
 
         /// <summary>
         /// Current frame of the animation
         /// </summary>
-        public int CurrentFrame { get; set; }
+        private int CurrentFrame { get; set; }
 
         /// <summary>
         /// Array that will have length equal to the frame count, and every
@@ -44,7 +44,7 @@ namespace ClubPenguinPlus.Utils
         /// For example, { 0, 0, 1 } means that the first two frames are the first frame in the sprite frames,
         /// and the third frame is the second frame in the sprite frames.
         /// </summary>
-        public int[] Frames { get; private set; }
+        private int[] Frames { get; set; }
 
         public FramerateBoundAnimation(SpriteFrames spriteFrames, Sprite2D parent, StringName animation = null)
         {
@@ -52,7 +52,7 @@ namespace ClubPenguinPlus.Utils
             Parent = parent;
             Animation = animation ?? new StringName("default");
             int totalFrames = SpriteFrames.GetFrameCount(Animation);
-            List<int> frames = new List<int>();
+            var frames = new List<int>();
             FrameCount = 0;
             for (int i = 0; i < totalFrames; i++)
             {
@@ -80,6 +80,7 @@ namespace ClubPenguinPlus.Utils
         /// </summary>
         public void Advance()
         {
+            GD.Print("animating", Parent);
             Parent.Texture = SpriteFrames.GetFrameTexture(Animation, Frames[CurrentFrame]);
             CurrentFrame = (CurrentFrame + 1) % FrameCount;
         }

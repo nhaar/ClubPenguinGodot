@@ -9,6 +9,10 @@
 
 [node name="UI" type="Node2D"]
 script = ExtResource("1_4k31g")
+PointsPath = NodePath("PointsLabel/PointsNumber")
+MeltedTilePath = NodePath("ArcadeTopRow/TileSeparator/MeltedTileCount")
+TotalTilePath = NodePath("ArcadeTopRow/TileSeparator/TotalTileCount")
+LevelPath = NodePath("ArcadeTopRow/LevelLabel/LevelNumber")
 
 [node name="ArcadeTopRow" type="Node2D" parent="."]
 position = Vector2(0, -2030)

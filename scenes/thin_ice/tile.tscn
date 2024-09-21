@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://xhxo0y64rdkb"]
+[gd_scene load_steps=57 format=3 uid="uid://xhxo0y64rdkb"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Tile.cs" id="1_2kvod"]
 [ext_resource type="Texture2D" uid="uid://dcuwccylqoa2s" path="res://assets/thin_ice/EmptyTile.png" id="2_g1va1"]
@@ -53,6 +53,7 @@
 [ext_resource type="Texture2D" uid="uid://pkq5nrxnnsww" path="res://assets/thin_ice/IdleTeleporterTile2.png" id="51_ekg38"]
 [ext_resource type="Texture2D" uid="uid://bmmjpkhcgq27k" path="res://assets/thin_ice/IdleTeleporterTile3.png" id="52_7bejh"]
 [ext_resource type="Texture2D" uid="uid://bd7ywv3n6a5o" path="res://assets/thin_ice/IdleTeleporterTile4.png" id="53_c7402"]
+[ext_resource type="PackedScene" uid="uid://dxrog52g45si" path="res://scenes/thin_ice/key.tscn" id="54_wc2ij"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ktfn6"]
 animations = [{
@@ -212,3 +213,4 @@ ButtonTile = ExtResource("9_8sdh5")
 BlockHoleTile = ExtResource("10_wivvf")
 WaterTileFrames = SubResource("SpriteFrames_ktfn6")
 TeleporterTileFrames = SubResource("SpriteFrames_0o7d4")
+KeyScene = ExtResource("54_wc2ij")

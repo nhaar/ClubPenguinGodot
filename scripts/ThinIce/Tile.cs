@@ -11,37 +11,40 @@ namespace ClubPenguinPlus.ThinIce
 	public partial class Tile : Sprite2D
 	{
 		[Export]
-		public Texture2D EmptyTile { get; set; }
+		private Texture2D EmptyTile { get; set; }
 
 		[Export]
-		public Texture2D IceTile { get; set; }
+		private Texture2D IceTile { get; set; }
 
 		[Export]
-		public Texture2D ThickIceTile { get; set; }
+		private Texture2D ThickIceTile { get; set; }
 
 		[Export]
-		public Texture2D WallTile { get; set; }
+		private Texture2D WallTile { get; set; }
 
 		[Export]
-		public Texture2D GoalTile { get; set; }
+		private Texture2D GoalTile { get; set; }
 
 		[Export]
-		public Texture2D PlaidTeleporterTile { get; set; }
+		private Texture2D PlaidTeleporterTile { get; set; }
 
 		[Export]
-		public Texture2D LockTile { get; set; }
+		private Texture2D LockTile { get; set; }
 
 		[Export]
-		public Texture2D ButtonTile { get; set; }
+		private Texture2D ButtonTile { get; set; }
 
 		[Export]
-		public Texture2D BlockHoleTile { get; set; }
+		private Texture2D BlockHoleTile { get; set; }
 
 		[Export]
-		public SpriteFrames WaterTileFrames { get; set; }
+		private SpriteFrames WaterTileFrames { get; set; }
 
 		[Export]
-		public SpriteFrames TeleporterTileFrames { get; set; }
+		private SpriteFrames TeleporterTileFrames { get; set; }
+
+		[Export]
+		private PackedScene KeyScene { get; set; }
 
 		/// <summary>
 		/// All valid tile types
@@ -123,12 +126,12 @@ namespace ClubPenguinPlus.ThinIce
 			BlockHole
 		}
 
-		public Type TileType { get; set; }
+		public Type TileType { get; private set; }
 
 		/// <summary>
 		/// Reference to a key object if this tile has one
 		/// </summary>
-		public Key KeyReference { get; set; }
+		private Key KeyReference { get; set; }
 
 		/// <summary>
 		/// Reference to a block object if it's on this tile
@@ -160,18 +163,13 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public Sprite2D CoinBag { get; set; } = null;
 
-		/// <summary>
-		/// Name of all the animations in sprite frames
-		/// </summary>
-		public static readonly StringName Animation = new("default");
+		private FramerateBoundAnimation WaterAnimation { get; set; }
 
-		public FramerateBoundAnimation WaterAnimation { get; set; }
-
-		public FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
+		private FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
 
 		// reference hardcoded values
-		public static readonly int LeftmostTileX = -2158;
-		public static readonly int TopmostTileY = -1700;
+		private static readonly int LeftmostTileX = -2158;
+		private static readonly int TopmostTileY = -1700;
 
 		public override void _Ready()
 		{
@@ -245,11 +243,22 @@ namespace ClubPenguinPlus.ThinIce
 			TileType = tileType;
 		}
 
+		public void OnPuffleStartEnter(Direction direction)
+		{
+			BlockReference?.Move(direction);
+
+			// button is pressed on previous tile exit
+			if (TileType == Type.Button)
+			{
+				Game.PressButton();
+			}
+		}
+
 		/// <summary>
 		/// Action to perform when the puffle enters this tile
 		/// </summary>
 		/// <param name="direction"></param>
-		public void OnPuffleEnter(Puffle puffle)
+		public void OnPuffleFinishEnter(Puffle puffle)
 		{
 			if (CoinBag != null)
 			{
@@ -287,24 +296,13 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Action to perform when the puffle exits this tile
 		/// </summary>
-		public void OnPuffleExit(Direction direction)
+		public void OnPuffleExit()
 		{
 			if (TileType == Type.Ice || TileType == Type.ThickIce)
 			{
 				var newType = TileType == Type.Ice ? Type.Water : Type.Ice;
 				Game.MeltTile();
 				ChangeTile(newType);
-			}
-
-			Tile destinationTile = GetAdjacent(direction);
-
-			// move if block exists
-			destinationTile.BlockReference?.Move(direction);
-
-			// button is pressed on previous tile exit
-			if (destinationTile.TileType == Type.Button)
-			{
-				Game.PressButton();
 			}
 		}
 
@@ -334,20 +332,8 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void AddKey()
 		{
-
-			var key = GD.Load<PackedScene>("res://scenes/thin_ice/key.tscn").Instantiate<Key>();
-			KeyReference = key;
-			AddChild(key);
-		}
-
-		/// <summary>
-		/// Get adjacent tile in a given direction
-		/// </summary>
-		/// <param name="direction"></param>
-		/// <returns></returns>
-		public Tile GetAdjacent(Direction direction)
-		{
-			return Game.GetTile(Puffle.GetDestination(TileCoordinate, direction));
+			KeyReference = KeyScene.Instantiate<Key>();
+			AddChild(KeyReference);
 		}
 
 		public void RemoveCoinBag()
@@ -364,7 +350,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void GetCoinBag()
 		{
-			Game.PointsInLevel += 100;
+			Game.GetCoinBag();
 			RemoveCoinBag();
 		}
 	}

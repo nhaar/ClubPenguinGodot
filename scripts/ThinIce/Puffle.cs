@@ -26,7 +26,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <remarks>
 		/// In vanilla, each level has at most one key. This is thus meant for custom levels.
 		/// </remarks>
-		public int KeyCount { get; set; }
+		private int KeyCount { get; set; }
 
 		private bool IsActive { get; set; }
 
@@ -57,21 +57,19 @@ namespace ClubPenguinPlus.ThinIce
 				// preserving the original code's arrow key priority
 				List<Direction> pressedDirections = new();
 
-				if (Input.IsPhysicalKeyPressed(Godot.Key.Up))
+				var inputMap = new Dictionary<Godot.Key, Direction>
 				{
-					pressedDirections.Add(Direction.Up);
-				}
-				if (Input.IsPhysicalKeyPressed(Godot.Key.Down))
+					{ Godot.Key.Up, Direction.Up },
+					{ Godot.Key.Down, Direction.Down },
+					{ Godot.Key.Left, Direction.Left },
+					{ Godot.Key.Right, Direction.Right }
+				};
+				foreach (var entry in inputMap)
 				{
-					pressedDirections.Add(Direction.Down);
-				}
-				if (Input.IsPhysicalKeyPressed(Godot.Key.Left))
-				{
-					pressedDirections.Add(Direction.Left);
-				}
-				if (Input.IsPhysicalKeyPressed(Godot.Key.Right))
-				{
-					pressedDirections.Add(Direction.Right);
+					if (Input.IsPhysicalKeyPressed(entry.Key))
+					{
+						pressedDirections.Add(entry.Value);
+					}
 				}
 				foreach (var direction in pressedDirections)
 				{
@@ -121,9 +119,10 @@ namespace ClubPenguinPlus.ThinIce
 		private void StartMoveAnimation(Direction direction)
 		{
 			var targetCoords = GetDestination(Coordinates, direction);
-			Game.GetTile(Coordinates).OnPuffleExit(direction);
-			var targetPos = Game.GetTile(targetCoords).Position;
-			base.StartMoveAnimation(targetCoords, direction, targetPos);
+			var targetTile = Game.GetTile(targetCoords);
+			Game.GetTile(Coordinates).OnPuffleExit();
+			targetTile.OnPuffleStartEnter(direction);
+			base.StartMoveAnimation(targetCoords, direction, targetTile.Position);
 		}
 
 		/// <summary>
@@ -132,7 +131,7 @@ namespace ClubPenguinPlus.ThinIce
 		protected override void FinishMoveAnimation()
 		{
 			base.FinishMoveAnimation();
-			Game.GetTile(Coordinates).OnPuffleEnter(this);
+			Game.GetTile(Coordinates).OnPuffleFinishEnter(this);
 		}
 
 		public void GetKey()
@@ -144,7 +143,7 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			KeyCount--;
 		}
-		public void ResetKeys()
+		private void ResetKeys()
 		{
 			KeyCount = 0;
 		}

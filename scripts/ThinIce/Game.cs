@@ -37,7 +37,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// How many points the player has collected in the current level in their
 		/// current life
 		/// </summary>
-		public int PointsInLevel { get; set; } = 0;
+		private int PointsInLevel { get; set; } = 0;
 
 		/// <summary>
 		/// How many tiles the player has melted in the current level in their
@@ -278,6 +278,11 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			MeltedTiles++;
 			PointsInLevel++;
+		}
+
+		public void GetCoinBag()
+		{
+			PointsInLevel += 100;
 		}
 	}
 }

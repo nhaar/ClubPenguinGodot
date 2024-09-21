@@ -37,6 +37,7 @@ namespace ClubPenguinPlus.ThinIce
 			UI = GetNode<UI>(UIPath);
 			Logo = GetNode<Sprite2D>(LogoPath);
 			HowToScreen = GetNode<Node2D>(HowToPath);
+			UI.Engine = Engine;
 		}
 
 		private void StartHowTo()

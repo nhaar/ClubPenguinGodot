@@ -9,9 +9,9 @@ namespace ClubPenguinPlus.ThinIce
 	public partial class Text : Label
 	{
 		[Export]
-		public Font Font;
+		private Font Font;
 
-		public static readonly Color TextColor = new(0, 102f / 255, 204f / 255);
+		private static readonly Color TextColor = new(0, 102f / 255, 204f / 255);
 
 		public override void _Ready()
 		{

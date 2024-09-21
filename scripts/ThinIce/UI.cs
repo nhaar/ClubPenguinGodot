@@ -6,29 +6,39 @@ namespace ClubPenguinPlus.ThinIce
 {
 	public partial class UI : Node2D
 	{
-		public Label PointsLabel { get; set; }
+		[Export]
+		private NodePath PointsPath { get; set; }
 
-		public Label MeltedTileLabel { get; set; }
+		[Export]
+		private NodePath MeltedTilePath { get; set; }
 
-		public Label TotalTileLabel { get; set; }
+		[Export]
+		private NodePath TotalTilePath { get; set; }
 
-		public Label LevelLabel { get; set; }
+		[Export]
+		private NodePath LevelPath { get; set; }
+
+		private Label PointsLabel { get; set; }
+
+		private Label MeltedTileLabel { get; set; }
+
+		private Label TotalTileLabel { get; set; }
+
+		private Label LevelLabel { get; set; }
 
 		public Game Engine { get; set; }
 
 		public override void _Ready()
 		{
 			base._Ready();
-			PointsLabel = GetNode<Label>("PointsLabel/PointsNumber");
-			MeltedTileLabel = GetNode<Label>("ArcadeTopRow/TileSeparator/MeltedTileCount");
-			TotalTileLabel = GetNode<Label>("ArcadeTopRow/TileSeparator/TotalTileCount");
-			LevelLabel = GetNode<Label>("ArcadeTopRow/LevelLabel/LevelNumber");
-			Engine = GetNode<Game>("%ThinIceEngine");
+			PointsLabel = GetNode<Label>(PointsPath);
+			MeltedTileLabel = GetNode<Label>(MeltedTilePath);
+			TotalTileLabel = GetNode<Label>(TotalTilePath);
+			LevelLabel = GetNode<Label>(LevelPath);
 		}
 
 		public override void _Process(double delta)
 		{
-			base._Process(delta);
 			LevelLabel.Text = Engine.CurrentLevelNumber.ToString();
 			MeltedTileLabel.Text = Engine.MeltedTiles.ToString();
 			TotalTileLabel.Text = Engine.TotalTileCount.ToString();
