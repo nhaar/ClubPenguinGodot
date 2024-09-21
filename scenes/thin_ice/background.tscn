@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Background.cs" id="1_dd7uq"]
 [ext_resource type="PackedScene" uid="uid://cj1610se05dvm" path="res://scenes/thin_ice/cabinet.tscn" id="1_i2uf0"]
-[ext_resource type="PackedScene" uid="uid://wde2hs582ngl" path="res://scenes/thin_ice/side_cabinet_key.tscn" id="2_hhba6"]
-[ext_resource type="PackedScene" uid="uid://dqg8ktr5wal48" path="res://scenes/thin_ice/cabinet_key.tscn" id="3_3btc6"]
+[ext_resource type="PackedScene" uid="uid://wde2hs582ngl" path="res://scenes/thin_ice/side_cabinet_arrow_key.tscn" id="2_hhba6"]
+[ext_resource type="PackedScene" uid="uid://dqg8ktr5wal48" path="res://scenes/thin_ice/cabinet_arrow_key.tscn" id="3_3btc6"]
 [ext_resource type="Texture2D" uid="uid://dnq0r4c8dgm0k" path="res://assets/thin_ice/UpKeyStill.png" id="4_do3in"]
 [ext_resource type="Texture2D" uid="uid://c5rd13ep663wq" path="res://assets/thin_ice/UpKeyPressed.png" id="5_viu6t"]
 [ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://assets/thin_ice/DownKeyStill.png" id="6_4qrr7"]
@@ -17,25 +17,25 @@ CabinetPath = NodePath("Cabinet")
 [node name="Cabinet" parent="." instance=ExtResource("1_i2uf0")]
 script = null
 
-[node name="RightCabinetKey" parent="Cabinet" instance=ExtResource("2_hhba6")]
+[node name="RightCabinetArrowKey" parent="Cabinet" instance=ExtResource("2_hhba6")]
 BoundKey = 4194321
 
-[node name="LeftCabinetKey" parent="Cabinet" instance=ExtResource("2_hhba6")]
+[node name="LeftCabinetArrowKey" parent="Cabinet" instance=ExtResource("2_hhba6")]
 IsLeft = true
 BoundKey = 4194319
 
-[node name="UpCabinetKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
+[node name="UpCabinetArrowKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
 offset = Vector2(0, 2100)
 StillTexture = ExtResource("4_do3in")
 PressedTexture = ExtResource("5_viu6t")
 BoundKey = 4194320
 
-[node name="DownCabinetKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
+[node name="DownCabinetArrowKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
 offset = Vector2(0, 2300)
 StillTexture = ExtResource("6_4qrr7")
 PressedTexture = ExtResource("7_v6w2i")
 BoundKey = 4194322
 
-[node name="ThinIceScreenBackground" type="Sprite2D" parent="Cabinet"]
+[node name="ScreenBackground" type="Sprite2D" parent="Cabinet"]
 position = Vector2(0, -150)
 texture = ExtResource("8_me3nf")

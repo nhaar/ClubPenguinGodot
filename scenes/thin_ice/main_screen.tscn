@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cqtjybggt2wo8" path="res://assets/thin_ice/MenuArt.png" id="58_3yip4"]
 [ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://assets/thin_ice/SmallButton.png" id="59_ckgbh"]
 [ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://assets/thin_ice/SmallButtonHover.png" id="60_xc0jj"]
-[ext_resource type="Script" path="res://scripts/ThinIce/HowTo.cs" id="65_huqpk"]
+[ext_resource type="Script" path="res://scripts/ThinIce/MainScreen.cs" id="65_huqpk"]
 [ext_resource type="Texture2D" uid="uid://ha2tiaqki64l" path="res://assets/thin_ice/InstructionArt1.png" id="66_fs4ym"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_urycm"]
@@ -16,25 +16,25 @@ font = ExtResource("15_g1vvg")
 font_size = 140
 font_color = Color(0, 0.4, 0.8, 1)
 
-[node name="ThinIceGame" type="Node2D"]
+[node name="MainScreen" type="Node2D"]
 script = ExtResource("65_huqpk")
-EnginePath = NodePath("ThinIceEngine")
-TitlePath = NodePath("ThinIceTitle")
+EnginePath = NodePath("Engine")
+TitlePath = NodePath("Title")
 UIPath = NodePath("UI")
-LogoPath = NodePath("ThinIceLogo")
-HowToPath = NodePath("ThinIceHowTo")
+LogoPath = NodePath("Logo")
+HowToPath = NodePath("HowTo")
 
-[node name="ThinIceLogo" type="Sprite2D" parent="."]
+[node name="Logo" type="Sprite2D" parent="."]
 texture = ExtResource("57_ei5o6")
 offset = Vector2(0, -1600)
 
-[node name="ThinIceTitle" type="Node2D" parent="."]
+[node name="Title" type="Node2D" parent="."]
 
-[node name="ThinIceMenuArt" type="Sprite2D" parent="ThinIceTitle"]
+[node name="MenuArt" type="Sprite2D" parent="Title"]
 texture = ExtResource("58_3yip4")
 offset = Vector2(0, 100)
 
-[node name="ThinIceStartButton" type="TextureButton" parent="ThinIceTitle"]
+[node name="StartButton" type="TextureButton" parent="Title"]
 offset_left = -480.0
 offset_top = 1600.0
 offset_right = 480.0
@@ -46,14 +46,13 @@ ButtonText = "START"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
 
-[node name="ThinIceEngine" parent="." instance=ExtResource("7_wr4ey")]
-unique_name_in_owner = true
+[node name="Engine" parent="." instance=ExtResource("7_wr4ey")]
 visible = false
 
-[node name="ThinIceHowTo" type="Node2D" parent="."]
+[node name="HowTo" type="Node2D" parent="."]
 visible = false
 
-[node name="ThinIcePlayButton" type="TextureButton" parent="ThinIceHowTo"]
+[node name="PlayButton" type="TextureButton" parent="HowTo"]
 offset_left = -2000.0
 offset_top = 1600.0
 offset_right = -1040.0
@@ -65,7 +64,7 @@ ButtonText = "PLAY"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
 
-[node name="ThinIceNextButton" type="TextureButton" parent="ThinIceHowTo"]
+[node name="NextButton" type="TextureButton" parent="HowTo"]
 offset_left = 1088.0
 offset_top = 1600.0
 offset_right = 2048.0
@@ -77,11 +76,11 @@ ButtonText = "NEXT"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
 
-[node name="ThinIceHowToArt1" type="Sprite2D" parent="ThinIceHowTo"]
+[node name="HowToArt1" type="Sprite2D" parent="HowTo"]
 position = Vector2(0, 500)
 texture = ExtResource("66_fs4ym")
 
-[node name="ThinIceHowToText1" type="Label" parent="ThinIceHowTo"]
+[node name="HowToText1" type="Label" parent="HowTo"]
 offset_left = -2542.0
 offset_top = -1110.0
 offset_right = 2755.0
@@ -94,5 +93,5 @@ label_settings = SubResource("LabelSettings_urycm")
 [node name="UI" parent="." instance=ExtResource("10_ld5i1")]
 visible = false
 
-[connection signal="pressed" from="ThinIceTitle/ThinIceStartButton" to="." method="StartHowTo"]
-[connection signal="pressed" from="ThinIceHowTo/ThinIcePlayButton" to="." method="EndHowTo"]
+[connection signal="pressed" from="Title/StartButton" to="." method="StartHowTo"]
+[connection signal="pressed" from="HowTo/PlayButton" to="." method="EndHowTo"]

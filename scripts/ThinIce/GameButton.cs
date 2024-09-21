@@ -4,7 +4,7 @@ using System;
 namespace ClubPenguinPlus.ThinIce
 {
 	/// <summary>
-	/// A button that is clickable in the Thin Ice game.
+	/// A button that is clickable in the Thin Ice UI
 	/// </summary>
 	public partial class GameButton : TextureButton
 	{

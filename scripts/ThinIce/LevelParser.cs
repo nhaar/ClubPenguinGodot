@@ -4,24 +4,54 @@ using System.Collections.Generic;
 
 namespace ClubPenguinPlus.ThinIce
 {
+	/// <summary>
+	/// Parser for Thin Ice levels following a custom JSON format
+	/// </summary>
 	internal class LevelParser
 	{
+		/// <summary>
+		/// Key that stores map grids
+		/// </summary>
 		private static readonly string MapKey = "m";
 
+		/// <summary>
+		/// Key that store coin bag coordinates
+		/// </summary>
 		private static readonly string CoinBagKey = "c";
 
+		/// <summary>
+		/// Key that stores a list of block coordinates
+		/// </summary>
 		private static readonly string BlocksKey = "b";
 
+		/// <summary>
+		/// Key that stores alternate level information (random parallel version)
+		/// </summary>
 		private static readonly string AltKey = "a";
 
+		/// <summary>
+		/// Key that stores the spawn coordinate
+		/// </summary>
 		private static readonly string SpawnKey = "s";
 
+		/// <summary>
+		/// Key that stores an origin coordinate
+		/// </summary>
 		private static readonly string OriginKey = "o";
 
+		/// <summary>
+		/// Key that stores a list of coordinates with coordinates to in-game key objects
+		/// </summary>
 		private static readonly string KeysKey = "k";
 
+		/// <summary>
+		/// Current level during parsing, null if have not started any level
+		/// </summary>
 		private int? CurrentLevel { get; set; } = null;
 
+		/// <summary>
+		/// Parse a JSON resource containing the levels
+		/// </summary>
 		public Level[] ParseLevels(Json json)
 		{
 			try
@@ -60,6 +90,9 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
+		/// <summary>
+		/// Parse the dictionary representation of a level json
+		/// </summary>
 		private static Level ParseLevelData(Godot.Collections.Dictionary<string, Variant> levelData)
 		{
 			var origin = Vector2I.Zero;
@@ -70,14 +103,13 @@ namespace ClubPenguinPlus.ThinIce
 			Vector2I? bag = null;
 			List<List< Tile.Type >> map;
 
-
 			Vector2I size;
 			var maxSize = new Vector2I(Level.MaxWidth, Level.MaxHeight);
 			if (levelData.ContainsKey(MapKey))
 			{
 				try
 				{
-					TryParseMap(levelData[MapKey], out map, out size);
+					ParseMap(levelData[MapKey], out map, out size);
 				}
 				catch (Exception ex)
 				{
@@ -97,7 +129,7 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				try
 				{
-					TryGetCoordinate(levelData[OriginKey], out origin, Vector2I.Zero, maxSize - size);
+					ParseCoordinate(levelData[OriginKey], out origin, Vector2I.Zero, maxSize - size);
 				}
 				catch (Exception ex)
 				{
@@ -110,7 +142,7 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				try
 				{
-					TryGetCoordinate(levelData[SpawnKey], out spawn, origin, maxCoord);
+					ParseCoordinate(levelData[SpawnKey], out spawn, origin, maxCoord);
 				}
 				catch (Exception ex)
 				{
@@ -125,7 +157,7 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				try
 				{
-					TryGetCoordinate(levelData[CoinBagKey], out var bagOut, origin, maxCoord);
+					ParseCoordinate(levelData[CoinBagKey], out var bagOut, origin, maxCoord);
 					bag = bagOut;
 				}
 				catch (Exception ex)
@@ -137,7 +169,7 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				try
 				{
-					TryGetCoordinateList(levelData[KeysKey], out keys, origin, maxCoord);
+					ParseCoordinateList(levelData[KeysKey], out keys, origin, maxCoord);
 				}
 				catch (Exception ex)
 				{
@@ -148,7 +180,7 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				try
 				{
-					TryGetCoordinateList(levelData[BlocksKey], out blocks, origin, maxCoord);
+					ParseCoordinateList(levelData[BlocksKey], out blocks, origin, maxCoord);
 				}
 				catch (Exception ex)
 				{
@@ -180,7 +212,7 @@ namespace ClubPenguinPlus.ThinIce
 							List<List<Tile.Type>> patchMap;
 							try
 							{
-								TryParseMap(patchValue[MapKey], out patchMap, out patchSize);
+								ParseMap(patchValue[MapKey], out patchMap, out patchSize);
 							}
 							catch (Exception ex)
 							{
@@ -192,7 +224,7 @@ namespace ClubPenguinPlus.ThinIce
 							}
 							try
 							{
-								TryGetCoordinate(patchValue[OriginKey], out patchOrigin, origin, maxCoord - patchSize);
+								ParseCoordinate(patchValue[OriginKey], out patchOrigin, origin, maxCoord - patchSize);
 							}
 							catch (Exception ex)
 							{
@@ -249,7 +281,14 @@ namespace ClubPenguinPlus.ThinIce
 			};
 		}
 	
-		private static void TryGetCoordinate(Variant value, out Vector2I coordinates, Vector2I min, Vector2I max)
+		/// <summary>
+		/// Parse the value which should represent a coordinate (an array with two numbers in JSON)
+		/// </summary>
+		/// <param name="value">Coordinate from the JSON</param>
+		/// <param name="coordinates">Variable the coordinates will be saved to</param>
+		/// <param name="min">Minimum allowed value for coordinates</param>
+		/// <param name="max">Maximum allowed value for coordinates</param>
+		private static void ParseCoordinate(Variant value, out Vector2I coordinates, Vector2I min, Vector2I max)
 		{
 			coordinates = Vector2I.Zero;
 			if (value.VariantType == Variant.Type.Array)
@@ -289,7 +328,14 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		private static void TryGetCoordinateList(Variant value, out List<Vector2I> coordList, Vector2I min, Vector2I max)
+		/// <summary>
+		/// Parse a list of coordinates
+		/// </summary>
+		/// <param name="value">Value from the JSON that represents the list</param>
+		/// <param name="coordList">Variable to save the list to</param>
+		/// <param name="min">Minimum allowed coordinate</param>
+		/// <param name="max">Maximum allowed coordinate</param>
+		private static void ParseCoordinateList(Variant value, out List<Vector2I> coordList, Vector2I min, Vector2I max)
 		{
 			coordList = new List<Vector2I>();
 			if (value.VariantType == Variant.Type.Array)
@@ -300,7 +346,7 @@ namespace ClubPenguinPlus.ThinIce
 					Vector2I coord;
 					try
 					{
-						TryGetCoordinate(element, out coord, min, max);
+						ParseCoordinate(element, out coord, min, max);
 					}
 					catch (Exception ex)
 					{
@@ -315,7 +361,13 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		private static void TryParseMap(Variant value, out List<List<Tile.Type>> map, out Vector2I size)
+		/// <summary>
+		/// Parse a map JSON object
+		/// </summary>
+		/// <param name="value">Value from the JSON of the map</param>
+		/// <param name="map">Variable to save the map to</param>
+		/// <param name="size">Variable to save the size of the map to</param>
+		private static void ParseMap(Variant value, out List<List<Tile.Type>> map, out Vector2I size)
 		{
 			map = new List<List<Tile.Type>>();
 			size = Vector2I.Zero;

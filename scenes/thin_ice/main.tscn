@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://dkaahsk2blmkh"]
 
 [ext_resource type="PackedScene" uid="uid://c2gmq5qjdjjwf" path="res://scenes/thin_ice/background.tscn" id="1_vk8no"]
-[ext_resource type="PackedScene" uid="uid://cyqygan61whl4" path="res://scenes/thin_ice/game.tscn" id="13_rvxe4"]
+[ext_resource type="PackedScene" uid="uid://cyqygan61whl4" path="res://scenes/thin_ice/main_screen.tscn" id="13_rvxe4"]
 
 [node name="ThinIce" type="Node2D"]
 
 [node name="Background" parent="." instance=ExtResource("1_vk8no")]
 
-[node name="ThinIceGame" parent="Background" instance=ExtResource("13_rvxe4")]
+[node name="MainScreen" parent="Background" instance=ExtResource("13_rvxe4")]

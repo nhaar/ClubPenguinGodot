@@ -4,9 +4,9 @@ using System;
 namespace ClubPenguinPlus.ThinIce
 {
 	/// <summary>
-	/// Class for labels used in the Thin Ice game buttons
+	/// Class for labels used in the game UI
 	/// </summary>
-	public partial class Text : Label
+	public partial class GameText : Label
 	{
 		[Export]
 		private Font Font;

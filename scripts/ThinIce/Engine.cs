@@ -95,7 +95,7 @@ namespace ClubPenguinPlus.ThinIce
 				for (int j = 0; j < Level.MaxHeight; j++)
 				{
 					var tile = TileScene.Instantiate<Tile>();
-					tile.Game = this;
+					tile.Engine = this;
 					tile.SetCoordinate(i, j);
 					Tiles[i, j] = tile;
 					AddChild(tile);
@@ -104,10 +104,13 @@ namespace ClubPenguinPlus.ThinIce
 
 			// move to bottom so it is always visible on top of tiles
 			Puffle = GetNode<Puffle>(PufflePath);
-			Puffle.Game = this;
+			Puffle.Engine = this;
 		}
 
-		public void MakeVisible()
+		/// <summary>
+		/// Makes this engine instance ready to play
+		/// </summary>
+		public void Activate()
 		{
 			Visible = true;
 			Puffle.Activate();
@@ -160,11 +163,11 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			foreach (var keyPosition in level.KeyPositions)
 			{
-				Tiles[keyPosition.X, keyPosition.Y].AddKey();
+				GetTile(keyPosition).AddKey();
 			}
 			foreach (var blockPosition in level.BlockPositions)
 			{
-				var blockTile = Tiles[blockPosition.X, blockPosition.Y];
+				var blockTile = GetTile(blockPosition);
 				var block = BlockScene.Instantiate<Block>();
 				block.Coordinates = blockPosition;
 				block.Position = blockTile.Position;
@@ -185,7 +188,6 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Start level based on its number
 		/// </summary>
-		/// <param name="levelNumber"></param>
 		/// <param name="resetting">
 		/// Whether or not the player is resetting the level
 		/// </param>
@@ -218,9 +220,6 @@ namespace ClubPenguinPlus.ThinIce
 			StartLevel(CurrentLevelNumber + 1);
 		}
 
-		/// <summary>
-		/// Clears all blocks from the screen
-		/// </summary>
 		private void ClearBlocks()
 		{
 			foreach (var block in Blocks)
@@ -234,17 +233,15 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Gets tile in the given coordinate
 		/// </summary>
-		/// <param name="coordinates"></param>
-		/// <returns></returns>
 		public Tile GetTile(Vector2I coordinates)
 		{
 			return Tiles[coordinates.X, coordinates.Y];
 		}
 
 		/// <summary>
-		/// Action for when the button that exposes fake walls is pressed
+		/// Action for when the button that exposes fake walls is pressed (level 19 hidden area)
 		/// </summary>
-		public void PressButton()
+		public void PressSecretButton()
 		{
 			for (int i = 0; i < Level.MaxWidth; i++)
 			{
@@ -264,7 +261,7 @@ namespace ClubPenguinPlus.ThinIce
 		}
 
 		/// <summary>
-		/// Resets the level
+		/// Restarting the level
 		/// </summary>
 		public void ResetLevel()
 		{
@@ -272,9 +269,6 @@ namespace ClubPenguinPlus.ThinIce
 			StartLevel(CurrentLevelNumber, true);
 		}
 
-		/// <summary>
-		/// Action for when a tile is melted
-		/// </summary>
 		public void MeltTile()
 		{
 			MeltedTiles++;

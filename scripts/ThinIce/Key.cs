@@ -3,7 +3,9 @@ using System;
 
 namespace ClubPenguinPlus.ThinIce
 {
-
+	/// <summary>
+	/// Scene for the in-game keys
+	/// </summary>
 	public partial class Key : Sprite2D
 	{
 		[Export]

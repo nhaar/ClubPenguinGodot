@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ClubPenguinPlus.ThinIce
 {
     /// <summary>
-    /// Class for a Thin Ice level's layout
+    /// Data for a level's layout
     /// </summary>
     internal class Level
     {
@@ -104,8 +104,6 @@ namespace ClubPenguinPlus.ThinIce
         /// <summary>
         /// Whether the given point is outside the level's defined boundaries
         /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
         public bool IsPointOutOfBounds(Vector2I point)
         {
             return point.X < RelativeOrigin.X || point.Y < RelativeOrigin.Y || point.X >= Width + RelativeOrigin.X || point.Y >= Height + RelativeOrigin.Y;

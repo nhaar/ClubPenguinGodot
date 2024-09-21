@@ -6,7 +6,9 @@ using ClubPenguinPlus.Utils;
 namespace ClubPenguinPlus.ThinIce
 {
 	/// <summary>
-	/// Object for a single tile in the Thin Ice game
+	/// Scene for a single tile in the Thin Ice game
+	/// 
+	/// By design, tiles are mutable, as opposed to handling them by deleting and creating new tiles
 	/// </summary>
 	public partial class Tile : Sprite2D
 	{
@@ -156,7 +158,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Reference to the game
 		/// </summary>
-		public Engine Game { get; set; }
+		public Engine Engine { get; set; }
 
 		/// <summary>
 		/// Reference to the coin bag on this tile, or null if none exists
@@ -201,8 +203,6 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Change the tile to a fresh new one of a given type
 		/// </summary>
-		/// <param name="tileType"></param>
-		/// <exception cref="NotImplementedException"></exception>
 		public void ChangeTile(Type tileType)
 		{
 			RemoveKey();
@@ -243,6 +243,10 @@ namespace ClubPenguinPlus.ThinIce
 			TileType = tileType;
 		}
 
+		/// <summary>
+		/// When a puffle walking in the given direction (that is, moving from the opposite of the given direction)
+		/// starts the animation to enter this tile
+		/// </summary>
 		public void OnPuffleStartEnter(Direction direction)
 		{
 			BlockReference?.Move(direction);
@@ -250,14 +254,13 @@ namespace ClubPenguinPlus.ThinIce
 			// button is pressed on previous tile exit
 			if (TileType == Type.Button)
 			{
-				Game.PressButton();
+				Engine.PressSecretButton();
 			}
 		}
 
 		/// <summary>
-		/// Action to perform when the puffle enters this tile
+		/// Action to perform when a puffle fully finishes entering this tile
 		/// </summary>
-		/// <param name="direction"></param>
 		public void OnPuffleFinishEnter(Puffle puffle)
 		{
 			if (CoinBag != null)
@@ -266,7 +269,7 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			if (TileType == Type.Goal)
 			{
-				Game.GoToNextLevel();
+				Engine.GoToNextLevel();
 			}
 			// we must have the key already
 			// also, this functionality should be changed to work on adjacent tile enter
@@ -283,7 +286,7 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			else if (puffle.IsStuck())
 			{
-				Game.ResetLevel();
+				Engine.ResetLevel();
 			}
 
 			if (KeyReference != null)
@@ -294,30 +297,24 @@ namespace ClubPenguinPlus.ThinIce
 		}
 
 		/// <summary>
-		/// Action to perform when the puffle exits this tile
+		/// Action to perform when the puffle exits this tile (the moment the animation for leaving starts)
 		/// </summary>
 		public void OnPuffleExit()
 		{
 			if (TileType == Type.Ice || TileType == Type.ThickIce)
 			{
 				var newType = TileType == Type.Ice ? Type.Water : Type.Ice;
-				Game.MeltTile();
+				Engine.MeltTile();
 				ChangeTile(newType);
 			}
 		}
 
-		/// <summary>
-		/// Make this teleporter a plaid teleporter
-		/// </summary>
 		public void MakePlaidTeleporter()
 		{
 			IsPlaidTeleporter = true;
 			Texture = PlaidTeleporterTile;
 		}
 
-		/// <summary>
-		/// Remove key from tile
-		/// </summary>
 		public void RemoveKey()
 		{
 			if (KeyReference != null)
@@ -327,9 +324,6 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		/// <summary>
-		/// Add key to tile
-		/// </summary>
 		public void AddKey()
 		{
 			KeyReference = KeyScene.Instantiate<Key>();
@@ -345,12 +339,9 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		/// <summary>
-		/// Removes and returns the value of the coin bag
-		/// </summary>
 		public void GetCoinBag()
 		{
-			Game.GetCoinBag();
+			Engine.GetCoinBag();
 			RemoveCoinBag();
 		}
 	}

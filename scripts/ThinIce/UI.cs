@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace ClubPenguinPlus.ThinIce
 {
+	/// <summary>
+	/// Scene that handles the game information and UI
+	/// </summary>
 	public partial class UI : Node2D
 	{
 		[Export]
@@ -44,6 +47,10 @@ namespace ClubPenguinPlus.ThinIce
 			TotalTileLabel.Text = Engine.TotalTileCount.ToString();
 			PointsLabel.Text = Engine.Points.ToString();
 		}
+
+		/// <summary>
+		/// Signal for pressing the button
+		/// </summary>
 		private void OnResetButtonPressed()
 		{
 			Engine.ResetLevel();

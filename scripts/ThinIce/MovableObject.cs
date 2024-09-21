@@ -5,36 +5,51 @@ using ClubPenguinPlus.Utils;
 
 namespace ClubPenguinPlus.ThinIce
 {
+    /// <summary>
+    /// Base for an object that moves across each tile at a fixed rate
+    /// </summary>
     public abstract partial class MovableObject : Sprite2D
     {
         /// <summary>
-        /// Grid coordinates where the puffle is locaed
+        /// Coordinates the object is in the grid
         /// </summary>
         public Vector2I Coordinates { get; set; }
 
+        /// <summary>
+        /// Direction of the ongoing movement (if moving)
+        /// </summary>
         protected Direction MovementDirection { get; set; }
 
+        /// <summary>
+        /// How many frames it takes for this object to move across a tile
+        /// </summary>
         protected abstract int MoveAnimationDuration { get; }
 
         protected bool IsMoving { get; set; } = false;
 
+        /// <summary>
+        /// How many frames the current movement has lasted
+        /// </summary>
         private int MoveAnimationTimer { get; set; } = 0;
 
         /// <summary>
-        /// Position in screen space the puffle is moving from
+        /// Position the object is coming from in current movement
         /// </summary>
         private Vector2 PositionMovingFrom { get; set; }
 
         /// <summary>
-        /// Coordinate pair the puffle is moving towards
+        /// Coordinate pair the object is moving towards
         /// </summary>
         private Vector2I MovementTargetCoords { get; set; }
 
         /// <summary>
-        /// Displacement vector for the puffle's movement towards the next tile
+        /// Displacement vector for the objects's movement towards the next tile
         /// </summary>
         private Vector2 MovementDisplacement { get; set; }
 
+        /// <summary>
+        /// All tiles in which objects can't move through
+        /// </summary>
         public static readonly List<Tile.Type> ImpassableTiles = new()
         {
             Tile.Type.Wall,
@@ -45,10 +60,6 @@ namespace ClubPenguinPlus.ThinIce
         /// <summary>
         /// Gets the coordinate from moving in the given direction from the original coordinate
         /// </summary>
-        /// <param name="originalCoords"></param>
-        /// <param name="direction"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
         public static Vector2I GetDestination(Vector2I originalCoords, Direction direction)
         {
             Vector2I deltaCoord = direction switch
@@ -73,9 +84,6 @@ namespace ClubPenguinPlus.ThinIce
             ContinueMoveAnimation();
         }
 
-        /// <summary>
-        /// Progresses animation towards the next tile
-        /// </summary>
         protected void ContinueMoveAnimation()
         {
             MoveAnimationTimer++;
@@ -86,9 +94,6 @@ namespace ClubPenguinPlus.ThinIce
             }
         }
 
-        /// <summary>
-        /// Finishes moving towards the next tile
-        /// </summary>
         protected virtual void FinishMoveAnimation()
         {
             Coordinates = MovementTargetCoords;

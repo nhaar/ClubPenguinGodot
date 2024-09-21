@@ -3,7 +3,10 @@ using System;
 
 namespace ClubPenguinPlus.ThinIce
 {
-	public partial class HowTo : Node2D
+	/// <summary>
+	/// Scene for the main screen, which displays the tutorials, game and end screens
+	/// </summary>
+	public partial class MainScreen : Node2D
 	{
 		[Export]
 		private NodePath EnginePath;
@@ -40,15 +43,21 @@ namespace ClubPenguinPlus.ThinIce
 			UI.Engine = Engine;
 		}
 
+		/// <summary>
+		/// Signal for pressing the START button
+		/// </summary>
 		private void StartHowTo()
 		{
 			Title.QueueFree();
 			HowToScreen.Visible = true;
 		}
 
+		/// <summary>
+		/// Signal for pressing the PLAY button
+		/// </summary>
 		private void EndHowTo()
 		{
-			Engine.MakeVisible();
+			Engine.Activate();
 			UI.Visible = true;
 			Logo.QueueFree();
 			HowToScreen.QueueFree();

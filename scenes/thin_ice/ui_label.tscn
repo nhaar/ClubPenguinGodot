@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dkw5x0xm3ibtr"]
 
-[ext_resource type="Script" path="res://scripts/ThinIce/Text.cs" id="1_kgikf"]
+[ext_resource type="Script" path="res://scripts/ThinIce/GameText.cs" id="1_ibute"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="2_cwskd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_i7sie"]
@@ -9,5 +9,5 @@
 offset_right = 40.0
 offset_bottom = 23.0
 label_settings = SubResource("LabelSettings_i7sie")
-script = ExtResource("1_kgikf")
+script = ExtResource("1_ibute")
 Font = ExtResource("2_cwskd")

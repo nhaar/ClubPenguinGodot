@@ -6,19 +6,13 @@ using ClubPenguinPlus.Utils;
 namespace ClubPenguinPlus.ThinIce
 {
 	/// <summary>
-	/// Object for the playable puffle
+	/// The puffle protagonist
 	/// </summary>
 	public partial class Puffle : MovableObject
 	{
-		/// <summary>
-		/// Amount of time it takes for the puffle to move a tile
-		/// </summary>
 		protected override int MoveAnimationDuration => 4;
 
-		/// <summary>
-		/// Reference to the game object
-		/// </summary>
-		public Engine Game { get; set; }
+		public Engine Engine { get; set; }
 
 		/// <summary>
 		/// Number of keys the puffle has
@@ -28,6 +22,9 @@ namespace ClubPenguinPlus.ThinIce
 		/// </remarks>
 		private int KeyCount { get; set; }
 
+		/// <summary>
+		/// If the puffle has functionality
+		/// </summary>
 		private bool IsActive { get; set; }
 
 		public override void _Ready()
@@ -85,13 +82,10 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Whether or not the puffle can move in a given direction
 		/// </summary>
-		/// <param name="targetCoords"></param>
-		/// <param name="direction"></param>
-		/// <returns></returns>
 		public bool CanMove(Direction direction)
 		{
 			var targetCoords = GetDestination(Coordinates, direction);
-			Tile targetTile = Game.GetTile(targetCoords);
+			Tile targetTile = Engine.GetTile(targetCoords);
 
 			if (ImpassableTiles.Contains(targetTile.TileType))
 			{
@@ -111,27 +105,19 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		/// <summary>
-		/// Starts moving towards a tile
-		/// </summary>
-		/// <param name="targetCoords"></param>
-		/// <param name="direction"></param>
 		private void StartMoveAnimation(Direction direction)
 		{
 			var targetCoords = GetDestination(Coordinates, direction);
-			var targetTile = Game.GetTile(targetCoords);
-			Game.GetTile(Coordinates).OnPuffleExit();
+			var targetTile = Engine.GetTile(targetCoords);
+			Engine.GetTile(Coordinates).OnPuffleExit();
 			targetTile.OnPuffleStartEnter(direction);
 			base.StartMoveAnimation(targetCoords, direction, targetTile.Position);
 		}
 
-		/// <summary>
-		/// Finishes moving towards the next tile
-		/// </summary>
 		protected override void FinishMoveAnimation()
 		{
 			base.FinishMoveAnimation();
-			Game.GetTile(Coordinates).OnPuffleFinishEnter(this);
+			Engine.GetTile(Coordinates).OnPuffleFinishEnter(this);
 		}
 
 		public void GetKey()
@@ -148,20 +134,12 @@ namespace ClubPenguinPlus.ThinIce
 			KeyCount = 0;
 		}
 
-		/// <summary>
-		/// Teleports the puffle to the given grid coordinates
-		/// </summary>
-		/// <param name="coords"></param>
 		public void TeleportTo(Vector2I coords)
 		{
-			Position = Game.GetTile(coords).Position;
+			Position = Engine.GetTile(coords).Position;
 			Coordinates = coords;
 		}
 
-		/// <summary>
-		/// Whether or not the puffle has anywhere to go
-		/// </summary>
-		/// <returns></returns>
 		public bool IsStuck()
 		{
 			foreach (Direction direction in Enum.GetValues(typeof(Direction)))
@@ -174,9 +152,6 @@ namespace ClubPenguinPlus.ThinIce
 			return true;
 		}
 
-		/// <summary>
-		/// Reset Puffle variables for when the puffle "dies"
-		/// </summary>
 		public void Die()
 		{
 			IsMoving = false;

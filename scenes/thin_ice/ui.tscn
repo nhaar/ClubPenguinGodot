@@ -10,35 +10,35 @@
 [node name="UI" type="Node2D"]
 script = ExtResource("1_4k31g")
 PointsPath = NodePath("PointsLabel/PointsNumber")
-MeltedTilePath = NodePath("ArcadeTopRow/TileSeparator/MeltedTileCount")
-TotalTilePath = NodePath("ArcadeTopRow/TileSeparator/TotalTileCount")
-LevelPath = NodePath("ArcadeTopRow/LevelLabel/LevelNumber")
+MeltedTilePath = NodePath("TopRow/TileSeparator/MeltedTileCount")
+TotalTilePath = NodePath("TopRow/TileSeparator/TotalTileCount")
+LevelPath = NodePath("TopRow/LevelLabel/LevelNumber")
 
-[node name="ArcadeTopRow" type="Node2D" parent="."]
+[node name="TopRow" type="Node2D" parent="."]
 position = Vector2(0, -2030)
 
-[node name="LevelLabel" parent="ArcadeTopRow" instance=ExtResource("1_qluoo")]
+[node name="LevelLabel" parent="TopRow" instance=ExtResource("1_qluoo")]
 offset_left = -2000.0
 offset_right = -1960.0
 text = "LEVEL"
 
-[node name="LevelNumber" parent="ArcadeTopRow/LevelLabel" instance=ExtResource("1_qluoo")]
+[node name="LevelNumber" parent="TopRow/LevelLabel" instance=ExtResource("1_qluoo")]
 layout_mode = 0
 offset_left = 600.0
 offset_right = 640.0
 
-[node name="TileSeparator" parent="ArcadeTopRow" instance=ExtResource("1_qluoo")]
+[node name="TileSeparator" parent="TopRow" instance=ExtResource("1_qluoo")]
 offset_left = -50.0
 offset_right = -10.0
 text = "/"
 
-[node name="MeltedTileCount" parent="ArcadeTopRow/TileSeparator" instance=ExtResource("1_qluoo")]
+[node name="MeltedTileCount" parent="TopRow/TileSeparator" instance=ExtResource("1_qluoo")]
 layout_mode = 0
 offset_left = -530.0
 offset_right = -490.0
 horizontal_alignment = 2
 
-[node name="TotalTileCount" parent="ArcadeTopRow/TileSeparator" instance=ExtResource("1_qluoo")]
+[node name="TotalTileCount" parent="TopRow/TileSeparator" instance=ExtResource("1_qluoo")]
 layout_mode = 0
 offset_left = 100.0
 offset_right = 140.0
