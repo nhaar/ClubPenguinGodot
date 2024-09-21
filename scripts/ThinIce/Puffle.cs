@@ -7,27 +7,12 @@ namespace ClubPenguinPlus.ThinIce
 	/// <summary>
 	/// Object for the playable puffle
 	/// </summary>
-	public partial class Puffle : Sprite2D
+	public partial class Puffle : MovableObject
 	{
 		/// <summary>
 		/// Amount of time it takes for the puffle to move a tile
 		/// </summary>
-		public static readonly int MoveAnimationDuration = 4;
-
-		/// <summary>
-		/// Grid coordinates where the puffle is locaed
-		/// </summary>
-		public Vector2I Coordinates { get; set; }
-
-		/// <summary>
-		/// Whether or not the puffle is moving
-		/// </summary>
-		public bool IsMoving { get; set; }
-
-		/// <summary>
-		/// Counter for the move animation
-		/// </summary>
-		public int MoveAnimationTimer { get; set; }
+		protected override int MoveAnimationDuration => 4;
 
 		/// <summary>
 		/// Reference to the game object
@@ -42,52 +27,11 @@ namespace ClubPenguinPlus.ThinIce
 		/// </remarks>
 		public int KeyCount { get; set; }
 
-		/// <summary>
-		/// Position in screen space the puffle is moving from
-		/// </summary>
-		private Vector2 _positionMovingFrom;
-
-		/// <summary>
-		/// Coordinate pair the puffle is moving towards
-		/// </summary>
-		private Vector2I _movementTargetCoords;
-
-		/// <summary>
-		/// Displacement vector for the puffle's movement towards the next tile
-		/// </summary>
-		private Vector2 _movementDisplacement;
-
-		/// <summary>
-		/// Direction the puffle is moving towards
-		/// </summary>
-		private Direction _movementDirection;
-
-		/// <summary>
-		/// Represents a direction the puffle can move in
-		/// </summary>
-		public enum Direction
-		{
-			Up,
-			Down,
-			Left,
-			Right,
-		}
-
-		/// <summary>
-		/// All tiles the puffle cannot move through
-		/// </summary>
-		public static readonly List<Game.TileType> ImpassableTiles = new()
-	{
-		Game.TileType.Wall,
-		Game.TileType.Water,
-		Game.TileType.FakeImpassableWall,
-	};
-
 		public override void _Ready()
 		{
+			base._Ready();
 			Game = (Game)GetParent();
 			KeyCount = 0;
-			IsMoving = false;
 		}
 
 		public override void _Process(double delta)
@@ -99,26 +43,26 @@ namespace ClubPenguinPlus.ThinIce
 			else
 			{
 				// preserving the original code's arrow key priority
-				List<Direction> pressedDirections = new();
+				List<Game.Direction> pressedDirections = new();
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Up))
 				{
-					pressedDirections.Add(Direction.Up);
+					pressedDirections.Add(Game.Direction.Up);
 				}
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Down))
 				{
-					pressedDirections.Add(Direction.Down);
+					pressedDirections.Add(Game.Direction.Down);
 				}
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Left))
 				{
-					pressedDirections.Add(Direction.Left);
+					pressedDirections.Add(Game.Direction.Left);
 				}
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Right))
 				{
-					pressedDirections.Add(Direction.Right);
+					pressedDirections.Add(Game.Direction.Right);
 				}
 				if (pressedDirections.Count > 0)
 				{
-					foreach (Direction direction in pressedDirections)
+					foreach (var direction in pressedDirections)
 					{
 						Vector2I targetCoords = GetDestination(Coordinates, direction);
 						if (CanMove(targetCoords, direction))
@@ -132,32 +76,12 @@ namespace ClubPenguinPlus.ThinIce
 		}
 
 		/// <summary>
-		/// Gets the coordinate from moving in the given direction from the original coordinate
-		/// </summary>
-		/// <param name="originalCoords"></param>
-		/// <param name="direction"></param>
-		/// <returns></returns>
-		/// <exception cref="NotImplementedException"></exception>
-		public static Vector2I GetDestination(Vector2I originalCoords, Direction direction)
-		{
-			Vector2I deltaCoord = direction switch
-			{
-				Direction.Up => new Vector2I(0, -1),
-				Direction.Down => new Vector2I(0, 1),
-				Direction.Left => new Vector2I(-1, 0),
-				Direction.Right => new Vector2I(1, 0),
-				_ => throw new NotImplementedException(),
-			};
-			return originalCoords + deltaCoord;
-		}
-
-		/// <summary>
 		/// Whether or not the puffle can move in a given direction
 		/// </summary>
 		/// <param name="targetCoords"></param>
 		/// <param name="direction"></param>
 		/// <returns></returns>
-		public bool CanMove(Vector2I targetCoords, Direction direction)
+		public bool CanMove(Vector2I targetCoords, Game.Direction direction)
 		{
 			Tile targetTile = Game.Tiles[targetCoords.X, targetCoords.Y];
 
@@ -184,39 +108,20 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		/// <param name="targetCoords"></param>
 		/// <param name="direction"></param>
-		public void StartMoveAnimation(Vector2I targetCoords, Direction direction)
+		private void StartMoveAnimation(Vector2I targetCoords, Game.Direction direction)
 		{
 			Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleExit(direction);
-			_movementTargetCoords = targetCoords;
-			_movementDirection = direction;
-			_positionMovingFrom = Position;
-			_movementDisplacement = Game.Tiles[targetCoords.X, targetCoords.Y].Position - _positionMovingFrom;
-			MoveAnimationTimer = 0;
-			IsMoving = true;
-			ContinueMoveAnimation();
-		}
-
-		/// <summary>
-		/// Progresses animation towards the next tile
-		/// </summary>
-		public void ContinueMoveAnimation()
-		{
-			MoveAnimationTimer++;
-			Position = _positionMovingFrom + _movementDisplacement * MoveAnimationTimer / MoveAnimationDuration;
-			if (MoveAnimationTimer == MoveAnimationDuration)
-			{
-				FinishMoveAnimation();
-			}
+			var targetPos = Game.Tiles[targetCoords.X, targetCoords.Y].Position;
+			base.StartMoveAnimation(targetCoords, direction, targetPos);
 		}
 
 		/// <summary>
 		/// Finishes moving towards the next tile
 		/// </summary>
-		public void FinishMoveAnimation()
+		protected override void FinishMoveAnimation()
 		{
-			Coordinates = _movementTargetCoords;
-			Game.Tiles[_movementTargetCoords.X, _movementTargetCoords.Y].OnPuffleEnter(_movementDirection);
-			IsMoving = false;
+			base.FinishMoveAnimation();
+			Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleEnter();
 		}
 
 		public void GetKey()
@@ -249,7 +154,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <returns></returns>
 		public bool IsStuck()
 		{
-			foreach (Direction direction in Enum.GetValues(typeof(Direction)))
+			foreach (Game.Direction direction in Enum.GetValues(typeof(Game.Direction)))
 			{
 				if (CanMove(GetDestination(Coordinates, direction), direction))
 				{

@@ -156,7 +156,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// Action to perform when the puffle enters this tile
 		/// </summary>
 		/// <param name="direction"></param>
-		public void OnPuffleEnter(Puffle.Direction direction)
+		public void OnPuffleEnter()
 		{
 			if (CoinBag != null)
 			{
@@ -194,7 +194,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Action to perform when the puffle exits this tile
 		/// </summary>
-		public void OnPuffleExit(Puffle.Direction direction)
+		public void OnPuffleExit(Game.Direction direction)
 		{
 			if (TileType == Game.TileType.Ice)
 			{
@@ -256,7 +256,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		/// <param name="direction"></param>
 		/// <returns></returns>
-		public Tile GetAdjacent(Puffle.Direction direction)
+		public Tile GetAdjacent(Game.Direction direction)
 		{
 			return Game.GetTile(Puffle.GetDestination(TileCoordinate, direction));
 		}

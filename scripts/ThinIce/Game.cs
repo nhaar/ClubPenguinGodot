@@ -60,6 +60,14 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public bool SolvedPrevious { get; set; } = false;
 
+		public enum Direction
+		{
+			Up,
+			Down,
+			Left,
+			Right,
+		}
+
 		public override void _Ready()
 		{ 
 			var parser = new LevelParser();
