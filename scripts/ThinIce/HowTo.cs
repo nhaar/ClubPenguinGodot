@@ -5,32 +5,47 @@ namespace ClubPenguinPlus.ThinIce
 {
 	public partial class HowTo : Node2D
 	{
-		public Node2D Title { get; set; }
+		[Export]
+		private NodePath EnginePath;
 
-		public Game Engine { get; set; }
+		[Export]
+		private NodePath TitlePath;
 
-		public UI UI { get; set; }
+		[Export]
+		private NodePath UIPath;
 
-		public Node2D HowToScreen { get; set; }
+		[Export]
+		private NodePath LogoPath;
 
-		public Sprite2D Logo { get; set; }
+		[Export]
+		private NodePath HowToPath;
+
+		private Node2D Title { get; set; }
+
+		private Game Engine { get; set; }
+
+		private UI UI { get; set; }
+
+		private Node2D HowToScreen { get; set; }
+
+		private Sprite2D Logo { get; set; }
 
 		public override void _Ready()
 		{
-			Engine = GetNode<Game>("ThinIceEngine");
-			Title = GetNode<Node2D>("ThinIceTitle");
-			UI = GetNode<UI>("UI");
-			Logo = GetNode<Sprite2D>("ThinIceLogo");
-			HowToScreen = GetNode<Node2D>("ThinIceHowTo");
+			Engine = GetNode<Game>(EnginePath);
+			Title = GetNode<Node2D>(TitlePath);
+			UI = GetNode<UI>(UIPath);
+			Logo = GetNode<Sprite2D>(LogoPath);
+			HowToScreen = GetNode<Node2D>(HowToPath);
 		}
 
-		public void StartHowTo()
+		private void StartHowTo()
 		{
 			Title.QueueFree();
 			HowToScreen.Visible = true;
 		}
 
-		public void EndHowTo()
+		private void EndHowTo()
 		{
 			Engine.MakeVisible();
 			UI.Visible = true;

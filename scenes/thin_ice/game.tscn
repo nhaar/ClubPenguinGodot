@@ -18,6 +18,11 @@ font_color = Color(0, 0.4, 0.8, 1)
 
 [node name="ThinIceGame" type="Node2D"]
 script = ExtResource("65_huqpk")
+EnginePath = NodePath("ThinIceEngine")
+TitlePath = NodePath("ThinIceTitle")
+UIPath = NodePath("UI")
+LogoPath = NodePath("ThinIceLogo")
+HowToPath = NodePath("ThinIceHowTo")
 
 [node name="ThinIceLogo" type="Sprite2D" parent="."]
 texture = ExtResource("57_ei5o6")
