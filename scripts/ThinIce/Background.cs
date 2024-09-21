@@ -4,16 +4,17 @@ using System;
 namespace ClubPenguinPlus.ThinIce
 {
 	/// <summary>
-	/// Node for the Thin Ice Arcade Cabinet image.
+	/// Node for the background of the game
 	/// </summary>
-	public partial class Cabinet : Node2D
+	public partial class Background : Node2D
 	{
 		[Export]
-		public NodePath CabinetPath { get; set; }
+		private NodePath CabinetPath { get; set; }
 
 		public override void _Ready()
 		{
 			var cabinet = GetNode<Sprite2D>(CabinetPath);
+
 			// the original doesn't do this, it uses a placeholder, here we are properly centering
 			// the game
 			// scale image to fit the height of the screen

@@ -26,7 +26,7 @@ namespace ClubPenguinPlus.ThinIce
 
 		private Label LevelLabel { get; set; }
 
-		public Game Engine { get; set; }
+		public Engine Engine { get; set; }
 
 		public override void _Ready()
 		{

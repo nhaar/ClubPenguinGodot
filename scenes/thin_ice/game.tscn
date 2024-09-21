@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://l0ev2rssqilp" path="res://scenes/thin_ice/engine.tscn" id="7_wr4ey"]
 [ext_resource type="PackedScene" uid="uid://cooykk2jsc1wn" path="res://scenes/thin_ice/ui.tscn" id="10_ld5i1"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="15_g1vvg"]
-[ext_resource type="Script" path="res://scripts/ThinIce/Button.cs" id="19_bssp1"]
+[ext_resource type="Script" path="res://scripts/ThinIce/GameButton.cs" id="19_bssp1"]
 [ext_resource type="Texture2D" uid="uid://kpdn3kob5rh2" path="res://assets/thin_ice/Logo.png" id="57_ei5o6"]
 [ext_resource type="Texture2D" uid="uid://cqtjybggt2wo8" path="res://assets/thin_ice/MenuArt.png" id="58_3yip4"]
 [ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://assets/thin_ice/SmallButton.png" id="59_ckgbh"]

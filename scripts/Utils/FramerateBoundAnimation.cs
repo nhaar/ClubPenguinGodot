@@ -80,7 +80,6 @@ namespace ClubPenguinPlus.Utils
         /// </summary>
         public void Advance()
         {
-            GD.Print("animating", Parent);
             Parent.Texture = SpriteFrames.GetFrameTexture(Animation, Frames[CurrentFrame]);
             CurrentFrame = (CurrentFrame + 1) % FrameCount;
         }

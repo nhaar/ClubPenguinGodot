@@ -22,50 +22,41 @@ namespace ClubPenguinPlus.ThinIce
 
 		private int? CurrentLevel { get; set; } = null;
 
-		public Level[] ParseLevels(string file)
+		public Level[] ParseLevels(Json json)
 		{
 			try
-			{
+			{ 
 				var levels = new List<Level>();
-				var jsonString = FileAccess.Open(file, FileAccess.ModeFlags.Read).GetAsText();
-				var jsonParser = new Json();
-				if (jsonParser.Parse(jsonString) == Error.Ok)
+				var data = json.Data;
+				if (data.VariantType == Variant.Type.Array)
 				{
-					var data = jsonParser.Data;
-					if (data.VariantType == Variant.Type.Array)
+					CurrentLevel = 0;
+					var levelsArray = data.AsGodotArray();
+					foreach (var levelRepresentation in levelsArray)
 					{
-						CurrentLevel = 0;
-						var levelsArray = data.AsGodotArray();
-						foreach (var levelRepresentation in levelsArray)
+						CurrentLevel++;
+						if (levelRepresentation.VariantType == Variant.Type.Dictionary)
 						{
-							CurrentLevel++;
-							if (levelRepresentation.VariantType == Variant.Type.Dictionary)
-							{
-								var levelData = levelRepresentation.AsGodotDictionary<string, Variant>();
-								levels.Add(ParseLevelData(levelData));
-							}
-							else
-							{
-								throw new Exception($"Level was represented with {levelRepresentation.VariantType} instead of using a dictionary");
-							}
+							var levelData = levelRepresentation.AsGodotDictionary<string, Variant>();
+							levels.Add(ParseLevelData(levelData));
 						}
-					}
-					else
-					{
-						throw new Exception($"Expected an array of levels at the root of levels file, instead found {data.VariantType}");
+						else
+						{
+							throw new Exception($"Level was represented with {levelRepresentation.VariantType} instead of using a dictionary");
+						}
 					}
 				}
 				else
 				{
-					throw new Exception($"Failed to parse JSON: {jsonParser.GetErrorMessage()}\nLine {jsonParser.GetErrorLine()}");
+					throw new Exception($"Expected an array of levels at the root of levels file, instead found {data.VariantType}");
 				}
 
 				return levels.ToArray();
 			}
 			catch (Exception ex)
 			{
-				var levelMessage = CurrentLevel == null ? "" : $"for level {CurrentLevel}";
-				throw new Exception($"Error while parsing Thin Ice level file {levelMessage}: {ex.Message}\n{ex.StackTrace}");
+				var levelMessage = CurrentLevel == null ? "" : $" for level {CurrentLevel}";
+				throw new Exception($"Error while parsing Thin Ice level file{levelMessage}: {ex.Message}\n{ex.StackTrace}");
 			}
 		}
 

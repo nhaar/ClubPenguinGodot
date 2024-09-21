@@ -6,16 +6,16 @@ namespace ClubPenguinPlus.ThinIce
 	/// <summary>
 	/// A button that is clickable in the Thin Ice game.
 	/// </summary>
-	public partial class Button : TextureButton
+	public partial class GameButton : TextureButton
 	{
 		[Export]
-		public string ButtonText { get; set; }
+		private string ButtonText { get; set; }
 
 		[Export]
-		public Font ButtonFont { get; set; }
+		private Font ButtonFont { get; set; }
 
 		[Export]
-		public int ButtonFontSize { get; set; }
+		private int ButtonFontSize { get; set; }
 
 		public override void _Ready()
 		{

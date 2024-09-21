@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqg8ktr5wal48"]
 
-[ext_resource type="Script" path="res://scripts/ThinIce/CabinetKey.cs" id="1_f4lmf"]
+[ext_resource type="Script" path="res://scripts/ThinIce/CabinetArrowKey.cs" id="1_f4lmf"]
 
 [node name="CabinetKey" type="Sprite2D"]
 script = ExtResource("1_f4lmf")

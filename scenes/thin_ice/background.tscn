@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c2gmq5qjdjjwf"]
 
-[ext_resource type="Script" path="res://scripts/ThinIce/Cabinet.cs" id="1_dd7uq"]
+[ext_resource type="Script" path="res://scripts/ThinIce/Background.cs" id="1_dd7uq"]
 [ext_resource type="PackedScene" uid="uid://cj1610se05dvm" path="res://scenes/thin_ice/cabinet.tscn" id="1_i2uf0"]
 [ext_resource type="PackedScene" uid="uid://wde2hs582ngl" path="res://scenes/thin_ice/side_cabinet_key.tscn" id="2_hhba6"]
 [ext_resource type="PackedScene" uid="uid://dqg8ktr5wal48" path="res://scenes/thin_ice/cabinet_key.tscn" id="3_3btc6"]

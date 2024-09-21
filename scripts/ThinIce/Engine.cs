@@ -1,31 +1,34 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace ClubPenguinPlus.ThinIce
 {
 	/// <summary>
-	/// Node for the contents of the Thin Ice game scene, which consitutes of the
-	/// everything in the arcade screen after the "PLAY" button is pressed.
+	/// Node for the game engine
 	/// </summary>
-	public partial class Game : Node2D
+	public partial class Engine : Node2D
 	{
 		[Export]
-		public PackedScene TileScene { get; set; }
+		private PackedScene TileScene { get; set; }
 
 		[Export]
-		public PackedScene BlockScene { get; set; }
+		private PackedScene BlockScene { get; set; }
 
 		[Export]
-		public PackedScene CoinBagScene { get; set; }
+		private PackedScene CoinBagScene { get; set; }
 
 		[Export]
-		public NodePath PufflePath { get; set; }
+		private NodePath PufflePath { get; set; }
+
+		[Export]
+		private Json LevelsJson { get; set; }
 
 		public int CurrentLevelNumber { get; private set; } = 1;
 
+		/// <summary>
+		/// Total tiles available to melt in current level
+		/// </summary>
 		public int TotalTileCount => CurrentLevel.TotalTileCount;
 
 		/// <summary>
@@ -48,7 +51,6 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Gets the total number of points the player has to display
 		/// </summary>
-		/// <returns></returns>
 		public int Points => PointsAtStartOfLevel + PointsInLevel;
 
 		/// <summary>
@@ -56,22 +58,22 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		private int TimesFailed { get; set; } = 0;
 
+		/// <summary>
+		/// All game levels in order
+		/// </summary>
 		private Level[] Levels { get; set; }
 
 		private Level CurrentLevel => Levels[CurrentLevelNumber - 1];
 
 		/// <summary>
-		/// Grid containing all tiles used in the game
+		/// The game tile map
 		/// </summary>
 		private Tile[,] Tiles { get; set; }
 
-		/// <summary>
-		/// Reference to the Puffle object
-		/// </summary>
 		private Puffle Puffle { get; set; }
 
 		/// <summary>
-		/// A list containing references to all the blocks currently in the screen
+		/// All blocks in the game
 		/// </summary>
 		private List<Block> Blocks { get; set; }
 
@@ -80,11 +82,10 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		private bool SolvedPrevious { get; set; } = false;
 
-
 		public override void _Ready()
-		{ 
+		{
 			var parser = new LevelParser();
-			Levels = parser.ParseLevels("res://assets/thin_ice/levels.json");
+			Levels = parser.ParseLevels(LevelsJson);
 
 			Tiles = new Tile[Level.MaxWidth, Level.MaxHeight];
 			Blocks = new List<Block>();
@@ -167,7 +168,7 @@ namespace ClubPenguinPlus.ThinIce
 				var block = BlockScene.Instantiate<Block>();
 				block.Coordinates = blockPosition;
 				block.Position = blockTile.Position;
-				block.Game = this;
+				block.Engine = this;
 				AddChild(block);
 				Blocks.Add(block);
 				blockTile.BlockReference = block;

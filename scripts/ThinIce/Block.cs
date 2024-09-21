@@ -9,7 +9,7 @@ namespace ClubPenguinPlus.ThinIce
 	/// </summary>
 	public partial class Block : MovableObject
 	{
-		public Game Game { get; set; }
+		public Engine Engine { get; set; }
 
 		protected override int MoveAnimationDuration => 3;
 
@@ -26,8 +26,8 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public bool CanPush(Direction direction)
 		{
-			Vector2I targetCoords = GetAdjacentCoords(direction);
-			return !ImpassableTiles.Contains(Game.GetTile(targetCoords).TileType);
+			var targetCoords = GetAdjacentCoords(direction);
+			return !ImpassableTiles.Contains(Engine.GetTile(targetCoords).TileType);
 		}
 
 		/// <summary>
@@ -36,16 +36,16 @@ namespace ClubPenguinPlus.ThinIce
 		public void Move(Direction direction)
 		{
 			var targetCoords = GetAdjacentCoords(direction);
-			var targetPos = Game.GetTile(targetCoords).Position;
+			var targetPos = Engine.GetTile(targetCoords).Position;
 			base.StartMoveAnimation(targetCoords, direction, targetPos);
-			Game.GetTile(Coordinates).BlockReference = null;
+			Engine.GetTile(Coordinates).BlockReference = null;
 		}
 
 		protected override void FinishMoveAnimation()
 		{
 			base.FinishMoveAnimation();
 			// add block to new tile
-			var currentTile = Game.GetTile(Coordinates);
+			var currentTile = Engine.GetTile(Coordinates);
 			currentTile.BlockReference = this;
 
 			if (currentTile.TileType == Tile.Type.Teleporter)
@@ -54,9 +54,8 @@ namespace ClubPenguinPlus.ThinIce
 				var warpTile = currentTile.LinkedTeleporter;
 				Coordinates = warpTile.TileCoordinate;
 				Position = warpTile.Position;
-				Move(MovementDirection);
 			}
-			else if (CanPush(MovementDirection))
+			if (CanPush(MovementDirection))
 			{
 				Move(MovementDirection);
 			}

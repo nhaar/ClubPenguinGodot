@@ -6,7 +6,7 @@ namespace ClubPenguinPlus.ThinIce
 	/// <summary>
 	/// Class for one of side cabinet keys.
 	/// </summary>
-	public partial class SideCabinetKey : CabinetKey
+	public partial class SideCabinetKey : CabinetArrowKey
 	{
 		/// <summary>
 		/// Whether this is the left key or the right key

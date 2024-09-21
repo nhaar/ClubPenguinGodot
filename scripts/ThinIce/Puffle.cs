@@ -18,7 +18,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Reference to the game object
 		/// </summary>
-		public Game Game { get; set; }
+		public Engine Game { get; set; }
 
 		/// <summary>
 		/// Number of keys the puffle has

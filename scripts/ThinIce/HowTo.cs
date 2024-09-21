@@ -22,7 +22,7 @@ namespace ClubPenguinPlus.ThinIce
 
 		private Node2D Title { get; set; }
 
-		private Game Engine { get; set; }
+		private Engine Engine { get; set; }
 
 		private UI UI { get; set; }
 
@@ -32,7 +32,7 @@ namespace ClubPenguinPlus.ThinIce
 
 		public override void _Ready()
 		{
-			Engine = GetNode<Game>(EnginePath);
+			Engine = GetNode<Engine>(EnginePath);
 			Title = GetNode<Node2D>(TitlePath);
 			UI = GetNode<UI>(UIPath);
 			Logo = GetNode<Sprite2D>(LogoPath);

@@ -156,7 +156,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Reference to the game
 		/// </summary>
-		public Game Game { get; set; }
+		public Engine Game { get; set; }
 
 		/// <summary>
 		/// Reference to the coin bag on this tile, or null if none exists
