@@ -36,7 +36,7 @@ namespace ClubPenguinPlus.ThinIce
 		}
 		private void OnResetButtonPressed()
 		{
-			Engine.Reset();
+			Engine.ResetLevel();
 		}
 	}
 }

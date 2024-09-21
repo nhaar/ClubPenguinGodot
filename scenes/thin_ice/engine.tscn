@@ -1,12 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://l0ev2rssqilp"]
+[gd_scene load_steps=6 format=3 uid="uid://l0ev2rssqilp"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Game.cs" id="1_7qeck"]
 [ext_resource type="PackedScene" uid="uid://xhxo0y64rdkb" path="res://scenes/thin_ice/tile.tscn" id="2_7a5ti"]
 [ext_resource type="PackedScene" uid="uid://bdysnfwdxdo1" path="res://scenes/thin_ice/puffle.tscn" id="2_f25ot"]
+[ext_resource type="PackedScene" uid="uid://dnw13topxrxdq" path="res://scenes/thin_ice/block.tscn" id="3_f23r8"]
+[ext_resource type="PackedScene" uid="uid://ffgdtuph51r1" path="res://scenes/thin_ice/coin_bag.tscn" id="4_y3tti"]
 
 [node name="Engine" type="Node2D"]
 script = ExtResource("1_7qeck")
 TileScene = ExtResource("2_7a5ti")
+BlockScene = ExtResource("3_f23r8")
+CoinBagScene = ExtResource("4_y3tti")
 PufflePath = NodePath("Puffle")
 
 [node name="Puffle" parent="." instance=ExtResource("2_f25ot")]

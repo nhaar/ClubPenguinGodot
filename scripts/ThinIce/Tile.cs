@@ -289,15 +289,11 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void OnPuffleExit(Direction direction)
 		{
-			if (TileType == Type.Ice)
+			if (TileType == Type.Ice || TileType == Type.ThickIce)
 			{
+				var newType = TileType == Type.Ice ? Type.Water : Type.Ice;
 				Game.MeltTile();
-				ChangeTile(Type.Water);
-			}
-			else if (TileType == Type.ThickIce)
-			{
-				Game.MeltTile();
-				ChangeTile(Type.Ice);
+				ChangeTile(newType);
 			}
 
 			Tile destinationTile = GetAdjacent(direction);

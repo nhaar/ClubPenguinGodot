@@ -16,6 +16,12 @@ namespace ClubPenguinPlus.ThinIce
 		public PackedScene TileScene { get; set; }
 
 		[Export]
+		public PackedScene BlockScene { get; set; }
+
+		[Export]
+		public PackedScene CoinBagScene { get; set; }
+
+		[Export]
 		public NodePath PufflePath { get; set; }
 
 		public int CurrentLevelNumber { get; private set; } = 1;
@@ -110,10 +116,10 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Draws the current level to its absolute freshest state
 		/// </summary>
-		public void DrawLevel()
+		private void DrawLevel()
 		{
 			ClearBlocks();
-			Level level = CurrentLevel;
+			var level = CurrentLevel;
 			int teleporterCount = 0;
 			Tile lastTeleporter = null;
 			for (int i = 0; i < Level.MaxWidth; i++)
@@ -130,7 +136,7 @@ namespace ClubPenguinPlus.ThinIce
 						tileType = level.Tiles[i - level.RelativeOrigin.X, j - level.RelativeOrigin.Y];
 					}
 					Tiles[i, j].ChangeTile(tileType);
-					Tile currentTile = Tiles[i, j];
+					var currentTile = Tiles[i, j];
 
 					// teleporters are currently linked in pair based
 					// on first appearance
@@ -151,14 +157,14 @@ namespace ClubPenguinPlus.ThinIce
 					}
 				}
 			}
-			foreach (Vector2I keyPosition in level.KeyPositions)
+			foreach (var keyPosition in level.KeyPositions)
 			{
 				Tiles[keyPosition.X, keyPosition.Y].AddKey();
 			}
-			foreach (Vector2I blockPosition in level.BlockPositions)
+			foreach (var blockPosition in level.BlockPositions)
 			{
-				Tile blockTile = Tiles[blockPosition.X, blockPosition.Y];
-				var block = GD.Load<PackedScene>("res://scenes/thin_ice/block.tscn").Instantiate<Block>();
+				var blockTile = Tiles[blockPosition.X, blockPosition.Y];
+				var block = BlockScene.Instantiate<Block>();
 				block.Coordinates = blockPosition;
 				block.Position = blockTile.Position;
 				block.Game = this;
@@ -168,8 +174,8 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			if (SolvedPrevious && level.CoinBagPosition != null)
 			{
-				Tile tile = GetTile((Vector2I)level.CoinBagPosition);
-				var coinBag = GD.Load<PackedScene>("res://scenes/thin_ice/coin_bag.tscn").Instantiate<Sprite2D>();
+				var tile = GetTile((Vector2I)level.CoinBagPosition);
+				var coinBag = CoinBagScene.Instantiate<Sprite2D>();
 				tile.AddChild(coinBag);
 				tile.CoinBag = coinBag;
 			}
@@ -193,8 +199,8 @@ namespace ClubPenguinPlus.ThinIce
 
 			CurrentLevelNumber = levelNumber;
 			DrawLevel();
+			Puffle.Die();
 			Puffle.TeleportTo(CurrentLevel.PuffleSpawnLocation);
-			Puffle.ResetKeys();
 		}
 
 		public void GoToNextLevel()
@@ -214,9 +220,9 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Clears all blocks from the screen
 		/// </summary>
-		public void ClearBlocks()
+		private void ClearBlocks()
 		{
-			foreach (Block block in Blocks)
+			foreach (var block in Blocks)
 			{
 				block.QueueFree();
 				GetTile(block.Coordinates).BlockReference = null;
@@ -263,12 +269,6 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			TimesFailed++;
 			StartLevel(CurrentLevelNumber, true);
-		}
-
-		public void Reset()
-		{
-			ResetLevel();
-			Puffle.Die();
 		}
 
 		/// <summary>
