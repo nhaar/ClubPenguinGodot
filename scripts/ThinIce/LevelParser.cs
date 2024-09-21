@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ClubPenguinPlus.ThinIce
 {
-	public partial class LevelParser
+	internal class LevelParser
 	{
 		private static readonly string MapKey = "m";
 
@@ -22,11 +22,11 @@ namespace ClubPenguinPlus.ThinIce
 
 		private int? CurrentLevel { get; set; } = null;
 
-		public Game.Level[] ParseLevels(string file)
+		public Level[] ParseLevels(string file)
 		{
 			try
 			{
-				var levels = new List<Game.Level>();
+				var levels = new List<Level>();
 				var jsonString = FileAccess.Open(file, FileAccess.ModeFlags.Read).GetAsText();
 				var jsonParser = new Json();
 				if (jsonParser.Parse(jsonString) == Error.Ok)
@@ -69,7 +69,7 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		private static Game.Level ParseLevelData(Godot.Collections.Dictionary<string, Variant> levelData)
+		private static Level ParseLevelData(Godot.Collections.Dictionary<string, Variant> levelData)
 		{
 			var origin = Vector2I.Zero;
 			Vector2I spawn;
@@ -81,7 +81,7 @@ namespace ClubPenguinPlus.ThinIce
 
 
 			Vector2I size;
-			var maxSize = new Vector2I(Game.Level.MaxWidth, Game.Level.MaxHeight);
+			var maxSize = new Vector2I(Level.MaxWidth, Level.MaxHeight);
 			if (levelData.ContainsKey(MapKey))
 			{
 				try
@@ -245,7 +245,7 @@ namespace ClubPenguinPlus.ThinIce
 				}
 			}
 
-			return new Game.Level
+			return new Level
 			{
 				RelativeOrigin = origin,
 				PuffleSpawnLocation = spawn,

@@ -249,7 +249,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// Action to perform when the puffle enters this tile
 		/// </summary>
 		/// <param name="direction"></param>
-		public void OnPuffleEnter()
+		public void OnPuffleEnter(Puffle puffle)
 		{
 			if (CoinBag != null)
 			{
@@ -264,15 +264,15 @@ namespace ClubPenguinPlus.ThinIce
 			else if (TileType == Type.Lock)
 			{
 				ChangeTile(Type.Ice);
-				Game.Puffle.UseKey();
+				puffle.UseKey();
 			}
 			else if (!IsPlaidTeleporter && TileType == Type.Teleporter)
 			{
-				Game.Puffle.TeleportTo(LinkedTeleporter.TileCoordinate);
+				puffle.TeleportTo(LinkedTeleporter.TileCoordinate);
 				MakePlaidTeleporter();
 				LinkedTeleporter.MakePlaidTeleporter();
 			}
-			else if (Game.Puffle.IsStuck())
+			else if (puffle.IsStuck())
 			{
 				Game.ResetLevel();
 			}
@@ -280,7 +280,7 @@ namespace ClubPenguinPlus.ThinIce
 			if (KeyReference != null)
 			{
 				RemoveKey();
-				Game.Puffle.GetKey();
+				puffle.GetKey();
 			}
 		}
 

@@ -31,8 +31,8 @@ namespace ClubPenguinPlus.ThinIce
 			base._Process(delta);
 			LevelLabel.Text = Engine.CurrentLevelNumber.ToString();
 			MeltedTileLabel.Text = Engine.MeltedTiles.ToString();
-			TotalTileLabel.Text = Engine.CurrentLevel.TotalTileCount.ToString();
-			PointsLabel.Text = Engine.GetPoints().ToString();
+			TotalTileLabel.Text = Engine.TotalTileCount.ToString();
+			PointsLabel.Text = Engine.Points.ToString();
 		}
 		private void OnResetButtonPressed()
 		{

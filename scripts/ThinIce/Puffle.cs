@@ -132,7 +132,7 @@ namespace ClubPenguinPlus.ThinIce
 		protected override void FinishMoveAnimation()
 		{
 			base.FinishMoveAnimation();
-			Game.GetTile(Coordinates).OnPuffleEnter();
+			Game.GetTile(Coordinates).OnPuffleEnter(this);
 		}
 
 		public void GetKey()
