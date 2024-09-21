@@ -7,67 +7,17 @@ namespace ClubPenguinPlus.ThinIce
 	/// <summary>
 	/// Movable block
 	/// </summary>
-	public partial class Block : Sprite2D
-	{
-		/// <summary>
-		/// Grid coordinate
-		/// </summary>
-		public Vector2I Coordinates { get; set; }
-
+	public partial class Block : MovableObject
+	{ 
 		/// <summary>
 		/// Reference to game instance
 		/// </summary>
 		public Game Game { get; set; }
 
 		/// <summary>
-		/// Direction it's currently moving towards (if start moving)
-		/// </summary>
-		private Game.Direction _movementDirection;
-
-		/// <summary>
 		/// The amount of frames it takes for the block to move a tile
 		/// </summary>
-		public static readonly int MoveAnimationDuration = 3;
-
-		/// <summary>
-		/// Whether or not the block is moving
-		/// </summary>
-		public bool IsMoving;
-
-		/// <summary>
-		/// Grid coordinate the block is moving from
-		/// </summary>
-		private Vector2I _coordinateMovingFrom;
-
-		/// <summary>
-		/// Grid coordinate the block is moving towards
-		/// </summary>
-		private Vector2I _coordinatesMovingTo;
-
-		/// <summary>
-		/// Position in screen space the block is moving from
-		/// </summary>
-		private Vector2 _positionMovingFrom;
-
-		/// <summary>
-		/// Vector for the total displacement of the block while moving from
-		/// this tile to the next
-		/// </summary>
-		private Vector2 _displacementVector;
-
-		/// <summary>
-		/// How many frames the block has been moving for
-		/// </summary>
-		private int _moveAnimationTimer;
-
-		/// <summary>
-		/// Tiles the block cannot move through
-		/// </summary>
-		public static readonly List<Game.TileType> ImpassableTiles = new()
-		{
-			Game.TileType.Wall,
-			Game.TileType.Water,
-		};
+		protected override int MoveAnimationDuration => 3;
 
 		public override void _Ready()
 		{
@@ -99,49 +49,20 @@ namespace ClubPenguinPlus.ThinIce
 		/// <param name="direction"></param>
 		public void Move(Game.Direction direction)
 		{
-			_movementDirection = direction;
-			_coordinateMovingFrom = Coordinates;
-			_coordinatesMovingTo = Puffle.GetDestination(Coordinates, direction);
-			_positionMovingFrom = Position;
-			Vector2 targetPosition = Game.Tiles[_coordinatesMovingTo.X, _coordinatesMovingTo.Y].Position;
-			_displacementVector = targetPosition - Position;
-			StartMoveAnimation();
+			var targetCoords = GetDestination(Coordinates, direction);
 
+			var targetPos = Game.GetTile(targetCoords).Position;
+			base.StartMoveAnimation(targetCoords, direction, targetPos);
 			Game.GetTile(Coordinates).BlockReference = null;
 		}
 
-		/// <summary>
-		/// Start the move animation towards the next tile
-		/// </summary>
-		private void StartMoveAnimation()
-		{
-			_moveAnimationTimer = 0;
-			IsMoving = true;
-			ContinueMoveAnimation();
-		}
-
-		/// <summary>
-		/// Continue the move animation towards the next tile
-		/// </summary>
-		private void ContinueMoveAnimation()
-		{
-			_moveAnimationTimer++;
-			if (_moveAnimationTimer > MoveAnimationDuration)
-			{
-				StopMoveAnimation();
-			}
-			else
-			{
-				Position = _positionMovingFrom + _displacementVector * _moveAnimationTimer / MoveAnimationDuration;
-			}
-		}
 
 		/// <summary>
 		/// Stop the move animation to the next tile, continuing if it can be pushed further
 		/// </summary>
-		private void StopMoveAnimation()
+		protected override void FinishMoveAnimation()
 		{
-			Coordinates = _coordinatesMovingTo;
+			base.FinishMoveAnimation();
 			// add block to new tile
 			Tile currentTile = Game.GetTile(Coordinates);
 			currentTile.BlockReference = this;
@@ -151,15 +72,11 @@ namespace ClubPenguinPlus.ThinIce
 				currentTile.BlockReference = null;
 				Coordinates = currentTile.LinkedTeleporter.TileCoordinate;
 				Position = Game.GetTile(Coordinates).Position;
-				Move(_movementDirection);
+				Move(MovementDirection);
 			}
-			else if (CanPush(_movementDirection))
+			else if (CanPush(MovementDirection))
 			{
-				Move(_movementDirection);
-			}
-			else
-			{
-				IsMoving = false;
+				Move(MovementDirection);
 			}
 		}
 	}

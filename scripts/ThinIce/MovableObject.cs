@@ -9,9 +9,9 @@ namespace ClubPenguinPlus.ThinIce
         /// <summary>
         /// Grid coordinates where the puffle is locaed
         /// </summary>
-        protected Vector2I Coordinates { get; set; }
+        public Vector2I Coordinates { get; set; }
 
-        private Game.Direction MovementDirection { get; set; }
+        protected Game.Direction MovementDirection { get; set; }
 
         protected abstract int MoveAnimationDuration { get; }
 
