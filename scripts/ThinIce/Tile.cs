@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using ClubPenguinPlus.Utils;
 
 
 namespace ClubPenguinPlus.ThinIce
@@ -42,7 +43,87 @@ namespace ClubPenguinPlus.ThinIce
 		[Export]
 		public SpriteFrames TeleporterTileFrames { get; set; }
 
-		public Game.TileType TileType { get; set; }
+		/// <summary>
+		/// All valid tile types
+		/// </summary>
+		public enum Type
+		{
+			/// <summary>
+			/// In vanilla, represents blank tiles placed outside the level
+			/// </summary>
+			Empty,
+
+			/// <summary>
+			/// Regular ice tiles
+			/// </summary>
+			Ice,
+
+			/// <summary>
+			/// Tiles after ice is melt
+			/// </summary>
+			Water,
+
+			/// <summary>
+			/// Tiles that can be passed through twice
+			/// </summary>
+			ThickIce,
+
+			/// <summary>
+			/// Regular wall tile
+			/// </summary>
+			Wall,
+
+			/// <summary>
+			/// Tile that finishes the level upon reached
+			/// </summary>
+			Goal,
+
+			/// <summary>
+			/// Tile that links to another and teleports player to it
+			/// </summary>
+			Teleporter,
+
+			/// <summary>
+			/// Tile for an already used teleporter
+			/// </summary>
+			PlaidTeleporter,
+
+			/// <summary>
+			/// Tile that requires a key to be opened
+			/// </summary>
+			Lock,
+
+			/// <summary>
+			/// Tile for the button that in vanilla is used to reveal the hidden path in
+			/// level 19
+			/// </summary>
+			Button,
+
+			/// <summary>
+			/// Tile for the fake wall that in vanilla is used to hide the hidden path in
+			/// level 19, but you can't walk over
+			/// </summary>
+			FakeImpassableWall,
+
+			/// <summary>
+			/// Tile for the fake wall that in vanilla is used to hide the hidden path in
+			/// level 19 and that you can walk over
+			/// </summary>
+			FakePassableWall,
+
+			/// <summary>
+			/// Tile for the fake wall in vanilla that is used to hide the hidden path in
+			/// level 19 and that becomes a normal wall when the button is pressed
+			/// </summary>
+			FakeTemporaryWall,
+
+			/// <summary>
+			/// Tile the blocks are meant to be placed into
+			/// </summary>
+			BlockHole
+		}
+
+		public Type TileType { get; set; }
 
 		/// <summary>
 		/// Reference to a key object if this tile has one
@@ -88,20 +169,32 @@ namespace ClubPenguinPlus.ThinIce
 
 		public FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
 
+		// reference hardcoded values
+		public static readonly int LeftmostTileX = -2158;
+		public static readonly int TopmostTileY = -1700;
+
 		public override void _Ready()
 		{
+			Texture = EmptyTile;
 			WaterAnimation = new(WaterTileFrames, this);
 			TeleporterIdleAnimation = new(TeleporterTileFrames, this);
+		}
+
+		public void SetCoordinate(int x, int y)
+		{
+			var tileSize = EmptyTile.GetSize();
+			Position = new Vector2(LeftmostTileX + x * tileSize.X, TopmostTileY + y * tileSize.Y);
+			TileCoordinate = new Vector2I(x, y);
 		}
 
 		public override void _Process(double delta)
 		{
 			// water tile animation
-			if (TileType == Game.TileType.Water)
+			if (TileType == Type.Water)
 			{
 				WaterAnimation.Advance();
 			}
-			else if (TileType == Game.TileType.Teleporter && !IsPlaidTeleporter)
+			else if (TileType == Type.Teleporter && !IsPlaidTeleporter)
 			{
 				TeleporterIdleAnimation.Advance();
 			}
@@ -112,7 +205,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		/// <param name="tileType"></param>
 		/// <exception cref="NotImplementedException"></exception>
-		public void ChangeTile(Game.TileType tileType)
+		public void ChangeTile(Type tileType)
 		{
 			RemoveKey();
 			RemoveCoinBag();
@@ -120,11 +213,11 @@ namespace ClubPenguinPlus.ThinIce
 			BlockReference = null;
 			IsPlaidTeleporter = false;
 
-			if (tileType == Game.TileType.Water)
+			if (tileType == Type.Water)
 			{
 				WaterAnimation.Start();
 			}
-			else if (tileType == Game.TileType.Teleporter)
+			else if (tileType == Type.Teleporter)
 			{
 				TeleporterIdleAnimation.Start();
 			}
@@ -132,18 +225,18 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				Texture2D tileTexture = tileType switch
 				{
-					Game.TileType.Empty => EmptyTile,
-					Game.TileType.Ice => IceTile,
-					Game.TileType.ThickIce => ThickIceTile,
-					Game.TileType.Wall => WallTile,
-					Game.TileType.Goal => GoalTile,
-					Game.TileType.PlaidTeleporter => PlaidTeleporterTile,
-					Game.TileType.Lock => LockTile,
-					Game.TileType.Button => ButtonTile,
-					Game.TileType.FakeTemporaryWall => WallTile,
-					Game.TileType.FakeImpassableWall => WallTile,
-					Game.TileType.FakePassableWall => WallTile,
-					Game.TileType.BlockHole => BlockHoleTile,
+					Type.Empty => EmptyTile,
+					Type.Ice => IceTile,
+					Type.ThickIce => ThickIceTile,
+					Type.Wall => WallTile,
+					Type.Goal => GoalTile,
+					Type.PlaidTeleporter => PlaidTeleporterTile,
+					Type.Lock => LockTile,
+					Type.Button => ButtonTile,
+					Type.FakeTemporaryWall => WallTile,
+					Type.FakeImpassableWall => WallTile,
+					Type.FakePassableWall => WallTile,
+					Type.BlockHole => BlockHoleTile,
 					_ => throw new NotImplementedException(),
 				};
 
@@ -162,18 +255,18 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				GetCoinBag();
 			}
-			if (TileType == Game.TileType.Goal)
+			if (TileType == Type.Goal)
 			{
 				Game.GoToNextLevel();
 			}
 			// we must have the key already
 			// also, this functionality should be changed to work on adjacent tile enter
-			else if (TileType == Game.TileType.Lock)
+			else if (TileType == Type.Lock)
 			{
-				ChangeTile(Game.TileType.Ice);
+				ChangeTile(Type.Ice);
 				Game.Puffle.UseKey();
 			}
-			else if (!IsPlaidTeleporter && TileType == Game.TileType.Teleporter)
+			else if (!IsPlaidTeleporter && TileType == Type.Teleporter)
 			{
 				Game.Puffle.TeleportTo(LinkedTeleporter.TileCoordinate);
 				MakePlaidTeleporter();
@@ -194,17 +287,17 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Action to perform when the puffle exits this tile
 		/// </summary>
-		public void OnPuffleExit(Game.Direction direction)
+		public void OnPuffleExit(Direction direction)
 		{
-			if (TileType == Game.TileType.Ice)
+			if (TileType == Type.Ice)
 			{
 				Game.MeltTile();
-				ChangeTile(Game.TileType.Water);
+				ChangeTile(Type.Water);
 			}
-			else if (TileType == Game.TileType.ThickIce)
+			else if (TileType == Type.ThickIce)
 			{
 				Game.MeltTile();
-				ChangeTile(Game.TileType.Ice);
+				ChangeTile(Type.Ice);
 			}
 
 			Tile destinationTile = GetAdjacent(direction);
@@ -213,7 +306,7 @@ namespace ClubPenguinPlus.ThinIce
 			destinationTile.BlockReference?.Move(direction);
 
 			// button is pressed on previous tile exit
-			if (destinationTile.TileType == Game.TileType.Button)
+			if (destinationTile.TileType == Type.Button)
 			{
 				Game.PressButton();
 			}
@@ -256,7 +349,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		/// <param name="direction"></param>
 		/// <returns></returns>
-		public Tile GetAdjacent(Game.Direction direction)
+		public Tile GetAdjacent(Direction direction)
 		{
 			return Game.GetTile(Puffle.GetDestination(TileCoordinate, direction));
 		}

@@ -1,6 +1,7 @@
 ﻿using Godot;
 using System;
 using System.Collections.Generic;
+using ClubPenguinPlus.Utils;
 
 namespace ClubPenguinPlus.ThinIce
 {
@@ -11,7 +12,7 @@ namespace ClubPenguinPlus.ThinIce
         /// </summary>
         public Vector2I Coordinates { get; set; }
 
-        protected Game.Direction MovementDirection { get; set; }
+        protected Direction MovementDirection { get; set; }
 
         protected abstract int MoveAnimationDuration { get; }
 
@@ -34,11 +35,11 @@ namespace ClubPenguinPlus.ThinIce
         /// </summary>
         private Vector2 MovementDisplacement { get; set; }
 
-        public static readonly List<Game.TileType> ImpassableTiles = new()
+        public static readonly List<Tile.Type> ImpassableTiles = new()
         {
-            Game.TileType.Wall,
-            Game.TileType.Water,
-            Game.TileType.FakeImpassableWall,
+            Tile.Type.Wall,
+            Tile.Type.Water,
+            Tile.Type.FakeImpassableWall,
         };
 
         /// <summary>
@@ -48,20 +49,20 @@ namespace ClubPenguinPlus.ThinIce
         /// <param name="direction"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static Vector2I GetDestination(Vector2I originalCoords, Game.Direction direction)
+        public static Vector2I GetDestination(Vector2I originalCoords, Direction direction)
         {
             Vector2I deltaCoord = direction switch
             {
-                Game.Direction.Up => new Vector2I(0, -1),
-                Game.Direction.Down => new Vector2I(0, 1),
-                Game.Direction.Left => new Vector2I(-1, 0),
-                Game.Direction.Right => new Vector2I(1, 0),
+                Direction.Up => new Vector2I(0, -1),
+                Direction.Down => new Vector2I(0, 1),
+                Direction.Left => new Vector2I(-1, 0),
+                Direction.Right => new Vector2I(1, 0),
                 _ => throw new NotImplementedException(),
             };
             return originalCoords + deltaCoord;
         }
 
-        protected virtual void StartMoveAnimation(Vector2I targetCoords, Game.Direction direction, Vector2 targetPos)
+        protected virtual void StartMoveAnimation(Vector2I targetCoords, Direction direction, Vector2 targetPos)
         {
             MovementTargetCoords = targetCoords;
             MovementDirection = direction;
@@ -93,5 +94,11 @@ namespace ClubPenguinPlus.ThinIce
             Coordinates = MovementTargetCoords;
             IsMoving = false;
         }
+
+        protected Vector2I GetAdjacentCoords(Direction direction)
+        {
+            return GetDestination(Coordinates, direction);
+        }
+
     }
 }

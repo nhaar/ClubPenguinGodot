@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using ClubPenguinPlus.Utils;
 
 namespace ClubPenguinPlus.ThinIce
 {
@@ -27,15 +28,26 @@ namespace ClubPenguinPlus.ThinIce
 		/// </remarks>
 		public int KeyCount { get; set; }
 
+		private bool IsActive { get; set; }
+
 		public override void _Ready()
 		{
 			base._Ready();
-			Game = (Game)GetParent();
 			KeyCount = 0;
+			IsActive = false;
+		}
+
+		public void Activate()
+		{
+			IsActive = true;
 		}
 
 		public override void _Process(double delta)
 		{
+			if (!IsActive)
+			{
+				return;
+			}
 			if (IsMoving)
 			{
 				ContinueMoveAnimation();
@@ -43,33 +55,30 @@ namespace ClubPenguinPlus.ThinIce
 			else
 			{
 				// preserving the original code's arrow key priority
-				List<Game.Direction> pressedDirections = new();
+				List<Direction> pressedDirections = new();
+
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Up))
 				{
-					pressedDirections.Add(Game.Direction.Up);
+					pressedDirections.Add(Direction.Up);
 				}
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Down))
 				{
-					pressedDirections.Add(Game.Direction.Down);
+					pressedDirections.Add(Direction.Down);
 				}
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Left))
 				{
-					pressedDirections.Add(Game.Direction.Left);
+					pressedDirections.Add(Direction.Left);
 				}
 				if (Input.IsPhysicalKeyPressed(Godot.Key.Right))
 				{
-					pressedDirections.Add(Game.Direction.Right);
+					pressedDirections.Add(Direction.Right);
 				}
-				if (pressedDirections.Count > 0)
+				foreach (var direction in pressedDirections)
 				{
-					foreach (var direction in pressedDirections)
+					if (CanMove(direction))
 					{
-						Vector2I targetCoords = GetDestination(Coordinates, direction);
-						if (CanMove(targetCoords, direction))
-						{
-							StartMoveAnimation(targetCoords, direction);
-							return;
-						}
+						StartMoveAnimation(direction);
+						return;
 					}
 				}
 			}
@@ -81,15 +90,16 @@ namespace ClubPenguinPlus.ThinIce
 		/// <param name="targetCoords"></param>
 		/// <param name="direction"></param>
 		/// <returns></returns>
-		public bool CanMove(Vector2I targetCoords, Game.Direction direction)
+		public bool CanMove(Direction direction)
 		{
-			Tile targetTile = Game.Tiles[targetCoords.X, targetCoords.Y];
+			var targetCoords = GetDestination(Coordinates, direction);
+			Tile targetTile = Game.GetTile(targetCoords);
 
 			if (ImpassableTiles.Contains(targetTile.TileType))
 			{
 				return false;
 			}
-			else if (targetTile.TileType == Game.TileType.Lock)
+			else if (targetTile.TileType == Tile.Type.Lock)
 			{
 				return KeyCount > 0;
 			}
@@ -108,10 +118,11 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		/// <param name="targetCoords"></param>
 		/// <param name="direction"></param>
-		private void StartMoveAnimation(Vector2I targetCoords, Game.Direction direction)
+		private void StartMoveAnimation(Direction direction)
 		{
-			Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleExit(direction);
-			var targetPos = Game.Tiles[targetCoords.X, targetCoords.Y].Position;
+			var targetCoords = GetDestination(Coordinates, direction);
+			Game.GetTile(Coordinates).OnPuffleExit(direction);
+			var targetPos = Game.GetTile(targetCoords).Position;
 			base.StartMoveAnimation(targetCoords, direction, targetPos);
 		}
 
@@ -121,7 +132,7 @@ namespace ClubPenguinPlus.ThinIce
 		protected override void FinishMoveAnimation()
 		{
 			base.FinishMoveAnimation();
-			Game.Tiles[Coordinates.X, Coordinates.Y].OnPuffleEnter();
+			Game.GetTile(Coordinates).OnPuffleEnter();
 		}
 
 		public void GetKey()
@@ -144,7 +155,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <param name="coords"></param>
 		public void TeleportTo(Vector2I coords)
 		{
-			Position = Game.Tiles[coords.X, coords.Y].Position;
+			Position = Game.GetTile(coords).Position;
 			Coordinates = coords;
 		}
 
@@ -154,9 +165,9 @@ namespace ClubPenguinPlus.ThinIce
 		/// <returns></returns>
 		public bool IsStuck()
 		{
-			foreach (Game.Direction direction in Enum.GetValues(typeof(Game.Direction)))
+			foreach (Direction direction in Enum.GetValues(typeof(Direction)))
 			{
-				if (CanMove(GetDestination(Coordinates, direction), direction))
+				if (CanMove(direction))
 				{
 					return false;
 				}

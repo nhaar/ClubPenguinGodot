@@ -12,12 +12,18 @@ namespace ClubPenguinPlus.ThinIce
 	/// </summary>
 	public partial class Game : Node2D
 	{
-		public int CurrentLevelNumber { get; set; } = 1;
+		[Export]
+		public PackedScene TileScene { get; set; }
+
+		[Export]
+		public NodePath PufflePath { get; set; }
+
+		public int CurrentLevelNumber { get; private set; } = 1;
 
 		/// <summary>
 		/// How many points the player has at the start of each level
 		/// </summary>
-		public int PointsAtStartOfLevel { get; set; } = 0;
+		private int PointsAtStartOfLevel { get; set; } = 0;
 
 		/// <summary>
 		/// How many points the player has collected in the current level in their
@@ -29,21 +35,21 @@ namespace ClubPenguinPlus.ThinIce
 		/// How many tiles the player has melted in the current level in their
 		/// current life
 		/// </summary>
-		public int MeltedTiles { get; set; } = 0;
+		public int MeltedTiles { get; private set; } = 0;
 
 		/// <summary>
 		/// How many times the player reset the current level
 		/// </summary>
-		public int TimesFailed { get; set; } = 0;
+		private int TimesFailed { get; set; } = 0;
 
-		public Level[] Levels { get; set; }
+		private Level[] Levels { get; set; }
 
 		public Level CurrentLevel => Levels[CurrentLevelNumber - 1];
 
 		/// <summary>
 		/// Grid containing all tiles used in the game
 		/// </summary>
-		public Tile[,] Tiles { get; set; }
+		private Tile[,] Tiles { get; set; }
 
 		/// <summary>
 		/// Reference to the Puffle object
@@ -58,15 +64,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Whether or not previous level was solved
 		/// </summary>
-		public bool SolvedPrevious { get; set; } = false;
-
-		public enum Direction
-		{
-			Up,
-			Down,
-			Left,
-			Right,
-		}
+		private bool SolvedPrevious { get; set; } = false;
 
 		public override void _Ready()
 		{ 
@@ -76,111 +74,28 @@ namespace ClubPenguinPlus.ThinIce
 			Tiles = new Tile[Level.MaxWidth, Level.MaxHeight];
 			Blocks = new List<Block>();
 
-			// reference hardcoded values
-			int leftmostTileX = -2158;
-			int topmostTileY = -1700;
-
-
-
 			for (int i = 0; i < Level.MaxWidth; i++)
 			{
 				for (int j = 0; j < Level.MaxHeight; j++)
 				{
-					var tile = GD.Load<PackedScene>("res://scenes/thin_ice/tile.tscn").Instantiate<Tile>();
-					tile.Texture = tile.EmptyTile;
-					var tileSize = tile.Texture.GetSize();
-					tile.Position = new Vector2(leftmostTileX + i * tileSize.X, topmostTileY + j * tileSize.Y);
-					tile.TileCoordinate = new Vector2I(i, j);
+					var tile = TileScene.Instantiate<Tile>();
 					tile.Game = this;
+					tile.SetCoordinate(i, j);
 					Tiles[i, j] = tile;
 					AddChild(tile);
-					// move up to so the pre-created nodes are visible
-					MoveChild(tile, 0);
 				}
 			}
 
 			// move to bottom so it is always visible on top of tiles
-			Puffle = GetNode<Puffle>("Puffle");
+			Puffle = GetNode<Puffle>(PufflePath);
+			Puffle.Game = this;
 		}
 
-		/// <summary>
-		/// All valid tile types
-		/// </summary>
-		public enum TileType
+		public void MakeVisible()
 		{
-			/// <summary>
-			/// In vanilla, represents blank tiles placed outside the level
-			/// </summary>
-			Empty,
-
-			/// <summary>
-			/// Regular ice tiles
-			/// </summary>
-			Ice,
-
-			/// <summary>
-			/// Tiles after ice is melt
-			/// </summary>
-			Water,
-
-			/// <summary>
-			/// Tiles that can be passed through twice
-			/// </summary>
-			ThickIce,
-
-			/// <summary>
-			/// Regular wall tile
-			/// </summary>
-			Wall,
-
-			/// <summary>
-			/// Tile that finishes the level upon reached
-			/// </summary>
-			Goal,
-
-			/// <summary>
-			/// Tile that links to another and teleports player to it
-			/// </summary>
-			Teleporter,
-
-			/// <summary>
-			/// Tile for an already used teleporter
-			/// </summary>
-			PlaidTeleporter,
-
-			/// <summary>
-			/// Tile that requires a key to be opened
-			/// </summary>
-			Lock,
-
-			/// <summary>
-			/// Tile for the button that in vanilla is used to reveal the hidden path in
-			/// level 19
-			/// </summary>
-			Button,
-
-			/// <summary>
-			/// Tile for the fake wall that in vanilla is used to hide the hidden path in
-			/// level 19, but you can't walk over
-			/// </summary>
-			FakeImpassableWall,
-
-			/// <summary>
-			/// Tile for the fake wall that in vanilla is used to hide the hidden path in
-			/// level 19 and that you can walk over
-			/// </summary>
-			FakePassableWall,
-
-			/// <summary>
-			/// Tile for the fake wall in vanilla that is used to hide the hidden path in
-			/// level 19 and that becomes a normal wall when the button is pressed
-			/// </summary>
-			FakeTemporaryWall,
-
-			/// <summary>
-			/// Tile the blocks are meant to be placed into
-			/// </summary>
-			BlockHole
+			Visible = true;
+			Puffle.Activate();
+			StartLevel(1);
 		}
 
 		/// <summary>
@@ -195,16 +110,16 @@ namespace ClubPenguinPlus.ThinIce
 			/// <summary>
 			/// Tiles that do not count towards the total tile count
 			/// </summary>
-			public static readonly List<TileType> ZeroCountTiles = new()
+			public static readonly List<Tile.Type> ZeroCountTiles = new()
 			{
-				TileType.Empty,
-				TileType.Water,
-				TileType.Wall,
-				TileType.BlockHole,
-				TileType.Goal,
-				TileType.Teleporter,
-				TileType.FakeTemporaryWall,
-				TileType.Button
+				Tile.Type.Empty,
+				Tile.Type.Water,
+				Tile.Type.Wall,
+				Tile.Type.BlockHole,
+				Tile.Type.Goal,
+				Tile.Type.Teleporter,
+				Tile.Type.FakeTemporaryWall,
+				Tile.Type.Button
 			};
 
 			/// <summary>
@@ -236,7 +151,7 @@ namespace ClubPenguinPlus.ThinIce
 			/// Grid containing all tiles used in the level, not containing
 			/// empty tiles outside the defined width, height and relative origin boundaries
 			/// </summary>
-			public TileType[,] Tiles { get; set; }
+			public Tile.Type[,] Tiles { get; set; }
 
 			/// <summary>
 			/// List of all cordinate pairs for where the keys should be placed
@@ -269,11 +184,11 @@ namespace ClubPenguinPlus.ThinIce
 					{
 						for (int j = 0; j < Height; j++)
 						{
-							TileType tileType = Tiles[i, j];
+							Tile.Type tileType = Tiles[i, j];
 							if (!ZeroCountTiles.Contains(tileType))
 							{
 								count++;
-								if (tileType == TileType.ThickIce)
+								if (tileType == Tile.Type.ThickIce)
 								{
 									count++;
 								}
@@ -308,10 +223,10 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				for (int j = 0; j < Level.MaxHeight; j++)
 				{
-					TileType tileType;
+					Tile.Type tileType;
 					if (level.IsPointOutOfBounds(new Vector2I(i, j)))
 					{
-						tileType = TileType.Empty;
+						tileType = Tile.Type.Empty;
 					}
 					else
 					{
@@ -323,7 +238,7 @@ namespace ClubPenguinPlus.ThinIce
 					// teleporters are currently linked in pair based
 					// on first appearance
 					// works for vanilla ones, but might be expanded for custom ones in the future
-					if (tileType == TileType.Teleporter)
+					if (tileType == Tile.Type.Teleporter)
 					{
 						if (teleporterCount % 2 == 0)
 						{
@@ -349,6 +264,7 @@ namespace ClubPenguinPlus.ThinIce
 				var block = GD.Load<PackedScene>("res://scenes/thin_ice/block.tscn").Instantiate<Block>();
 				block.Coordinates = blockPosition;
 				block.Position = blockTile.Position;
+				block.Game = this;
 				AddChild(block);
 				Blocks.Add(block);
 				blockTile.BlockReference = block;
@@ -431,13 +347,13 @@ namespace ClubPenguinPlus.ThinIce
 				for (int j = 0; j < Level.MaxHeight; j++)
 				{
 					Tile tile = Tiles[i, j];
-					if (tile.TileType == TileType.FakeTemporaryWall)
+					if (tile.TileType == Tile.Type.FakeTemporaryWall)
 					{
-						tile.ChangeTile(TileType.Wall);
+						tile.ChangeTile(Tile.Type.Wall);
 					}
-					else if (tile.TileType == TileType.FakePassableWall || tile.TileType == TileType.FakeImpassableWall)
+					else if (tile.TileType == Tile.Type.FakePassableWall || tile.TileType == Tile.Type.FakeImpassableWall)
 					{
-						tile.ChangeTile(TileType.Ice);
+						tile.ChangeTile(Tile.Type.Ice);
 					}
 				}
 			}

@@ -1,7 +1,7 @@
 ﻿using Godot;
 using System.Collections.Generic;
 
-namespace ClubPenguinPlus
+namespace ClubPenguinPlus.Utils
 {
     /// <summary>
     /// Helper class that can create an animation bounded by frame for a Sprite2D node.

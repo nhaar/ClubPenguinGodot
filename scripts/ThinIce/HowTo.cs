@@ -32,8 +32,7 @@ namespace ClubPenguinPlus.ThinIce
 
 		public void EndHowTo()
 		{
-			Engine.Visible = true;
-			Engine.StartLevel(1);
+			Engine.MakeVisible();
 			UI.Visible = true;
 			Logo.QueueFree();
 			HowToScreen.QueueFree();

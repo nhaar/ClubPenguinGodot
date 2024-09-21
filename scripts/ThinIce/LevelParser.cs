@@ -77,7 +77,7 @@ namespace ClubPenguinPlus.ThinIce
 			var keys = new List<Vector2I>();
 			var blocks = new List<Vector2I>();
 			Vector2I? bag = null;
-			List<List< Game.TileType >> map;
+			List<List< Tile.Type >> map;
 
 
 			Vector2I size;
@@ -186,7 +186,7 @@ namespace ClubPenguinPlus.ThinIce
 							}
 							Vector2I patchSize;
 							Vector2I patchOrigin;
-							List<List<Game.TileType>> patchMap;
+							List<List<Tile.Type>> patchMap;
 							try
 							{
 								TryParseMap(patchValue[MapKey], out patchMap, out patchSize);
@@ -229,7 +229,7 @@ namespace ClubPenguinPlus.ThinIce
 				}
 			}
 
-			var tiles = new Game.TileType[size.X, size.Y];
+			var tiles = new Tile.Type[size.X, size.Y];
 			for (int i = 0; i < map.Count; i++)
 			{
 				for (int j = 0; j < map[i].Count; j++)
@@ -324,9 +324,9 @@ namespace ClubPenguinPlus.ThinIce
 			}
 		}
 
-		private static void TryParseMap(Variant value, out List<List<Game.TileType>> map, out Vector2I size)
+		private static void TryParseMap(Variant value, out List<List<Tile.Type>> map, out Vector2I size)
 		{
-			map = new List<List<Game.TileType>>();
+			map = new List<List<Tile.Type>>();
 			size = Vector2I.Zero;
 			var width = -1;
 			if (value.VariantType == Variant.Type.Array)
@@ -335,7 +335,7 @@ namespace ClubPenguinPlus.ThinIce
 
 				foreach (var row in mapGrid)
 				{
-					var rowList = new List<Game.TileType>();
+					var rowList = new List<Tile.Type>();
 					if (row.VariantType == Variant.Type.Array)
 					{
 						var rowValue = row.AsGodotArray();
@@ -354,20 +354,20 @@ namespace ClubPenguinPlus.ThinIce
 								var tileValue = tile.AsInt32();
 								var type = tileValue switch
 								{
-									0 => Game.TileType.Empty,
-									1 => Game.TileType.Ice,
-									2 => Game.TileType.ThickIce,
-									3 => Game.TileType.Wall,
-									4 => Game.TileType.Goal,
-									5 => Game.TileType.Teleporter,
-									6 => Game.TileType.Lock,
-									7 => Game.TileType.Button,
-									8 => Game.TileType.FakeTemporaryWall,
-									9 => Game.TileType.FakePassableWall,
-									10 => Game.TileType.FakeImpassableWall,
-									11 => Game.TileType.BlockHole,
-									12 => Game.TileType.PlaidTeleporter,
-									13 => Game.TileType.Water,
+									0 => Tile.Type.Empty,
+									1 => Tile.Type.Ice,
+									2 => Tile.Type.ThickIce,
+									3 => Tile.Type.Wall,
+									4 => Tile.Type.Goal,
+									5 => Tile.Type.Teleporter,
+									6 => Tile.Type.Lock,
+									7 => Tile.Type.Button,
+									8 => Tile.Type.FakeTemporaryWall,
+									9 => Tile.Type.FakePassableWall,
+									10 => Tile.Type.FakeImpassableWall,
+									11 => Tile.Type.BlockHole,
+									12 => Tile.Type.PlaidTeleporter,
+									13 => Tile.Type.Water,
 									_ => throw new Exception($"{tileValue} is not a valid value for a tile")
 								} ;
 								rowList.Add(type);
