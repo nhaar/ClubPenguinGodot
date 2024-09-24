@@ -12,37 +12,37 @@ namespace ClubPenguinPlus.ThinIce
 		/// <summary>
 		/// Key that stores map grids
 		/// </summary>
-		private static readonly string MapKey = "m";
+		private static readonly string MapKey = "map";
 
 		/// <summary>
 		/// Key that store coin bag coordinates
 		/// </summary>
-		private static readonly string CoinBagKey = "c";
+		private static readonly string CoinBagKey = "coin-bag";
 
 		/// <summary>
 		/// Key that stores a list of block coordinates
 		/// </summary>
-		private static readonly string BlocksKey = "b";
+		private static readonly string BlocksKey = "blocks";
 
 		/// <summary>
 		/// Key that stores alternate level information (random parallel version)
 		/// </summary>
-		private static readonly string AltKey = "a";
+		private static readonly string AltKey = "alt";
 
 		/// <summary>
 		/// Key that stores the spawn coordinate
 		/// </summary>
-		private static readonly string SpawnKey = "s";
+		private static readonly string SpawnKey = "spawn";
 
 		/// <summary>
 		/// Key that stores an origin coordinate
 		/// </summary>
-		private static readonly string OriginKey = "o";
+		private static readonly string OriginKey = "origin";
 
 		/// <summary>
 		/// Key that stores a list of coordinates with coordinates to in-game key objects
 		/// </summary>
-		private static readonly string KeysKey = "k";
+		private static readonly string KeysKey = "keys";
 
 		/// <summary>
 		/// Current level during parsing, null if have not started any level
@@ -392,25 +392,25 @@ namespace ClubPenguinPlus.ThinIce
 						}
 						foreach (var tile in rowValue)
 						{
-							if (tile.VariantType == Variant.Type.Float)
+							if (tile.VariantType == Variant.Type.String)
 							{
-								var tileValue = tile.AsInt32();
+								var tileValue = tile.AsString();
 								var type = tileValue switch
 								{
-									0 => Tile.Type.Empty,
-									1 => Tile.Type.Ice,
-									2 => Tile.Type.ThickIce,
-									3 => Tile.Type.Wall,
-									4 => Tile.Type.Goal,
-									5 => Tile.Type.Teleporter,
-									6 => Tile.Type.Lock,
-									7 => Tile.Type.Button,
-									8 => Tile.Type.FakeTemporaryWall,
-									9 => Tile.Type.FakePassableWall,
-									10 => Tile.Type.FakeImpassableWall,
-									11 => Tile.Type.BlockHole,
-									12 => Tile.Type.PlaidTeleporter,
-									13 => Tile.Type.Water,
+									"empty" => Tile.Type.Empty,
+									"ice" => Tile.Type.Ice,
+									"thick" => Tile.Type.ThickIce,
+									"wall" => Tile.Type.Wall,
+									"goal" => Tile.Type.Goal,
+									"warp" => Tile.Type.Teleporter,
+									"lock" => Tile.Type.Lock,
+									"button" => Tile.Type.Button,
+									"faketempwall" => Tile.Type.FakeTemporaryWall,
+									"fakepasswall" => Tile.Type.FakePassableWall,
+									"fakeimpasswall" => Tile.Type.FakeImpassableWall,
+									"blockhole" => Tile.Type.BlockHole,
+									"plaidwarp" => Tile.Type.PlaidTeleporter,
+									"water" => Tile.Type.Water,
 									_ => throw new Exception($"{tileValue} is not a valid value for a tile")
 								} ;
 								rowList.Add(type);
@@ -418,7 +418,7 @@ namespace ClubPenguinPlus.ThinIce
 							}
 							else
 							{
-								throw new Exception("Tile was not a number");
+								throw new Exception("Tile was not a string");
 							}
 						}
 						map.Add(rowList);
