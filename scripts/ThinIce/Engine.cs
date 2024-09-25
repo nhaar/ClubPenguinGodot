@@ -119,7 +119,7 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			Visible = true;
 			Puffle.Activate();
-			StartLevel(1);
+			StartLevel(1, firstTime: true);
 		}
 
 		/// <summary>
@@ -196,7 +196,10 @@ namespace ClubPenguinPlus.ThinIce
 		/// <param name="resetting">
 		/// Whether or not the player is resetting the level
 		/// </param>
-		public void StartLevel(int levelNumber, bool resetting = false)
+		/// <param name="firstTime">
+		/// Whether or not it is the first time starting first level
+		/// </param>
+		public void StartLevel(int levelNumber, bool resetting = false, bool firstTime = false)
 		{
 			if (!resetting)
 			{
@@ -209,6 +212,10 @@ namespace ClubPenguinPlus.ThinIce
 			DrawLevel();
 			Puffle.Die();
 			Puffle.TeleportTo(CurrentLevel.PuffleSpawnLocation);
+			if (resetting || firstTime)
+			{
+				Puffle.Ignite();
+			}
 		}
 
 		public void GoToNextLevel()

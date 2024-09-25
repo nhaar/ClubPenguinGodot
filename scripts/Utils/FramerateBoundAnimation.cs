@@ -79,10 +79,14 @@ namespace ClubPenguinPlus.Utils
         /// <summary>
         /// Advances the animation by one frame
         /// </summary>
-        public void Advance()
+        /// <returns>
+        /// Whether or not the animation ended in the frame
+        /// </returns>
+        public bool Advance()
         {
             Parent.Texture = SpriteFrames.GetFrameTexture(Animation, Frames[CurrentFrame]);
             CurrentFrame = (CurrentFrame + 1) % FrameCount;
+            return CurrentFrame == 0;
         }
     }
 }
