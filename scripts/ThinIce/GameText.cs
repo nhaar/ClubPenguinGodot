@@ -18,7 +18,7 @@ namespace ClubPenguinPlus.ThinIce
 			LabelSettings = new()
 			{
 				Font = Font,
-				FontSize = 266,
+				FontSize = 350,
 				FontColor = TextColor
 			};
 		}

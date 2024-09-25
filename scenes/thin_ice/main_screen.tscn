@@ -12,8 +12,9 @@
 [ext_resource type="Script" path="res://scripts/ThinIce/MainScreen.cs" id="65_huqpk"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_urycm"]
+line_spacing = 100.0
 font = ExtResource("15_g1vvg")
-font_size = 140
+font_size = 230
 font_color = Color(0, 0.4, 0.8, 1)
 
 [node name="MainScreen" type="Node2D"]
@@ -44,7 +45,7 @@ texture_hover = ExtResource("5_l84su")
 script = ExtResource("19_bssp1")
 ButtonText = "START"
 ButtonFont = ExtResource("15_g1vvg")
-ButtonFontSize = 100
+ButtonFontSize = 266
 
 [node name="Engine" parent="." instance=ExtResource("7_wr4ey")]
 visible = false
@@ -62,7 +63,7 @@ texture_hover = ExtResource("5_l84su")
 script = ExtResource("19_bssp1")
 ButtonText = "PLAY"
 ButtonFont = ExtResource("15_g1vvg")
-ButtonFontSize = 100
+ButtonFontSize = 266
 
 [node name="NextButton" type="TextureButton" parent="HowTo"]
 offset_left = 2474.5
@@ -74,21 +75,22 @@ texture_hover = ExtResource("5_l84su")
 script = ExtResource("19_bssp1")
 ButtonText = "NEXT"
 ButtonFont = ExtResource("15_g1vvg")
-ButtonFontSize = 100
+ButtonFontSize = 266
 
 [node name="HowToArt1" type="Sprite2D" parent="HowTo"]
 position = Vector2(40.5, 722)
 texture = ExtResource("11_xj3ai")
 
 [node name="HowToText1" type="Label" parent="HowTo"]
-offset_left = -2542.0
-offset_top = -1110.0
-offset_right = 2755.0
-offset_bottom = -438.0
-text = "Melt ice on your way through each maze. Once the ice
-is melted you can't walk back. Melt all the ice to solve
-the stage"
+offset_left = -4750.0
+offset_top = -2400.0
+offset_right = 4785.0
+offset_bottom = -1716.0
+text = "Melt ice on your way through each maze. Once the ice is melted you
+can't walk back. Melt all the ice to solve the stage.
+"
 label_settings = SubResource("LabelSettings_urycm")
+horizontal_alignment = 1
 
 [node name="UI" parent="." instance=ExtResource("10_ld5i1")]
 visible = false
