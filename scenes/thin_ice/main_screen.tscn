@@ -1,15 +1,15 @@
 [gd_scene load_steps=12 format=3 uid="uid://cyqygan61whl4"]
 
+[ext_resource type="Texture2D" uid="uid://kpdn3kob5rh2" path="res://assets/thin_ice/logo.png" id="2_mvaxx"]
+[ext_resource type="Texture2D" uid="uid://di566t2sux2sl" path="res://assets/thin_ice/menu_art.png" id="3_78mm7"]
+[ext_resource type="Texture2D" uid="uid://b7n0i7mqfan65" path="res://assets/thin_ice/small_button/normal.png" id="4_5jn6v"]
+[ext_resource type="Texture2D" uid="uid://d05drkq1e5job" path="res://assets/thin_ice/small_button/hover.png" id="5_l84su"]
 [ext_resource type="PackedScene" uid="uid://l0ev2rssqilp" path="res://scenes/thin_ice/engine.tscn" id="7_wr4ey"]
 [ext_resource type="PackedScene" uid="uid://cooykk2jsc1wn" path="res://scenes/thin_ice/ui.tscn" id="10_ld5i1"]
+[ext_resource type="Texture2D" uid="uid://cbvqskgeratay" path="res://assets/thin_ice/howto/1.png" id="11_xj3ai"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="15_g1vvg"]
 [ext_resource type="Script" path="res://scripts/ThinIce/GameButton.cs" id="19_bssp1"]
-[ext_resource type="Texture2D" uid="uid://kpdn3kob5rh2" path="res://assets/thin_ice/Logo.png" id="57_ei5o6"]
-[ext_resource type="Texture2D" uid="uid://cqtjybggt2wo8" path="res://assets/thin_ice/MenuArt.png" id="58_3yip4"]
-[ext_resource type="Texture2D" uid="uid://bio8o4an2nhvg" path="res://assets/thin_ice/SmallButton.png" id="59_ckgbh"]
-[ext_resource type="Texture2D" uid="uid://casu86ypep8af" path="res://assets/thin_ice/SmallButtonHover.png" id="60_xc0jj"]
 [ext_resource type="Script" path="res://scripts/ThinIce/MainScreen.cs" id="65_huqpk"]
-[ext_resource type="Texture2D" uid="uid://ha2tiaqki64l" path="res://assets/thin_ice/InstructionArt1.png" id="66_fs4ym"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_urycm"]
 font = ExtResource("15_g1vvg")
@@ -25,22 +25,22 @@ LogoPath = NodePath("Logo")
 HowToPath = NodePath("HowTo")
 
 [node name="Logo" type="Sprite2D" parent="."]
-texture = ExtResource("57_ei5o6")
-offset = Vector2(0, -1600)
+texture = ExtResource("2_mvaxx")
+offset = Vector2(-39.5, -3438)
 
 [node name="Title" type="Node2D" parent="."]
 
 [node name="MenuArt" type="Sprite2D" parent="Title"]
-texture = ExtResource("58_3yip4")
-offset = Vector2(0, 100)
+texture = ExtResource("3_78mm7")
+offset = Vector2(180.5, -38)
 
 [node name="StartButton" type="TextureButton" parent="Title"]
-offset_left = -480.0
-offset_top = 1600.0
-offset_right = 480.0
-offset_bottom = 1880.0
-texture_normal = ExtResource("59_ckgbh")
-texture_hover = ExtResource("60_xc0jj")
+offset_left = -959.5
+offset_top = 2802.0
+offset_right = 960.5
+offset_bottom = 3362.0
+texture_normal = ExtResource("4_5jn6v")
+texture_hover = ExtResource("5_l84su")
 script = ExtResource("19_bssp1")
 ButtonText = "START"
 ButtonFont = ExtResource("15_g1vvg")
@@ -53,32 +53,32 @@ visible = false
 visible = false
 
 [node name="PlayButton" type="TextureButton" parent="HowTo"]
-offset_left = -2000.0
-offset_top = 1600.0
-offset_right = -1040.0
-offset_bottom = 1880.0
-texture_normal = ExtResource("59_ckgbh")
-texture_hover = ExtResource("60_xc0jj")
+offset_left = -4273.5
+offset_top = 2802.0
+offset_right = -2353.5
+offset_bottom = 3362.0
+texture_normal = ExtResource("4_5jn6v")
+texture_hover = ExtResource("5_l84su")
 script = ExtResource("19_bssp1")
 ButtonText = "PLAY"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
 
 [node name="NextButton" type="TextureButton" parent="HowTo"]
-offset_left = 1088.0
-offset_top = 1600.0
-offset_right = 2048.0
-offset_bottom = 1880.0
-texture_normal = ExtResource("59_ckgbh")
-texture_hover = ExtResource("60_xc0jj")
+offset_left = 2474.5
+offset_top = 2802.0
+offset_right = 4394.5
+offset_bottom = 3362.0
+texture_normal = ExtResource("4_5jn6v")
+texture_hover = ExtResource("5_l84su")
 script = ExtResource("19_bssp1")
 ButtonText = "NEXT"
 ButtonFont = ExtResource("15_g1vvg")
 ButtonFontSize = 100
 
 [node name="HowToArt1" type="Sprite2D" parent="HowTo"]
-position = Vector2(0, 500)
-texture = ExtResource("66_fs4ym")
+position = Vector2(40.5, 722)
+texture = ExtResource("11_xj3ai")
 
 [node name="HowToText1" type="Label" parent="HowTo"]
 offset_left = -2542.0

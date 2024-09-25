@@ -170,8 +170,8 @@ namespace ClubPenguinPlus.ThinIce
 		private FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
 
 		// reference hardcoded values
-		private static readonly int LeftmostTileX = -2158;
-		private static readonly int TopmostTileY = -1700;
+		private static readonly float LeftmostTileX = -4319.5f;
+		private static readonly float TopmostTileY = -3638f;
 
 		public override void _Ready()
 		{

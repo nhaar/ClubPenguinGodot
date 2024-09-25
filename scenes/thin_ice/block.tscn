@@ -1,8 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://dnw13topxrxdq"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Block.cs" id="1_irepo"]
-[ext_resource type="Texture2D" uid="uid://bcpgbrqousu3x" path="res://assets/thin_ice/Block.png" id="1_oumr1"]
+[ext_resource type="Texture2D" uid="uid://bcpgbrqousu3x" path="res://assets/thin_ice/block.png" id="1_w224v"]
 
 [node name="Block" type="Sprite2D"]
-texture = ExtResource("1_oumr1")
+texture = ExtResource("1_w224v")
 script = ExtResource("1_irepo")

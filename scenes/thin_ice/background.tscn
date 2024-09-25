@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://cj1610se05dvm" path="res://scenes/thin_ice/cabinet.tscn" id="1_i2uf0"]
 [ext_resource type="PackedScene" uid="uid://wde2hs582ngl" path="res://scenes/thin_ice/side_cabinet_arrow_key.tscn" id="2_hhba6"]
 [ext_resource type="PackedScene" uid="uid://dqg8ktr5wal48" path="res://scenes/thin_ice/cabinet_arrow_key.tscn" id="3_3btc6"]
-[ext_resource type="Texture2D" uid="uid://dnq0r4c8dgm0k" path="res://assets/thin_ice/UpKeyStill.png" id="4_do3in"]
-[ext_resource type="Texture2D" uid="uid://c5rd13ep663wq" path="res://assets/thin_ice/UpKeyPressed.png" id="5_viu6t"]
-[ext_resource type="Texture2D" uid="uid://bfegwv323f2dk" path="res://assets/thin_ice/DownKeyStill.png" id="6_4qrr7"]
-[ext_resource type="Texture2D" uid="uid://dehy53t8fcm50" path="res://assets/thin_ice/DownKeyPressed.png" id="7_v6w2i"]
-[ext_resource type="Texture2D" uid="uid://q7mgcru5ps36" path="res://assets/thin_ice/ScreenBackground.png" id="8_me3nf"]
+[ext_resource type="Texture2D" uid="uid://fb7owwig0jt0" path="res://assets/thin_ice/up_key/1.png" id="5_wln4v"]
+[ext_resource type="Texture2D" uid="uid://sp2ngjumcjv2" path="res://assets/thin_ice/up_key/2.png" id="6_k56eq"]
+[ext_resource type="Texture2D" uid="uid://dodvtrcsnqnu8" path="res://assets/thin_ice/down_key/1.png" id="7_2e3rm"]
+[ext_resource type="Texture2D" uid="uid://duxx25edikl8d" path="res://assets/thin_ice/down_key/2.png" id="8_ohm1j"]
+[ext_resource type="Texture2D" uid="uid://dug5jiprs3fb5" path="res://assets/thin_ice/screen_background.png" id="9_aykb5"]
 
 [node name="Background" type="Node2D"]
 script = ExtResource("1_dd7uq")
@@ -18,24 +18,26 @@ CabinetPath = NodePath("Cabinet")
 script = null
 
 [node name="RightCabinetArrowKey" parent="Cabinet" instance=ExtResource("2_hhba6")]
+position = Vector2(1939.5, 4287.5)
 BoundKey = 4194321
 
 [node name="LeftCabinetArrowKey" parent="Cabinet" instance=ExtResource("2_hhba6")]
+offset = Vector2(1919.5, 4285.5)
 IsLeft = true
 BoundKey = 4194319
 
 [node name="UpCabinetArrowKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
-offset = Vector2(0, 2100)
-StillTexture = ExtResource("4_do3in")
-PressedTexture = ExtResource("5_viu6t")
+offset = Vector2(16.5, 4056)
+StillTexture = ExtResource("5_wln4v")
+PressedTexture = ExtResource("6_k56eq")
 BoundKey = 4194320
 
 [node name="DownCabinetArrowKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
-offset = Vector2(0, 2300)
-StillTexture = ExtResource("6_4qrr7")
-PressedTexture = ExtResource("7_v6w2i")
+offset = Vector2(12.5, 4542)
+StillTexture = ExtResource("7_2e3rm")
+PressedTexture = ExtResource("8_ohm1j")
 BoundKey = 4194322
 
 [node name="ScreenBackground" type="Sprite2D" parent="Cabinet"]
-position = Vector2(0, -150)
-texture = ExtResource("8_me3nf")
+position = Vector2(0.5, -278)
+texture = ExtResource("9_aykb5")

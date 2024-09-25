@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/ThinIce/UI.cs" id="1_4k31g"]
 [ext_resource type="PackedScene" uid="uid://dkw5x0xm3ibtr" path="res://scenes/thin_ice/ui_label.tscn" id="1_qluoo"]
-[ext_resource type="Texture2D" uid="uid://ua1mdc33h03d" path="res://assets/thin_ice/SquareButtonScaled.png" id="2_veeyd"]
-[ext_resource type="Texture2D" uid="uid://bsx5mcwm64pq5" path="res://assets/thin_ice/SquareButtonHoverScaled.png" id="3_bcnes"]
+[ext_resource type="Texture2D" uid="uid://bau011s46ecsu" path="res://assets/thin_ice/big_button_scaled/normal.png" id="3_wd2tg"]
+[ext_resource type="Texture2D" uid="uid://cenw5tfdquvf0" path="res://assets/thin_ice/big_button_scaled/hover.png" id="4_40cx2"]
 [ext_resource type="Script" path="res://scripts/ThinIce/GameButton.cs" id="4_h83uc"]
 [ext_resource type="FontFile" uid="uid://b3dofkopx4xbr" path="res://assets/thin_ice/cpBurbankBgWdBold.ttf" id="5_8qfr1"]
 
@@ -15,12 +15,13 @@ TotalTilePath = NodePath("TopRow/TileSeparator/TotalTileCount")
 LevelPath = NodePath("TopRow/LevelLabel/LevelNumber")
 
 [node name="TopRow" type="Node2D" parent="."]
-position = Vector2(0, -2030)
+position = Vector2(0, -4308)
 
 [node name="LevelLabel" parent="TopRow" instance=ExtResource("1_qluoo")]
-offset_left = -2000.0
-offset_right = -1960.0
+offset_left = -3680.0
+offset_right = -3634.0
 text = "LEVEL"
+horizontal_alignment = 2
 
 [node name="LevelNumber" parent="TopRow/LevelLabel" instance=ExtResource("1_qluoo")]
 layout_mode = 0
@@ -56,15 +57,16 @@ offset_left = 700.0
 offset_right = 740.0
 
 [node name="ResetButton" type="TextureButton" parent="."]
-offset_left = -2100.0
-offset_top = 1820.0
-offset_right = -1210.0
-offset_bottom = 2012.0
-texture_normal = ExtResource("2_veeyd")
-texture_hover = ExtResource("3_bcnes")
+offset_left = -4339.0
+offset_top = 3357.5
+offset_right = -2560.0
+offset_bottom = 3742.5
+scale = Vector2(0.927, 0.688)
+texture_normal = ExtResource("3_wd2tg")
+texture_hover = ExtResource("4_40cx2")
 script = ExtResource("4_h83uc")
 ButtonText = "RESET"
 ButtonFont = ExtResource("5_8qfr1")
-ButtonFontSize = 100
+ButtonFontSize = 266
 
 [connection signal="pressed" from="ResetButton" to="." method="OnResetButtonPressed"]
