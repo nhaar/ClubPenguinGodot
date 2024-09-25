@@ -54,6 +54,11 @@ namespace ClubPenguinPlus.ThinIce
 		public int Points => PointsAtStartOfLevel + PointsInLevel;
 
 		/// <summary>
+		/// Levels the player has solved so far
+		/// </summary>
+		public int SolvedLevels { get; private set; } = 0;
+
+		/// <summary>
 		/// How many times the player reset the current level
 		/// </summary>
 		private int TimesFailed { get; set; } = 0;
@@ -214,6 +219,7 @@ namespace ClubPenguinPlus.ThinIce
 				// double if first try
 				int factor = TimesFailed == 0 ? 2 : 1;
 				PointsInLevel += factor * CurrentLevel.TotalTileCount;
+				SolvedLevels++;
 			}
 			SolvedPrevious = solved;
 			PointsAtStartOfLevel += PointsInLevel;

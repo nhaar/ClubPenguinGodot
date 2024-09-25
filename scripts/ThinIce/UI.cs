@@ -21,6 +21,9 @@ namespace ClubPenguinPlus.ThinIce
 		[Export]
 		private NodePath LevelPath { get; set; }
 
+		[Export]
+		private NodePath SolvedPath { get; set; }
+
 		private Label PointsLabel { get; set; }
 
 		private Label MeltedTileLabel { get; set; }
@@ -28,6 +31,8 @@ namespace ClubPenguinPlus.ThinIce
 		private Label TotalTileLabel { get; set; }
 
 		private Label LevelLabel { get; set; }
+
+		private Label SolvedLabel { get; set; }
 
 		public Engine Engine { get; set; }
 
@@ -38,6 +43,7 @@ namespace ClubPenguinPlus.ThinIce
 			MeltedTileLabel = GetNode<Label>(MeltedTilePath);
 			TotalTileLabel = GetNode<Label>(TotalTilePath);
 			LevelLabel = GetNode<Label>(LevelPath);
+			SolvedLabel = GetNode<Label>(SolvedPath);
 		}
 
 		public override void _Process(double delta)
@@ -46,6 +52,7 @@ namespace ClubPenguinPlus.ThinIce
 			MeltedTileLabel.Text = Engine.MeltedTiles.ToString();
 			TotalTileLabel.Text = Engine.TotalTileCount.ToString();
 			PointsLabel.Text = Engine.Points.ToString();
+			SolvedLabel.Text = Engine.SolvedLevels.ToString();
 		}
 
 		/// <summary>
