@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://xhxo0y64rdkb"]
+[gd_scene load_steps=63 format=3 uid="uid://xhxo0y64rdkb"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Tile.cs" id="1_2kvod"]
 [ext_resource type="Texture2D" uid="uid://c6efws38okqwi" path="res://assets/thin_ice/tile/empty.png" id="2_258yr"]
@@ -53,7 +53,12 @@
 [ext_resource type="Texture2D" uid="uid://dgjobuo7vpi2v" path="res://assets/thin_ice/tile/water/37.png" id="47_xs0eu"]
 [ext_resource type="Texture2D" uid="uid://dkw2qgwiqtstb" path="res://assets/thin_ice/tile/water/38.png" id="48_6lrxs"]
 [ext_resource type="Texture2D" uid="uid://beeu1624gi58u" path="res://assets/thin_ice/tile/water/39.png" id="49_21f5e"]
+[ext_resource type="Texture2D" uid="uid://cytg6gp5qxk36" path="res://assets/thin_ice/tile/melt/74.png" id="54_2niqe"]
 [ext_resource type="PackedScene" uid="uid://dxrog52g45si" path="res://scenes/thin_ice/key.tscn" id="54_wc2ij"]
+[ext_resource type="Texture2D" uid="uid://cc01un8gq0alc" path="res://assets/thin_ice/tile/melt/75.png" id="55_yl01k"]
+[ext_resource type="Texture2D" uid="uid://dxjvpebj68u03" path="res://assets/thin_ice/tile/melt/76.png" id="56_iv1ov"]
+[ext_resource type="Texture2D" uid="uid://cr1km3lk4x2iw" path="res://assets/thin_ice/tile/melt/77.png" id="57_dhpqu"]
+[ext_resource type="Texture2D" uid="uid://cyn5y4bvaweei" path="res://assets/thin_ice/tile/melt/78.png" id="58_1booj"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ktfn6"]
 animations = [{
@@ -200,6 +205,29 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_44f3h"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("54_2niqe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_yl01k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_iv1ov")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_dhpqu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_1booj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Tile" type="Sprite2D"]
 script = ExtResource("1_2kvod")
 EmptyTile = ExtResource("2_258yr")
@@ -213,4 +241,5 @@ ButtonTile = ExtResource("9_s0rne")
 BlockHoleTile = ExtResource("10_3pujj")
 WaterTileFrames = SubResource("SpriteFrames_ktfn6")
 TeleporterTileFrames = SubResource("SpriteFrames_0o7d4")
+MeltingAnimationFrames = SubResource("SpriteFrames_44f3h")
 KeyScene = ExtResource("54_wc2ij")

@@ -46,6 +46,9 @@ namespace ClubPenguinPlus.ThinIce
 		private SpriteFrames TeleporterTileFrames { get; set; }
 
 		[Export]
+		private SpriteFrames MeltingAnimationFrames { get; set; }
+
+		[Export]
 		private PackedScene KeyScene { get; set; }
 
 		/// <summary>
@@ -169,6 +172,10 @@ namespace ClubPenguinPlus.ThinIce
 
 		private FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
 
+		private FramerateBoundAnimation MeltingAnimation { get; set; }
+
+		private Sprite2D MeltingAnimationNode { get; set; } = null;
+
 		// reference hardcoded values
 		private static readonly float LeftmostTileX = -4319.5f;
 		private static readonly float TopmostTileY = -3638f;
@@ -180,6 +187,24 @@ namespace ClubPenguinPlus.ThinIce
 			TeleporterIdleAnimation = new(TeleporterTileFrames, this);
 		}
 
+		private void StartMelt()
+		{
+			MeltingAnimationNode = new();
+			AddChild(MeltingAnimationNode);
+			MeltingAnimation = new(MeltingAnimationFrames, MeltingAnimationNode);
+			MeltingAnimation.Start();
+		}
+
+		private void ContinueMelt()
+		{
+			var ended = MeltingAnimation.Advance();
+			if (ended)
+			{
+				MeltingAnimationNode.QueueFree();
+				MeltingAnimationNode = null;
+			}
+		}
+
 		public void SetCoordinate(int x, int y)
 		{
 			var tileSize = EmptyTile.GetSize();
@@ -189,6 +214,10 @@ namespace ClubPenguinPlus.ThinIce
 
 		public override void _Process(double delta)
 		{
+			if (MeltingAnimationNode != null)
+			{
+				ContinueMelt();
+			}
 			// water tile animation
 			if (TileType == Type.Water)
 			{
@@ -303,7 +332,16 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			if (TileType == Type.Ice || TileType == Type.ThickIce)
 			{
-				var newType = TileType == Type.Ice ? Type.Water : Type.Ice;
+				Type newType;
+				if (TileType == Type.Ice)
+				{
+					newType = Type.Water;
+					StartMelt();
+				}
+				else
+				{
+					newType = Type.Ice;
+				}
 				Engine.MeltTile();
 				ChangeTile(newType);
 			}
