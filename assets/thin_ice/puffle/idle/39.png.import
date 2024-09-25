@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://drek1n57nrse"
-path="res://.godot/imported/1.png-fbe4837d6c90c9bf7ef79a4176d1b237.ctex"
+uid="uid://ep2kr3xi2v1s"
+path="res://.godot/imported/39.png-823be7070b2c20f6004e5ee2f9320ede.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/thin_ice/puffle/1.png"
-dest_files=["res://.godot/imported/1.png-fbe4837d6c90c9bf7ef79a4176d1b237.ctex"]
+source_file="res://assets/thin_ice/puffle/idle/39.png"
+dest_files=["res://.godot/imported/39.png-823be7070b2c20f6004e5ee2f9320ede.ctex"]
 
 [params]
 

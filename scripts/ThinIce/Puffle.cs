@@ -11,7 +11,7 @@ namespace ClubPenguinPlus.ThinIce
 	public partial class Puffle : MovableObject
 	{
 		[Export]
-		private Texture2D IdleFrame { get; set; }
+		private SpriteFrames IdleAnimationFrames { get; set; }
 
 		[Export]
 		private SpriteFrames IgniteAnimationFrames { get; set; }
@@ -33,9 +33,13 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		private bool IsActive { get; set; }
 
-		private bool IsIgniting { get; set; }
+		private bool IsIgniting { get; set; } = false;
+
+		private bool IsIdle { get; set; } = false;
 
 		private FramerateBoundAnimation IgniteAnimation { get; set; }
+
+		private FramerateBoundAnimation IdleAnimation { get; set; }
 
 		public override void _Ready()
 		{
@@ -43,6 +47,7 @@ namespace ClubPenguinPlus.ThinIce
 			KeyCount = 0;
 			IsActive = false;
 			IgniteAnimation = new(IgniteAnimationFrames, this);
+			IdleAnimation = new(IdleAnimationFrames, this);
 			SetIdle();
 		}
 
@@ -65,7 +70,8 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		private void SetIdle()
 		{
-			Texture = IdleFrame;
+			IsIdle = true;
+			IdleAnimation.Start();
 		}
 
 		public override void _Process(double delta)
@@ -82,6 +88,10 @@ namespace ClubPenguinPlus.ThinIce
 					IsIgniting = false;
 					SetIdle();
 				}
+			}
+			else if (IsIdle)
+			{
+				IdleAnimation.Advance();
 			}
 			if (IsMoving)
 			{
