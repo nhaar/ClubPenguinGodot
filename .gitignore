@@ -2,14 +2,11 @@
 .godot/
 .vs/
 
-# Use this folder for image editting and other tests
-ImageTest/
-
-# Asset exporting
-AssetExporting/ffdec-path.txt
-AssetExporting/croptemp/
-AssetExporting/temp/
-OriginalAssets/
+# Use this folder for image editting, exporting, and other tests
+image_test/*
+!image_test/.gdignore
+!image_test/crop
+!image_test/crop/*
 
 # python cache
 *__pycache__*

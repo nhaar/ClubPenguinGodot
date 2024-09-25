@@ -5,14 +5,7 @@ import os
 
 # This is a script that you can use to fix the FFDec image exporting bug, where
 # it always adds a 1px border to the right and bottom of the image.
-# Make sure to install Pillow library and replace the output and input directories (it will)
-# fetch all the pngs inside it and crop them, not changing the original
-
-# Directory with the PNG files that you exported with FFDEC
-INPUT_DIR = ""
-
-# Directory to save the files
-OUTPUT_DIR = ""
+# Make sure to install Pillow 
 
 def crop_image(input_path, output_path):
     image = Image.open(input_path)
@@ -32,6 +25,3 @@ def crop_all_pngs(input_dir, output_dir):
         input_path = os.path.join(input_dir, image)
         output_path = os.path.join(output_dir, image)
         crop_image(input_path, output_path)
-
-if __name__ == "__main__":
-    crop_all_pngs(INPUT_DIR, OUTPUT_DIR)
