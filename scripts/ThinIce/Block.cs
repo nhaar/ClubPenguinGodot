@@ -13,11 +13,21 @@ namespace ClubPenguinPlus.ThinIce
 
 		protected override int MoveAnimationDuration => 3;
 
+		private bool HasMomentum { get; set; } = false;
+
 		public override void _Process(double delta)
 		{
 			if (IsMoving)
 			{
 				ContinueMoveAnimation();
+			}
+			else if (HasMomentum)
+			{
+				if (CanPush(MovementDirection))
+				{
+					Move(MovementDirection);
+				}
+				HasMomentum = false;
 			}
 		}
 
@@ -55,10 +65,7 @@ namespace ClubPenguinPlus.ThinIce
 				Coordinates = warpTile.TileCoordinate;
 				Position = warpTile.Position;
 			}
-			if (CanPush(MovementDirection))
-			{
-				Move(MovementDirection);
-			}
+			HasMomentum = true;
 		}
 	}
 }
