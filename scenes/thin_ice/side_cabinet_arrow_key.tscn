@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://wde2hs582ngl"]
+[gd_scene load_steps=5 format=3 uid="uid://wde2hs582ngl"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/SideCabinetArrowKey.cs" id="1_ufbxg"]
 [ext_resource type="Texture2D" uid="uid://bii4jg214bbjb" path="res://assets/thin_ice/right_key/1.png" id="2_tv53f"]
 [ext_resource type="Texture2D" uid="uid://ibpffy0tl228" path="res://assets/thin_ice/right_key/2.png" id="3_aq3u7"]
+[ext_resource type="Texture2D" uid="uid://dv3dr4fx5ispe" path="res://assets/thin_ice/right_key/3.png" id="4_5bnmp"]
 
 [node name="SideCabinetArrowKey" type="Sprite2D"]
 script = ExtResource("1_ufbxg")
 StillTexture = ExtResource("2_tv53f")
 PressedTexture = ExtResource("3_aq3u7")
+ReleaseTexture = ExtResource("4_5bnmp")

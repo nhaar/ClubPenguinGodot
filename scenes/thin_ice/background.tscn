@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c2gmq5qjdjjwf"]
+[gd_scene load_steps=12 format=3 uid="uid://c2gmq5qjdjjwf"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Background.cs" id="1_dd7uq"]
 [ext_resource type="PackedScene" uid="uid://cj1610se05dvm" path="res://scenes/thin_ice/cabinet.tscn" id="1_i2uf0"]
@@ -7,8 +7,10 @@
 [ext_resource type="Texture2D" uid="uid://fb7owwig0jt0" path="res://assets/thin_ice/up_key/1.png" id="5_wln4v"]
 [ext_resource type="Texture2D" uid="uid://sp2ngjumcjv2" path="res://assets/thin_ice/up_key/2.png" id="6_k56eq"]
 [ext_resource type="Texture2D" uid="uid://dodvtrcsnqnu8" path="res://assets/thin_ice/down_key/1.png" id="7_2e3rm"]
+[ext_resource type="Texture2D" uid="uid://bo4atpcyady6k" path="res://assets/thin_ice/up_key/3.png" id="7_rdej3"]
 [ext_resource type="Texture2D" uid="uid://duxx25edikl8d" path="res://assets/thin_ice/down_key/2.png" id="8_ohm1j"]
 [ext_resource type="Texture2D" uid="uid://dug5jiprs3fb5" path="res://assets/thin_ice/screen_background.png" id="9_aykb5"]
+[ext_resource type="Texture2D" uid="uid://c0gk0851nrfmv" path="res://assets/thin_ice/down_key/3.png" id="10_l1tcv"]
 
 [node name="Background" type="Node2D"]
 script = ExtResource("1_dd7uq")
@@ -30,12 +32,14 @@ BoundKey = 4194319
 offset = Vector2(16.5, 4056)
 StillTexture = ExtResource("5_wln4v")
 PressedTexture = ExtResource("6_k56eq")
+ReleaseTexture = ExtResource("7_rdej3")
 BoundKey = 4194320
 
 [node name="DownCabinetArrowKey" parent="Cabinet" instance=ExtResource("3_3btc6")]
 offset = Vector2(12.5, 4542)
 StillTexture = ExtResource("7_2e3rm")
 PressedTexture = ExtResource("8_ohm1j")
+ReleaseTexture = ExtResource("10_l1tcv")
 BoundKey = 4194322
 
 [node name="ScreenBackground" type="Sprite2D" parent="Cabinet"]
