@@ -176,7 +176,7 @@ namespace ClubPenguinPlus.ThinIce
 		public bool CanMove(Direction direction)
 		{
 			var targetCoords = GetDestination(Coordinates, direction);
-			Tile targetTile = Engine.GetTile(targetCoords);
+			var targetTile = Engine.GetTile(targetCoords);
 
 			if (ImpassableTiles.Contains(targetTile.TileType))
 			{
@@ -247,6 +247,11 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			IsMoving = false;
 			ResetKeys();
+		}
+
+		public bool HasKeys()
+		{
+			return KeyCount > 0;
 		}
 	}
 }

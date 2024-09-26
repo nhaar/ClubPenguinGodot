@@ -292,5 +292,34 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			PointsInLevel += 100;
 		}
+
+		/// <summary>
+		/// Get a list the tiles adjacent to a given tile (not including diagonals)
+		/// </summary>
+		public List<Tile> GetNeighborTiles(Tile tile)
+		{
+			var coords = tile.TileCoordinate;
+			var neighbors = new List<Tile>();
+
+			// the order here is special: the order in which tiles are unlocked in the original game
+			if (coords.Y > 0)
+			{
+				neighbors.Add(GetTile(coords + new Vector2I(0, -1)));
+			}
+			if (coords.Y < Level.MaxHeight)
+			{
+				neighbors.Add(GetTile(coords + new Vector2I(0, 1)));
+			}
+			if (coords.X > 0)
+			{
+				neighbors.Add(GetTile(coords + new Vector2I(-1, 0)));
+			}
+			if (coords.X < Level.MaxWidth)
+			{
+				neighbors.Add(GetTile(coords + new Vector2I(1, 0)));
+			}
+
+			return neighbors;
+		}
 	}
 }

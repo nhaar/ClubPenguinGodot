@@ -334,16 +334,29 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				GetCoinBag();
 			}
+			// unlocking any adjacent locks if they exist
+			if (puffle.HasKeys())
+			{
+				var neighbors = Engine.GetNeighborTiles(this);
+				foreach ( var neighbor in neighbors )
+				{
+					if (neighbor.TileType == Type.Lock)
+					{
+						neighbor.ChangeTile(Type.Ice);
+						puffle.UseKey();
+						// ran out of keys
+						if (!puffle.HasKeys())
+						{
+							break;
+						}
+					}
+				}
+			}
+
+
 			if (TileType == Type.Goal)
 			{
 				Engine.GoToNextLevel();
-			}
-			// we must have the key already
-			// also, this functionality should be changed to work on adjacent tile enter
-			else if (TileType == Type.Lock)
-			{
-				ChangeTile(Type.Ice);
-				puffle.UseKey();
 			}
 			else if (!IsPlaidTeleporter && TileType == Type.Teleporter)
 			{
