@@ -49,7 +49,18 @@ namespace ClubPenguinPlus.ThinIce
 		private SpriteFrames MeltingAnimationFrames { get; set; }
 
 		[Export]
+		private SpriteFrames WhirlpoolAnimationFrames { get; set; }
+
+		[Export]
 		private PackedScene KeyScene { get; set; }
+
+		[Export]
+		private Vector2 WhirlpoolCorrection { get; set; }
+
+		/// <summary>
+		/// How much to displace for the whirlpool animation to be centered
+		/// </summary>
+		private Vector2 WhirlpoolDelta { get; set; }
 
 		/// <summary>
 		/// All valid tile types
@@ -128,7 +139,12 @@ namespace ClubPenguinPlus.ThinIce
 			/// <summary>
 			/// Tile the blocks are meant to be placed into
 			/// </summary>
-			BlockHole
+			BlockHole,
+
+			/// <summary>
+			/// Water tile a puffle is sinking into
+			/// </summary>
+			Whirlpool
 		}
 
 		public Type TileType { get; private set; }
@@ -174,7 +190,11 @@ namespace ClubPenguinPlus.ThinIce
 
 		private FramerateBoundAnimation MeltingAnimation { get; set; }
 
+		private FramerateBoundAnimation WhirlpoolAnimation { get; set; }
+
 		private Sprite2D MeltingAnimationNode { get; set; } = null;
+
+		private bool IsWhirlpool { get; set; } = false;
 
 		// reference hardcoded values
 		private static readonly float LeftmostTileX = -4319.5f;
@@ -185,6 +205,8 @@ namespace ClubPenguinPlus.ThinIce
 			Texture = EmptyTile;
 			WaterAnimation = new(WaterTileFrames, this);
 			TeleporterIdleAnimation = new(TeleporterTileFrames, this);
+			WhirlpoolAnimation = new(WhirlpoolAnimationFrames, this);
+			WhirlpoolDelta = -WhirlpoolAnimation.GetFrameTexture(0).GetSize() / 2 + WhirlpoolCorrection;
 		}
 
 		private void StartMelt()
@@ -227,6 +249,10 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				TeleporterIdleAnimation.Advance();
 			}
+			else if (TileType == Type.Whirlpool)
+			{
+				WhirlpoolAnimation.Advance();
+			}
 		}
 
 		/// <summary>
@@ -240,6 +266,12 @@ namespace ClubPenguinPlus.ThinIce
 			BlockReference = null;
 			IsPlaidTeleporter = false;
 
+			if (IsWhirlpool)
+			{
+				IsWhirlpool = false;
+				Position -= WhirlpoolDelta;
+			}
+
 			if (tileType == Type.Water)
 			{
 				WaterAnimation.Start();
@@ -247,6 +279,12 @@ namespace ClubPenguinPlus.ThinIce
 			else if (tileType == Type.Teleporter)
 			{
 				TeleporterIdleAnimation.Start();
+			}
+			else if (tileType == Type.Whirlpool)
+			{
+				WhirlpoolAnimation.Start();
+				IsWhirlpool = true;
+				Position += WhirlpoolDelta;
 			}
 			else
 			{
@@ -315,7 +353,8 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			else if (puffle.IsStuck())
 			{
-				Engine.ResetLevel();
+				ChangeTile(Type.Whirlpool);
+				puffle.Sink();
 			}
 
 			if (KeyReference != null)

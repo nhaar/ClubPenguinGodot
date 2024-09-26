@@ -16,6 +16,12 @@ namespace ClubPenguinPlus.ThinIce
 		[Export]
 		private SpriteFrames IgniteAnimationFrames { get; set; }
 
+		[Export]
+		private SpriteFrames SinkingAnimationFrames { get; set; }
+
+		[Export]
+		private Vector2 SinkingCorrection { get; set; }
+
 		protected override int MoveAnimationDuration => 4;
 
 		public Engine Engine { get; set; }
@@ -37,9 +43,18 @@ namespace ClubPenguinPlus.ThinIce
 
 		private bool IsIdle { get; set; } = false;
 
+		private bool IsSinking { get; set; } = false;
+
 		private FramerateBoundAnimation IgniteAnimation { get; set; }
 
 		private FramerateBoundAnimation IdleAnimation { get; set; }
+
+		private FramerateBoundAnimation SinkingAnimation { get; set; }
+
+		/// <summary>
+		/// How much to displace for the sinking animation to be centered
+		/// </summary>
+		private Vector2 SinkingDelta { get; set; }
 
 		public override void _Ready()
 		{
@@ -48,7 +63,9 @@ namespace ClubPenguinPlus.ThinIce
 			IsActive = false;
 			IgniteAnimation = new(IgniteAnimationFrames, this);
 			IdleAnimation = new(IdleAnimationFrames, this);
+			SinkingAnimation = new(SinkingAnimationFrames, this);
 			SetIdle();
+			SinkingDelta = -SinkingAnimation.GetFrameTexture(0).GetSize() / 2 + SinkingCorrection;
 		}
 
 		/// <summary>
@@ -66,6 +83,22 @@ namespace ClubPenguinPlus.ThinIce
 		}
 
 		/// <summary>
+		/// Start sinking into the tile (Death animation)
+		/// </summary>
+		public void Sink()
+		{
+			Position += SinkingDelta;
+			IsSinking = true;
+			SinkingAnimation.Start();
+		}
+
+		private void EndSink()
+		{
+			Position -= SinkingDelta;
+			IsSinking = false;
+		}
+
+		/// <summary>
 		/// Set puffle to idle animation
 		/// </summary>
 		private void SetIdle()
@@ -78,6 +111,16 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			if (!IsActive)
 			{
+				return;
+			}
+			if (IsSinking)
+			{
+				var ended = SinkingAnimation.Advance();
+				if (ended)
+				{
+					EndSink();
+					Engine.ResetLevel();
+				}
 				return;
 			}
 			if (IsIgniting)

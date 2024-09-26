@@ -88,5 +88,10 @@ namespace ClubPenguinPlus.Utils
             CurrentFrame = (CurrentFrame + 1) % FrameCount;
             return CurrentFrame == 0;
         }
+
+        public Texture2D GetFrameTexture(int frame)
+        {
+            return SpriteFrames.GetFrameTexture(Animation, frame);
+        }
     }
 }

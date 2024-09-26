@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://xhxo0y64rdkb"]
+[gd_scene load_steps=84 format=3 uid="uid://xhxo0y64rdkb"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Tile.cs" id="1_2kvod"]
 [ext_resource type="Texture2D" uid="uid://c6efws38okqwi" path="res://assets/thin_ice/tile/empty.png" id="2_258yr"]
@@ -59,6 +59,26 @@
 [ext_resource type="Texture2D" uid="uid://dxjvpebj68u03" path="res://assets/thin_ice/tile/melt/76.png" id="56_iv1ov"]
 [ext_resource type="Texture2D" uid="uid://cr1km3lk4x2iw" path="res://assets/thin_ice/tile/melt/77.png" id="57_dhpqu"]
 [ext_resource type="Texture2D" uid="uid://cyn5y4bvaweei" path="res://assets/thin_ice/tile/melt/78.png" id="58_1booj"]
+[ext_resource type="Texture2D" uid="uid://c0e6gfv8f7y4y" path="res://assets/thin_ice/tile/whirlpool/1.png" id="59_uhcta"]
+[ext_resource type="Texture2D" uid="uid://cbwhe0pvv7w8r" path="res://assets/thin_ice/tile/whirlpool/2.png" id="60_herak"]
+[ext_resource type="Texture2D" uid="uid://behvftw0onbk4" path="res://assets/thin_ice/tile/whirlpool/3.png" id="61_uk2dq"]
+[ext_resource type="Texture2D" uid="uid://btlogon80o7ut" path="res://assets/thin_ice/tile/whirlpool/4.png" id="62_0sqou"]
+[ext_resource type="Texture2D" uid="uid://buck2yncem3hk" path="res://assets/thin_ice/tile/whirlpool/5.png" id="63_ahecl"]
+[ext_resource type="Texture2D" uid="uid://6fl4mgn4jc4v" path="res://assets/thin_ice/tile/whirlpool/6.png" id="64_b04yr"]
+[ext_resource type="Texture2D" uid="uid://dk4jtiu2o4f5j" path="res://assets/thin_ice/tile/whirlpool/7.png" id="65_0vkpi"]
+[ext_resource type="Texture2D" uid="uid://hnwahqum1s4k" path="res://assets/thin_ice/tile/whirlpool/8.png" id="66_h2doq"]
+[ext_resource type="Texture2D" uid="uid://dkkwvotwdg2ie" path="res://assets/thin_ice/tile/whirlpool/9.png" id="67_xyi5j"]
+[ext_resource type="Texture2D" uid="uid://bcot7ookeaagx" path="res://assets/thin_ice/tile/whirlpool/10.png" id="68_fmmyk"]
+[ext_resource type="Texture2D" uid="uid://bncjq4ms5y1xy" path="res://assets/thin_ice/tile/whirlpool/11.png" id="69_e3q8y"]
+[ext_resource type="Texture2D" uid="uid://dd5v2upl56lnx" path="res://assets/thin_ice/tile/whirlpool/12.png" id="70_6vgp1"]
+[ext_resource type="Texture2D" uid="uid://cb4qnib6j6uws" path="res://assets/thin_ice/tile/whirlpool/13.png" id="71_80lhl"]
+[ext_resource type="Texture2D" uid="uid://bunji3ok5htk" path="res://assets/thin_ice/tile/whirlpool/14.png" id="72_n15va"]
+[ext_resource type="Texture2D" uid="uid://bl5xjjmne4t60" path="res://assets/thin_ice/tile/whirlpool/15.png" id="73_23c3h"]
+[ext_resource type="Texture2D" uid="uid://dv2emd3lycr7t" path="res://assets/thin_ice/tile/whirlpool/16.png" id="74_334aa"]
+[ext_resource type="Texture2D" uid="uid://mlo608y7jnb1" path="res://assets/thin_ice/tile/whirlpool/17.png" id="75_v2alk"]
+[ext_resource type="Texture2D" uid="uid://krdj3btsutls" path="res://assets/thin_ice/tile/whirlpool/18.png" id="76_36oys"]
+[ext_resource type="Texture2D" uid="uid://c1hs7tb6ib1ea" path="res://assets/thin_ice/tile/whirlpool/19.png" id="77_24ny1"]
+[ext_resource type="Texture2D" uid="uid://dwl01v63h1tf1" path="res://assets/thin_ice/tile/whirlpool/20.png" id="78_m0u1r"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ktfn6"]
 animations = [{
@@ -228,6 +248,74 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_380m8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("59_uhcta")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_herak")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_uk2dq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_0sqou")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_ahecl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_b04yr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("65_0vkpi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_h2doq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_xyi5j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_fmmyk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_e3q8y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_6vgp1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_80lhl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_n15va")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_23c3h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_334aa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_v2alk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_36oys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_24ny1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_m0u1r")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Tile" type="Sprite2D"]
 script = ExtResource("1_2kvod")
 EmptyTile = ExtResource("2_258yr")
@@ -242,4 +330,6 @@ BlockHoleTile = ExtResource("10_3pujj")
 WaterTileFrames = SubResource("SpriteFrames_ktfn6")
 TeleporterTileFrames = SubResource("SpriteFrames_0o7d4")
 MeltingAnimationFrames = SubResource("SpriteFrames_44f3h")
+WhirlpoolAnimationFrames = SubResource("SpriteFrames_380m8")
 KeyScene = ExtResource("54_wc2ij")
+WhirlpoolCorrection = Vector2(437, 463)
