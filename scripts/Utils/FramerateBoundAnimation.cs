@@ -77,6 +77,14 @@ namespace ClubPenguinPlus.Utils
         }
 
         /// <summary>
+        /// Start animation, not updating in this frame
+        /// </summary>
+        public void StartDelayed()
+        {
+            CurrentFrame = 0;
+        }
+
+        /// <summary>
         /// Advances the animation by one frame
         /// </summary>
         /// <returns>

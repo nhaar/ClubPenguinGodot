@@ -1,4 +1,4 @@
-[gd_scene load_steps=84 format=3 uid="uid://xhxo0y64rdkb"]
+[gd_scene load_steps=85 format=3 uid="uid://xhxo0y64rdkb"]
 
 [ext_resource type="Script" path="res://scripts/ThinIce/Tile.cs" id="1_2kvod"]
 [ext_resource type="Texture2D" uid="uid://c6efws38okqwi" path="res://assets/thin_ice/tile/empty.png" id="2_258yr"]
@@ -205,7 +205,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_0o7d4"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_wh2ye"]
 animations = [{
 "frames": [{
 "duration": 2.0,
@@ -215,10 +215,30 @@ animations = [{
 "texture": ExtResource("12_ta7vd")
 }, {
 "duration": 2.0,
-"texture": ExtResource("13_nttvo")
+"texture": ExtResource("14_q1e73")
 }, {
 "duration": 2.0,
+"texture": ExtResource("13_nttvo")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0o7d4"]
+animations = [{
+"frames": [{
+"duration": 3.0,
+"texture": ExtResource("11_65nj4")
+}, {
+"duration": 3.0,
+"texture": ExtResource("12_ta7vd")
+}, {
+"duration": 3.0,
 "texture": ExtResource("14_q1e73")
+}, {
+"duration": 3.0,
+"texture": ExtResource("13_nttvo")
 }],
 "loop": true,
 "name": &"default",
@@ -328,6 +348,7 @@ LockTile = ExtResource("8_shpu5")
 ButtonTile = ExtResource("9_s0rne")
 BlockHoleTile = ExtResource("10_3pujj")
 WaterTileFrames = SubResource("SpriteFrames_ktfn6")
+TeleporterBootingAnimationFrames = SubResource("SpriteFrames_wh2ye")
 TeleporterTileFrames = SubResource("SpriteFrames_0o7d4")
 MeltingAnimationFrames = SubResource("SpriteFrames_44f3h")
 WhirlpoolAnimationFrames = SubResource("SpriteFrames_380m8")

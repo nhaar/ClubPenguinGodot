@@ -43,6 +43,9 @@ namespace ClubPenguinPlus.ThinIce
 		private SpriteFrames WaterTileFrames { get; set; }
 
 		[Export]
+		private SpriteFrames TeleporterBootingAnimationFrames { get; set; }
+
+		[Export]
 		private SpriteFrames TeleporterTileFrames { get; set; }
 
 		[Export]
@@ -186,6 +189,8 @@ namespace ClubPenguinPlus.ThinIce
 
 		private FramerateBoundAnimation WaterAnimation { get; set; }
 
+		private FramerateBoundAnimation TeleporterBootingAnimation { get; set; }
+
 		private FramerateBoundAnimation TeleporterIdleAnimation { get; set; }
 
 		private FramerateBoundAnimation MeltingAnimation { get; set; }
@@ -196,6 +201,8 @@ namespace ClubPenguinPlus.ThinIce
 
 		private bool IsWhirlpool { get; set; } = false;
 
+		private bool IsTeleporterBooting { get; set; } = false;
+
 		// reference hardcoded values
 		private static readonly float LeftmostTileX = -4319.5f;
 		private static readonly float TopmostTileY = -3638f;
@@ -205,6 +212,7 @@ namespace ClubPenguinPlus.ThinIce
 			Texture = EmptyTile;
 			WaterAnimation = new(WaterTileFrames, this);
 			TeleporterIdleAnimation = new(TeleporterTileFrames, this);
+			TeleporterBootingAnimation = new(TeleporterBootingAnimationFrames, this);
 			WhirlpoolAnimation = new(WhirlpoolAnimationFrames, this);
 			WhirlpoolDelta = -WhirlpoolAnimation.GetFrameTexture(0).GetSize() / 2 + WhirlpoolCorrection;
 		}
@@ -247,7 +255,19 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			else if (TileType == Type.Teleporter && !IsPlaidTeleporter)
 			{
-				TeleporterIdleAnimation.Advance();
+				if (IsTeleporterBooting)
+				{
+					var ended = TeleporterBootingAnimation.Advance();
+					if (ended)
+					{
+						IsTeleporterBooting = false;
+						TeleporterIdleAnimation.StartDelayed();
+					}
+				}
+				else
+				{
+					TeleporterIdleAnimation.Advance();
+				}
 			}
 			else if (TileType == Type.Whirlpool)
 			{
@@ -278,7 +298,8 @@ namespace ClubPenguinPlus.ThinIce
 			}
 			else if (tileType == Type.Teleporter)
 			{
-				TeleporterIdleAnimation.Start();
+				TeleporterBootingAnimation.Start();
+				IsTeleporterBooting = true;
 			}
 			else if (tileType == Type.Whirlpool)
 			{
