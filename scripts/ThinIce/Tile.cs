@@ -434,6 +434,11 @@ namespace ClubPenguinPlus.ThinIce
 				puffle.TeleportTo(LinkedTeleporter.TileCoordinate);
 				MakePlaidTeleporter();
 				LinkedTeleporter.MakePlaidTeleporter();
+				if (puffle.IsStuck())
+				{
+					LinkedTeleporter.ChangeTile(Type.Whirlpool);
+					puffle.Sink();
+				}
 			}
 			else if (puffle.IsStuck())
 			{
