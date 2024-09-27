@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d37qk44u56lgp"
-path="res://.godot/imported/1.png-3076eb4e447b1f3a45d3606f6ca18496.ctex"
+uid="uid://dvtwcciyvrius"
+path="res://.godot/imported/1.png-d902cdfce3f15a63436cc6d00a1b71fd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/thin_ice/tile/warp/1.png"
-dest_files=["res://.godot/imported/1.png-3076eb4e447b1f3a45d3606f6ca18496.ctex"]
+source_file="res://assets/thin_ice/tile/warp/charge/1.png"
+dest_files=["res://.godot/imported/1.png-d902cdfce3f15a63436cc6d00a1b71fd.ctex"]
 
 [params]
 

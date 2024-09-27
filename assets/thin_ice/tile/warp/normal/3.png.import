@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://64rnefsvfqko"
-path="res://.godot/imported/4.png-0942d0417a9dd1d2e4c9cd8748e2f0e8.ctex"
+uid="uid://clrqi5ns14mox"
+path="res://.godot/imported/3.png-63e1581567d69d925d084bddd60e67e6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/thin_ice/tile/warp/4.png"
-dest_files=["res://.godot/imported/4.png-0942d0417a9dd1d2e4c9cd8748e2f0e8.ctex"]
+source_file="res://assets/thin_ice/tile/warp/normal/3.png"
+dest_files=["res://.godot/imported/3.png-63e1581567d69d925d084bddd60e67e6.ctex"]
 
 [params]
 

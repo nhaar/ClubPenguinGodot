@@ -49,6 +49,9 @@ namespace ClubPenguinPlus.ThinIce
 		private SpriteFrames TeleporterTileFrames { get; set; }
 
 		[Export]
+		private SpriteFrames TeleporterChargeAnimationFrames { get; set; }
+
+		[Export]
 		private SpriteFrames MeltingAnimationFrames { get; set; }
 
 		[Export]
@@ -197,11 +200,18 @@ namespace ClubPenguinPlus.ThinIce
 
 		private FramerateBoundAnimation WhirlpoolAnimation { get; set; }
 
+		private FramerateBoundAnimation TeleporterChargeAnimation { get; set; }
+
 		private Sprite2D MeltingAnimationNode { get; set; } = null;
 
 		private bool IsWhirlpool { get; set; } = false;
 
 		private bool IsTeleporterBooting { get; set; } = false;
+
+		/// <summary>
+		/// Whether or not the teleporter is faster from being near a player
+		/// </summary>
+		public bool IsTeleporterCharge { get; private set; } = false;
 
 		// reference hardcoded values
 		private static readonly float LeftmostTileX = -4319.5f;
@@ -213,6 +223,7 @@ namespace ClubPenguinPlus.ThinIce
 			WaterAnimation = new(WaterTileFrames, this);
 			TeleporterIdleAnimation = new(TeleporterTileFrames, this);
 			TeleporterBootingAnimation = new(TeleporterBootingAnimationFrames, this);
+			TeleporterChargeAnimation = new(TeleporterChargeAnimationFrames, this);
 			WhirlpoolAnimation = new(WhirlpoolAnimationFrames, this);
 			WhirlpoolDelta = -WhirlpoolAnimation.GetFrameTexture(0).GetSize() / 2 + WhirlpoolCorrection;
 		}
@@ -232,6 +243,34 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				MeltingAnimationNode.QueueFree();
 				MeltingAnimationNode = null;
+			}
+		}
+
+		/// <summary>
+		/// Make a teleporter charged
+		/// </summary>
+		/// <param name="chargeOther">Whether or not should charge the linked one</param>
+		public void Charge(bool chargeOther = true)
+		{
+			IsTeleporterCharge = true;
+			TeleporterChargeAnimation.StartDelayed();
+			if (chargeOther)
+			{
+				LinkedTeleporter.Charge(false);
+			}
+		}
+
+		/// <summary>
+		/// Uncharge a teleporter
+		/// </summary>
+		/// <param name="unchargeOther">Whether or not should uncharge the linked one</param>
+		public void Uncharge(bool unchargeOther = true)
+		{
+			IsTeleporterCharge = false;
+			TeleporterIdleAnimation.StartDelayed();
+			if (unchargeOther)
+			{
+				LinkedTeleporter.Uncharge(false);
 			}
 		}
 
@@ -263,6 +302,10 @@ namespace ClubPenguinPlus.ThinIce
 						IsTeleporterBooting = false;
 						TeleporterIdleAnimation.StartDelayed();
 					}
+				}
+				else if (IsTeleporterCharge)
+				{
+					TeleporterChargeAnimation.Advance();
 				}
 				else
 				{
@@ -355,10 +398,10 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				GetCoinBag();
 			}
+			var neighbors = Engine.GetNeighborTiles(this);
 			// unlocking any adjacent locks if they exist
 			if (puffle.HasKeys())
 			{
-				var neighbors = Engine.GetNeighborTiles(this);
 				foreach ( var neighbor in neighbors )
 				{
 					if (neighbor.TileType == Type.Lock)
@@ -371,6 +414,13 @@ namespace ClubPenguinPlus.ThinIce
 							break;
 						}
 					}
+				}
+			}
+			foreach ( var neighbor in neighbors )
+			{
+				if (neighbor.TileType == Type.Teleporter)
+				{
+					neighbor.Charge();
 				}
 			}
 
@@ -403,6 +453,16 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void OnPuffleExit()
 		{
+			// uncharges early, similar to original
+			// might be interesting to uncharge after
+			var neighbors = Engine.GetNeighborTiles(this);
+			foreach ( var neighbor in neighbors )
+			{
+				if (neighbor.TileType == Type.Teleporter && neighbor.IsTeleporterCharge)
+				{
+					neighbor.Uncharge();
+				}
+			}
 			if (TileType == Type.Ice || TileType == Type.ThickIce)
 			{
 				Type newType;
