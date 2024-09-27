@@ -47,6 +47,16 @@ namespace ClubPenguinPlus.Utils
         /// </summary>
         private int[] Frames { get; set; }
 
+        /// <summary>
+        /// Next frame will be the first frame starting animation
+        /// </summary>
+        private bool IsDelayed { get; set; }
+
+        /// <summary>
+        /// Position to displace when the animation begins
+        /// </summary>
+        private Vector2 DelayedPosition { get; set; }
+
         public FramerateBoundAnimation(SpriteFrames spriteFrames, Sprite2D parent, StringName animation = null)
         {
             SpriteFrames = spriteFrames;
@@ -79,9 +89,21 @@ namespace ClubPenguinPlus.Utils
         /// <summary>
         /// Start animation, not updating in this frame
         /// </summary>
-        public void StartDelayed()
+        /// <param name="positionDelta">
+        /// Delta to displace position once animation starts
+        /// </param>
+        public void StartDelayed(Vector2? positionDelta = null)
         {
             CurrentFrame = 0;
+            IsDelayed = true;
+            if (positionDelta.HasValue)
+            {
+                DelayedPosition = positionDelta.Value;
+            }
+            else
+            {
+                DelayedPosition = Vector2.Zero;
+            }
         }
 
         /// <summary>
@@ -92,6 +114,11 @@ namespace ClubPenguinPlus.Utils
         /// </returns>
         public bool Advance()
         {
+            if (IsDelayed)
+            {
+                IsDelayed = false;
+                Parent.Position += DelayedPosition;
+            }
             Parent.Texture = SpriteFrames.GetFrameTexture(Animation, Frames[CurrentFrame]);
             CurrentFrame = (CurrentFrame + 1) % FrameCount;
             return CurrentFrame == 0;

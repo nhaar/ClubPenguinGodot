@@ -87,15 +87,20 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void Sink()
 		{
-			Position += SinkingDelta;
-			IsSinking = true;
-			SinkingAnimation.Start();
+			if (!IsSinking)
+			{
+				IsSinking = true;
+				SinkingAnimation.StartDelayed(SinkingDelta);
+			}
 		}
 
-		private void EndSink()
+		public void EndSink()
 		{
-			Position -= SinkingDelta;
-			IsSinking = false;
+			if (IsSinking)
+			{
+				Position -= SinkingDelta;
+				IsSinking = false;
+			}
 		}
 
 		/// <summary>

@@ -278,6 +278,7 @@ namespace ClubPenguinPlus.ThinIce
 		/// </summary>
 		public void ResetLevel()
 		{
+			Puffle.EndSink();
 			TimesFailed++;
 			StartLevel(CurrentLevelNumber, true);
 		}
