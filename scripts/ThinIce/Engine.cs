@@ -49,9 +49,9 @@ namespace ClubPenguinPlus.ThinIce
 		public int MeltedTiles { get; private set; } = 0;
 
 		/// <summary>
-		/// Gets the total number of points the player has to display
+		/// Points that get displayed in the screen
 		/// </summary>
-		public int Points => PointsAtStartOfLevel + PointsInLevel;
+		public int DisplayPoints { get; private set; } = 0;
 
 		/// <summary>
 		/// Levels the player has solved so far
@@ -110,6 +110,33 @@ namespace ClubPenguinPlus.ThinIce
 			// move to bottom so it is always visible on top of tiles
 			Puffle = GetNode<Puffle>(PufflePath);
 			Puffle.Engine = this;
+		}
+
+		public override void _Process(double delta)
+		{
+			base._Process(delta);
+			var score = PointsAtStartOfLevel + PointsInLevel;
+			var highIncrement = 110;
+			var midIncrement = 11;
+
+			// this code is from the original
+			// slowly increments points
+			if (DisplayPoints < score - highIncrement)
+			{
+				DisplayPoints += highIncrement;
+			}
+			else if (DisplayPoints < score - midIncrement)
+			{
+				DisplayPoints += midIncrement;
+			}
+			else if (DisplayPoints < score)
+			{
+				DisplayPoints += 1;
+			}
+			else if (DisplayPoints > score)
+			{
+				DisplayPoints = score;
+			}
 		}
 
 		/// <summary>
