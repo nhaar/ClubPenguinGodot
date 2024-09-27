@@ -78,21 +78,21 @@ namespace ClubPenguinPlus.Utils
         }
 
         /// <summary>
-        /// Starts animation
+        /// Starts animation, advancing first frame, should be used inside _Ready methods.
         /// </summary>
-        public void Start()
+        public void StartOnReady()
         {
             CurrentFrame = 0;
             Advance();
         }
 
         /// <summary>
-        /// Start animation, not updating in this frame
+        /// Start animation, not updating in this frame, should be ALWAYS be used if starting in a _Process method
         /// </summary>
         /// <param name="positionDelta">
         /// Delta to displace position once animation starts
         /// </param>
-        public void StartDelayed(Vector2? positionDelta = null)
+        public void StartOnProcess(Vector2? positionDelta = null)
         {
             CurrentFrame = 0;
             IsDelayed = true;

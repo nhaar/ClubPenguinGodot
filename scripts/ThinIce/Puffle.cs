@@ -58,13 +58,13 @@ namespace ClubPenguinPlus.ThinIce
 
 		public override void _Ready()
 		{
+			// the puffle is placed inactive and needs to be activated because of how the engine is placed invisible
 			base._Ready();
 			KeyCount = 0;
 			IsActive = false;
 			IgniteAnimation = new(IgniteAnimationFrames, this);
 			IdleAnimation = new(IdleAnimationFrames, this);
 			SinkingAnimation = new(SinkingAnimationFrames, this);
-			SetIdle();
 			SinkingDelta = -SinkingAnimation.GetFrameTexture(0).GetSize() / 2 + SinkingCorrection;
 		}
 
@@ -74,7 +74,7 @@ namespace ClubPenguinPlus.ThinIce
 		public void Ignite()
 		{
 			IsIgniting = true;
-			IgniteAnimation.Start();
+			IgniteAnimation.StartOnProcess();
 		}
 
 		public void Activate()
@@ -90,7 +90,7 @@ namespace ClubPenguinPlus.ThinIce
 			if (!IsSinking)
 			{
 				IsSinking = true;
-				SinkingAnimation.StartDelayed(SinkingDelta);
+				SinkingAnimation.StartOnProcess(SinkingDelta);
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace ClubPenguinPlus.ThinIce
 		private void SetIdle()
 		{
 			IsIdle = true;
-			IdleAnimation.Start();
+			IdleAnimation.StartOnProcess();
 		}
 
 		public override void _Process(double delta)

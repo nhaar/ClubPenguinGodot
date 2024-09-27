@@ -18,7 +18,7 @@ namespace ClubPenguinPlus.ThinIce
 		{
 			base._Ready();
 			KeyAnimation = new(KeyAnimationFrames, this);
-			KeyAnimation.Start();
+			KeyAnimation.StartOnReady();
 		}
 
 		public override void _Process(double delta)

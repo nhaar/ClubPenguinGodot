@@ -233,7 +233,7 @@ namespace ClubPenguinPlus.ThinIce
 			MeltingAnimationNode = new();
 			AddChild(MeltingAnimationNode);
 			MeltingAnimation = new(MeltingAnimationFrames, MeltingAnimationNode);
-			MeltingAnimation.Start();
+			MeltingAnimation.StartOnProcess();
 		}
 
 		private void ContinueMelt()
@@ -253,7 +253,7 @@ namespace ClubPenguinPlus.ThinIce
 		public void Charge(bool chargeOther = true)
 		{
 			IsTeleporterCharge = true;
-			TeleporterChargeAnimation.StartDelayed();
+			TeleporterChargeAnimation.StartOnProcess();
 			if (chargeOther)
 			{
 				LinkedTeleporter.Charge(false);
@@ -267,7 +267,7 @@ namespace ClubPenguinPlus.ThinIce
 		public void Uncharge(bool unchargeOther = true)
 		{
 			IsTeleporterCharge = false;
-			TeleporterIdleAnimation.StartDelayed();
+			TeleporterIdleAnimation.StartOnProcess();
 			if (unchargeOther)
 			{
 				LinkedTeleporter.Uncharge(false);
@@ -300,7 +300,7 @@ namespace ClubPenguinPlus.ThinIce
 					if (ended)
 					{
 						IsTeleporterBooting = false;
-						TeleporterIdleAnimation.StartDelayed();
+						TeleporterIdleAnimation.StartOnProcess();
 					}
 				}
 				else if (IsTeleporterCharge)
@@ -337,16 +337,16 @@ namespace ClubPenguinPlus.ThinIce
 
 			if (tileType == Type.Water)
 			{
-				WaterAnimation.Start();
+				WaterAnimation.StartOnProcess();
 			}
 			else if (tileType == Type.Teleporter)
 			{
-				TeleporterBootingAnimation.Start();
+				TeleporterBootingAnimation.StartOnProcess();
 				IsTeleporterBooting = true;
 			}
 			else if (tileType == Type.Whirlpool)
 			{
-				WhirlpoolAnimation.Start();
+				WhirlpoolAnimation.StartOnProcess();
 				IsWhirlpool = true;
 				Position += WhirlpoolDelta;
 			}
