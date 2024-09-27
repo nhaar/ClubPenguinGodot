@@ -60,14 +60,6 @@ namespace ClubPenguinPlus.ThinIce
 		[Export]
 		private PackedScene KeyScene { get; set; }
 
-		[Export]
-		private Vector2 WhirlpoolCorrection { get; set; }
-
-		/// <summary>
-		/// How much to displace for the whirlpool animation to be centered
-		/// </summary>
-		private Vector2 WhirlpoolDelta { get; set; }
-
 		/// <summary>
 		/// All valid tile types
 		/// </summary>
@@ -225,7 +217,6 @@ namespace ClubPenguinPlus.ThinIce
 			TeleporterBootingAnimation = new(TeleporterBootingAnimationFrames, this);
 			TeleporterChargeAnimation = new(TeleporterChargeAnimationFrames, this);
 			WhirlpoolAnimation = new(WhirlpoolAnimationFrames, this);
-			WhirlpoolDelta = -WhirlpoolAnimation.GetFrameTexture(0).GetSize() / 2 + WhirlpoolCorrection;
 		}
 
 		private void StartMelt()
@@ -332,7 +323,6 @@ namespace ClubPenguinPlus.ThinIce
 			if (IsWhirlpool)
 			{
 				IsWhirlpool = false;
-				Position -= WhirlpoolDelta;
 			}
 
 			if (tileType == Type.Water)
@@ -348,7 +338,6 @@ namespace ClubPenguinPlus.ThinIce
 			{
 				WhirlpoolAnimation.StartOnProcess();
 				IsWhirlpool = true;
-				Position += WhirlpoolDelta;
 			}
 			else
 			{
