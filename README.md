@@ -1,10 +1,10 @@
-Club Penguin Plus aims to be a single player recreation with improved performance and playability.
+This project's goal is to make a singleplayer recreation in Godot Engine so that the minigames can be played with improved performance and playablility.
 
-Club Penguin Plus is built in Godot Engine.
+Currently, the project is neither being worked on, neither completely dropped. It is unsure what will come out of this project!
 
 # Building
 
-1. Make sure you have downloaded Godot .NET support from the website
+1. Make sure you have downloaded Godot .NET support from the website (versions 4.2.1 is used)
 
 2. Make sure you have .NET 6 installed
 
