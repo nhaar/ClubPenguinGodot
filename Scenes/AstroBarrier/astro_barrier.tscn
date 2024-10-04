@@ -1,0 +1,36 @@
+[gd_scene load_steps=9 format=3 uid="uid://cdwme7708yt6u"]
+
+[ext_resource type="Texture2D" uid="uid://chcie4lt43s0p" path="res://Assets/AstroBarrier/Background.png" id="1_do6uj"]
+[ext_resource type="Script" path="res://Scenes/ThinIce/ThinIcePlaceholder.cs" id="2_wwvbr"]
+[ext_resource type="Texture2D" uid="uid://kw4o4g51qtr" path="res://Assets/AstroBarrier/GreenScreen.png" id="3_8ry5a"]
+[ext_resource type="Texture2D" uid="uid://ct15h60kk7nve" path="res://Assets/AstroBarrier/GreenScreenShadow.png" id="4_1grnk"]
+[ext_resource type="Texture2D" uid="uid://cv8vxmqeapk1m" path="res://Assets/AstroBarrier/GameWindow.png" id="5_2peen"]
+[ext_resource type="Script" path="res://Scenes/AstroBarrier/AstroBarrierGameWindow.cs" id="6_8rppm"]
+[ext_resource type="PackedScene" uid="uid://cll1riyjtngt5" path="res://Scenes/AstroBarrier/astro_barrier_game.tscn" id="7_kegnf"]
+[ext_resource type="Texture2D" uid="uid://qq6cpo4k50dv" path="res://Assets/AstroBarrier/Cabinet.png" id="8_chghe"]
+
+[node name="AstroBarrier" type="Node2D"]
+texture_filter = 1
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_do6uj")
+script = ExtResource("2_wwvbr")
+
+[node name="GreenArea" type="Sprite2D" parent="Background"]
+position = Vector2(-1.90735e-06, 0)
+texture = ExtResource("3_8ry5a")
+
+[node name="GreenAreaShadow" type="Sprite2D" parent="Background"]
+visible = false
+position = Vector2(-1.90735e-06, 0)
+texture = ExtResource("4_1grnk")
+
+[node name="GameWindow" type="Sprite2D" parent="Background"]
+scale = Vector2(0.917, 1)
+texture = ExtResource("5_2peen")
+script = ExtResource("6_8rppm")
+
+[node name="AstroBarrierGame" parent="Background/GameWindow" instance=ExtResource("7_kegnf")]
+
+[node name="Cabinet" type="Sprite2D" parent="Background"]
+texture = ExtResource("8_chghe")
